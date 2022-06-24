@@ -16,4 +16,5 @@ func (h handler) GetTeams(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, &equipes)
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 }
