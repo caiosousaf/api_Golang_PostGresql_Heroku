@@ -6,16 +6,17 @@ import (
 	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/projects"
 	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/tasks"
 	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/teams"
-
+    "github.com/itsjamie/gin-cors"
 	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/db"
 	"github.com/gin-gonic/gin"
-
+    "time"
 	"github.com/spf13/viper"
 )
 
 func main() {
     viper.SetConfigFile("./pkg/common/envs/.env")
     viper.ReadInConfig()
+    
 
     port := os.Getenv("PORT")
     dbUrl := viper.Get("DB_URL").(string)
@@ -30,5 +31,20 @@ func main() {
     tasks.RegisterRoutes(r, h)
     // register more routes here
 
+ 
+router := gin.New()
+
+
+config := cors.Config{
+	Origins:         "*",
+	RequestHeaders:  "Authorization",
+	Methods:         "GET, POST, PUT",
+	Credentials:     true,
+	ValidateHeaders: false,
+	MaxAge:          1 * time.Minute,
+}
+
+// Apply the middleware to the router (works on groups too)
+router.Use(cors.Middleware(config))
     r.Run(":"+port)
 }
