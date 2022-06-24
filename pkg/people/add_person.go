@@ -32,6 +32,6 @@ func (h handler) AddPerson(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-
+	
 	c.JSON(http.StatusCreated, &pessoa)
 }
