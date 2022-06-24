@@ -9,8 +9,7 @@ import (
 
 	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/db"
 	"github.com/gin-gonic/gin"
-	"github.com/gofiber/fiber"
-	"github.com/gofiber/fiber/v2/middleware/cors"
+
 	"github.com/spf13/viper"
 )
 
@@ -24,11 +23,6 @@ func main() {
     r := gin.Default()
     h := db.Init(dbUrl)
 
-    app := fiber.New()
-
-    app.Use(cors.New(cors.Config{
-        AllowCredentials: true,
-    }))
 
     pessoas.RegisterRoutes(r, h,)
     projetos.RegisterRoutes(r, h)

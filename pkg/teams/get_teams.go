@@ -14,7 +14,6 @@ func (h handler) GetTeams(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, &equipes)
 }
