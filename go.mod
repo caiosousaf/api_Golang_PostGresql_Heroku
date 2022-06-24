@@ -18,6 +18,10 @@ require (
 )
 
 require (
+	github.com/gofiber/fiber/v2/middleware/cors v1
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
