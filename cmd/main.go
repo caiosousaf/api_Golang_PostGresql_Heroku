@@ -6,10 +6,11 @@ import (
     "github.com/caiosousaf/api_desafio_BrisaNet/pkg/teams"
     "github.com/caiosousaf/api_desafio_BrisaNet/pkg/projects"
     "github.com/caiosousaf/api_desafio_BrisaNet/pkg/tasks"
-	
+	"time"
 	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/db"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+    "github.com/itsjamie/gin-cors"
 )
 
 func main() {
@@ -28,6 +29,19 @@ func main() {
     equipes.RegisterRoutes(r, h)
     tasks.RegisterRoutes(r, h)
     // register more routes here
+
+    router := gin.New()
+
+// Apply the middleware to the router (works with groups too)
+router.Use(cors.Middleware(cors.Config{
+	Origins:        "*",
+	Methods:        "GET, PUT, POST, DELETE",
+	RequestHeaders: "Origin, Authorization, Content-Type",
+	ExposedHeaders: "",
+	MaxAge: 50 * time.Second,
+	Credentials: false,
+	ValidateHeaders: false,
+}))
 
     
     r.Run(":"+port)
