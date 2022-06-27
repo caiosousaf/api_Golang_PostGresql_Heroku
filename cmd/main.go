@@ -25,7 +25,12 @@ func main() {
     r := gin.Default()
     h := db.Init(dbUrl)
 
-    r.Use(cors.Default())
+    config := cors.DefaultConfig()
+    config.AllowOrigins = []string{"http:localhost:3000"}
+    // config.AllowOrigins = []string{"http://google.com", "http://facebook.com"}
+    // config.AllowAllOrigins = true
+
+    r.Use(cors.New(config))
 
     pessoas.RegisterRoutes(r, h)
     projetos.RegisterRoutes(r, h)
