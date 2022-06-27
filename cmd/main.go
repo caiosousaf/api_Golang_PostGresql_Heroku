@@ -25,12 +25,17 @@ func main() {
     r := gin.Default()
     h := db.Init(dbUrl)
 
-    config := cors.DefaultConfig()
-    config.AllowOrigins = []string{"http:localhost:3000"}
-    // config.AllowOrigins = []string{"http://google.com", "http://facebook.com"}
-    // config.AllowAllOrigins = true
+    r.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"https://foo.com"},
+        AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
+        AllowHeaders:     []string{"Origin"},
+        ExposeHeaders:    []string{"Content-Length"},
+        AllowCredentials: true,
+        AllowOriginFunc: func(origin string) bool {
+          return origin == "https://localhost:3000"
+        },
 
-    r.Use(cors.New(config))
+      }))
 
     pessoas.RegisterRoutes(r, h)
     projetos.RegisterRoutes(r, h)

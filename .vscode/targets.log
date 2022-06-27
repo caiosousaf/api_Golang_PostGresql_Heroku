@@ -8,7 +8,7 @@ Makefile:2: *** missing separator.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jun 27 09:48:15 2022
+# Make data base, printed on Mon Jun 27 09:52:18 2022
 
 # Variables
 
@@ -157,7 +157,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-9f6b672e-b620-4775-86f7-3fcd9d6349b6.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-a278ecf0-043d-48e1-a85f-baaa35818e7c.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -231,7 +231,6 @@ VSCODE_PID = 14916
 
 # . (device 66307, inode 10229096): 11 files, no impossibilities.
 
- 
 # 11 files, no impossibilities in 1 directories.
 
 # Implicit Rules
@@ -246,6 +245,7 @@ all:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+ 
 
 # Not a target:
 Makefile:
@@ -278,6 +278,6 @@ server:
 # strcache performance: lookups = 22 / hit rate = 22%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/22=5%
-# Finished Make data base on Mon Jun 27 09:48:15 2022
+# Finished Make data base on Mon Jun 27 09:52:18 2022
 
  
