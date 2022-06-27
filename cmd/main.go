@@ -11,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/spf13/viper"
+    "github.com/gofiber/fiber/v2"
+    "github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
@@ -23,6 +25,11 @@ func main() {
 
     r := gin.Default()
     h := db.Init(dbUrl)
+
+    app := fiber.New()
+    app.Use(cors.New(cors.Config{
+        AllowCredentials: true,
+    }))
 
 
     pessoas.RegisterRoutes(r, h,)
