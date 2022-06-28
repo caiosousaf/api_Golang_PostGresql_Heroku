@@ -16,7 +16,7 @@ func (h handler) GetProjectTeam(c * gin.Context){
 
 	var equipes []Equipes
 	
-	sql := "select eq.nameteam from equipes as eq inner join equipes as pe on eq.id_project = pe.project_id where eq.id_team = ?"
+	sql := "select eq.nome.equipe from equipes as eq inner join equipes as pe on eq.id_project = pe.project_id where eq.id_equipe = ?"
 
 	if equipes := h.DB.Raw(sql, id).Scan(&equipes); equipes.Error != nil{
 		c.AbortWithError(http.StatusNotFound, equipes.Error)
