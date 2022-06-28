@@ -6,7 +6,7 @@ import (
 )
 
 type Equipes struct {
-	ID_project		  uint 		`json:"id_project"`
+	ID_projeto		  uint 		`json:"id_projeto"`
 	ID_Equipe         uint   	`json:"id_equipe"`
     Nome_Equipe       string 	`json:"nome_equipe"`
 }
@@ -16,7 +16,7 @@ func (h handler) GetProjectTeam(c * gin.Context){
 
 	var equipes []Equipes
 	
-	sql := "select eq.nome.equipe from equipes as eq inner join equipes as pe on eq.id_project = pe.project_id where eq.id_equipe = ?"
+	sql := "select eq.nome.equipe from equipes as eq inner join equipes as pe on eq.id_projeto = pe.projeto_id where eq.id_equipe = ?"
 
 	if equipes := h.DB.Raw(sql, id).Scan(&equipes); equipes.Error != nil{
 		c.AbortWithError(http.StatusNotFound, equipes.Error)
