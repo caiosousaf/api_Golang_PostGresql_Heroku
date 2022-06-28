@@ -1,4 +1,4 @@
-module github.com/caiosousaf/api_desafio_BrisaNet
+module github.com/caiosousaf/api_Golang_PostGresql_Heroku
 
 go 1.18
 

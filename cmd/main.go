@@ -2,12 +2,12 @@ package main
 
 import (
 	"os"
-	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/people"
-	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/projects"
-	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/tasks"
-	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/teams"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/people"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/projects"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/tasks"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/teams"
     
-	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/db"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/db"
 	"github.com/gin-gonic/gin"
 
 	"github.com/spf13/viper"

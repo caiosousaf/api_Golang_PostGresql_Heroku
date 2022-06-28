@@ -3,7 +3,7 @@ package equipes
 import (
 	"net/http"
 
-	"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/models"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 	"github.com/gin-gonic/gin"
 )
 

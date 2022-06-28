@@ -4,13 +4,14 @@ import (
     "net/http"
 
     "github.com/gin-gonic/gin"
-    "github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/models"
+    "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 )
 
 type UpdatePessoaRequestBody struct {
+	ID_Pessoa		uint   `json:"id_pessoa"`
 	Nome_Pessoa		string `json:"nome_pessoa"`
-	Funcao_Pessoa 		string `json:"funcao_pessoa"`
-	Equipe 		models.Equipe `json:"equipe"`
+	Funcao_Pessoa 	string `json:"funcao_pessoa"`
+	EquipeID		int    `json:"equipeId"`
 }
 
 func (h handler) UpdatePerson(c *gin.Context) {
@@ -32,9 +33,12 @@ func (h handler) UpdatePerson(c *gin.Context) {
 
 	pessoa.Nome_Pessoa = body.Nome_Pessoa
 	pessoa.Funcao_Pessoa = body.Funcao_Pessoa
-	pessoa.Equipe = body.Equipe
+	pessoa.EquipeID = body.EquipeID
 
-	h.DB.Save(&pessoa)
+	if result := h.DB.Raw("update pessoas set nome_pessoa = ?, funcao_pessoa = ?, equipe_id = ? where id_pessoa = ?", pessoa.Nome_Pessoa, pessoa.Funcao_Pessoa, pessoa.EquipeID, pessoa.ID_Pessoa).Scan(&pessoa); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	}
 
 	c.JSON(http.StatusOK, &pessoa)
 }
