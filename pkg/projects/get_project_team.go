@@ -1,26 +1,24 @@
 package projetos
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-type Equipes struct {
-	ID_projeto		  uint 		`json:"id_projeto"`
-	ID_Equipe         uint   	`json:"id_equipe"`
-    Nome_Equipe       string 	`json:"nome_equipe"`
+type GetProjectTeam struct {
+	Nome_Equipe 	string  `json:"nome_equipe"`
+	ID_Projeto 		uint 	`json:"id_projeto"`
+	Nome_Projeto 	string  `json:"nome_projeto"`
 }
 
-func (h handler) GetProjectTeam(c * gin.Context){
-	id := c.Param("id")
+func (h handler) GetProjectTeam (c *gin.Context) {
+	var equipes []GetProjectTeam
 
-	var equipes []Equipes
-	
-	sql := "select eq.nome.equipe from equipes as eq inner join equipes as pe on eq.id_projeto = pe.projeto_id where eq.id_equipe = ?"
-
-	if equipes := h.DB.Raw(sql, id).Scan(&equipes); equipes.Error != nil{
+	if equipes := h.DB.Raw("select eq.nome_equipe, pr.id_projeto, pr.nome_projeto from equipes as eq inner join projetos as pr on eq.id_equipe = pr.equipe_id").Scan(&equipes); equipes.Error != nil {
 		c.AbortWithError(http.StatusNotFound, equipes.Error)
 		return
 	}
+
 	c.JSON(http.StatusOK, &equipes)
 }

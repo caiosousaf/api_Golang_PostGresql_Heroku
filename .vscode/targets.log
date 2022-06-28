@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+Makefile:2: *** missing separator.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jun 28 08:31:59 2022
+# Make data base, printed on Tue Jun 28 10:20:58 2022
 
 # Variables
 
@@ -105,7 +107,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1001/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 6196
+GIO_LAUNCHED_DESKTOP_FILE_PID = 22260
 # automatic
 %F = $(notdir $%)
 # environment
@@ -155,7 +157,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-9c194e6a-f585-4087-b259-ce93cbfddd4a.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-3b158308-237a-4c09-8f38-f6d47a779116.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -217,7 +219,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 6196
+VSCODE_PID = 22260
 # variable set hash-table stats:
 # Load=104/1024=10%, Rehash=0, Collisions=12/118=10%
 
@@ -275,8 +277,6 @@ server:
 # strcache performance: lookups = 22 / hit rate = 22%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/22=5%
-# Finished Make data base on Tue Jun 28 08:31:59 2022
+# Finished Make data base on Tue Jun 28 10:20:58 2022
 
  
-Makefile:2: *** missing separator.  Stop.
-
