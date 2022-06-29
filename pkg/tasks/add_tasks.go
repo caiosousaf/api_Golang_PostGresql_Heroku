@@ -9,8 +9,8 @@ import (
 
 type AddTaskRequestBody struct {
 	Descricao_Task  string 			`gorm:"type: varchar(100) not null" json:"descricao"`
-	Pessoa			models.Pessoa 	`gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"pessoa"`
-	Projeto			models.Projeto 	`gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"projeto"`
+	PessoaID  		int				`json:"id_pessoa"`
+	ProjetoID 		int 			`json:"id_projeto"`
 }
 
 func (h handler) AddTask(c *gin.Context) {
@@ -25,8 +25,8 @@ func (h handler) AddTask(c *gin.Context) {
 	var task models.Task
 
 	task.Descricao_Task = body.Descricao_Task
-	task.Pessoa = body.Pessoa
-	task.Projeto = body.Projeto
+	task.PessoaID = body.PessoaID
+	task.ProjetoID = body.ProjetoID
 
 	if result := h.DB.Create(&task); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)

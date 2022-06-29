@@ -9,8 +9,8 @@ import (
 
 type UpdateTaskRequestBody struct {
 	Descricao_Task  string 			`gorm:"type: varchar(100) not null" json:"descricao_task"`
-	Pessoa			models.Pessoa 	`gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"pessoa"`
-	Projeto			models.Projeto 	`gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"projeto"`
+	PessoaID  		int		`json:"id_pessoa"`
+	ProjetoID 		int 	`json:"id_projeto"`
 }
 
 func (h handler) UpdateTask(c *gin.Context) {
@@ -31,8 +31,8 @@ func (h handler) UpdateTask(c *gin.Context) {
 	}
 
 	task.Descricao_Task = body.Descricao_Task
-	task.Pessoa = body.Pessoa
-	task.Projeto = body.Projeto
+	task.PessoaID = body.PessoaID
+	task.ProjetoID = body.ProjetoID
 
 	h.DB.Save(&task)
 
