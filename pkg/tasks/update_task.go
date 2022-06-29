@@ -31,7 +31,7 @@ func (h handler) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	task.ID_Task = body.ID_Task
+
 	task.Descricao_Task = body.Descricao_Task
 	task.PessoaID = body.PessoaID
 	task.ProjetoID = body.ProjetoID
