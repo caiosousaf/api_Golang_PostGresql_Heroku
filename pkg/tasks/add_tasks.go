@@ -9,8 +9,8 @@ import (
 
 type AddTaskRequestBody struct {
 	Descricao_Task  string 			`json:"descricao_task"`
-	PessoaID  		int				`json:"id_pessoa"`
-	ProjetoID 		int 			`json:"id_projeto"`
+	PessoaID  		int				`json:"pessoa_id"`
+	ProjetoID 		int 			`json:"projeto_id"`
 }
 
 func (h handler) AddTask(c *gin.Context) {
