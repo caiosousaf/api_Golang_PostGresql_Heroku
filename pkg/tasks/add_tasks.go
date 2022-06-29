@@ -12,6 +12,7 @@ type AddTaskRequestBody struct {
 	Descricao_Task  string 	`json:"descricao_task"`
 	PessoaID		int 	`json:"pessoa_id"`
 	ProjetoID		int 	`json:"projeto_id"`
+	Status			int		`json:"status"`
 }
 
 func (h handler) AddTask(c *gin.Context) {
@@ -29,6 +30,7 @@ func (h handler) AddTask(c *gin.Context) {
 	task.Descricao_Task = body.Descricao_Task
 	task.PessoaID = body.PessoaID
 	task.ProjetoID = body.ProjetoID
+	task.Status = body.Status
 
 	if result := h.DB.Create(&task); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)

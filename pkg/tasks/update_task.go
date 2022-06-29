@@ -12,6 +12,7 @@ type UpdateTaskRequestBody struct {
 	Descricao_Task  string 			`json:"descricao_task"`
 	PessoaID  		int				`json:"pessoa_id"`
 	ProjetoID 		int 			`json:"projeto_id"`
+	Status			int				`json:"status"`
 }
 
 func (h handler) UpdateTask(c *gin.Context) {
@@ -35,6 +36,7 @@ func (h handler) UpdateTask(c *gin.Context) {
 	task.Descricao_Task = body.Descricao_Task
 	task.PessoaID = body.PessoaID
 	task.ProjetoID = body.ProjetoID
+	task.Status = body.Status
 
 	h.DB.Save(&task)
 
