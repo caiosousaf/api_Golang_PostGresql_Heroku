@@ -8,7 +8,7 @@ import (
 )
 
 type AddTaskRequestBody struct {
-	Descricao_Task  string 			`gorm:"type: varchar(100) not null" json:"descricao"`
+	Descricao_Task  string 			`gorm:"type: varchar(100) not null" json:"descricao_task"`
 	PessoaID  		int				`json:"id_pessoa"`
 	ProjetoID 		int 			`json:"id_projeto"`
 }
