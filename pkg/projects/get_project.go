@@ -8,10 +8,10 @@ import (
 )
 
 type Projetos struct {
-	ID_Projeto 		uint 	`gorm:"primary_key" json:"id_projeto"`
-	Nome_Projeto 	string 	`gorm:"type: varchar(30) not null" json:"nome_projeto"`
-	EquipeID 		uint 	`json:"id_equipe"`
-	Status			int		`json:"status"`
+	ID_Projeto 		uint 		`gorm:"primary_key" json:"id_projeto"`
+	Nome_Projeto 	string 		`gorm:"type: varchar(30) not null" json:"nome_projeto"`
+	EquipeID 		uint 		`json:"id_equipe"`
+	Status			string		`json:"status"`
 
 }
 
