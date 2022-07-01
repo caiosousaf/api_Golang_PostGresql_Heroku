@@ -8,6 +8,7 @@ import (
 )
 
 type UpdateProjetoRequestBody struct {
+	ID_Projeto 			uint 				`json:"id_projeto"`
 	Nome_Projeto		string 				`json:"nome_projeto"`
 	Equipe_ID 			int					`json:"equipeid"`
 	Status				string				`json:"status"`
@@ -35,6 +36,7 @@ func (h handler) UpdateProject(c *gin.Context) {
 	projeto.EquipeID = body.Equipe_ID
 	projeto.Status = body.Status
 	projeto.Descricao_Projeto = body.Descricao_Projeto
+	projeto.ID_Projeto = body.ID_Projeto
 
 	if result := h.DB.Raw(`update projetos set nome_projeto = ?, equipe_id = ?, status = ?, descricao_projeto = ? where id_projeto = ?`, projeto.Nome_Projeto, projeto.EquipeID, projeto.Status, projeto.Descricao_Projeto, projeto.ID_Projeto).Scan(&projeto); result.Error != nil {
 		c.AbortWithError(http.StatusNotModified, result.Error)
