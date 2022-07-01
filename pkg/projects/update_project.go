@@ -8,9 +8,9 @@ import (
 )
 
 type UpdateProjetoRequestBody struct {
-	Nome_Projeto	string 			`json:"nome_projeto"`
-	Equipe_ID 		int				`json:"equipeid"`
-	Status			int				`json:"status"`
+	Nome_Projeto	string 				`json:"nome_projeto"`
+	Equipe_ID 		int					`json:"equipeid"`
+	Status			string				`json:"status"`
 }
 
 func (h handler) UpdateProject(c *gin.Context) {

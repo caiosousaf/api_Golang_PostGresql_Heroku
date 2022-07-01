@@ -8,9 +8,9 @@ import (
 )
 
 type AddProjetoRequestBody struct {
-	Nome_Projeto	string 			`gorm:"type: varchar(30) not null" json:"nome_projeto"`
-	Equipe_ID 		int				`json:"equipeid"`
-	Status			int				`json:"status"`
+	Nome_Projeto	string 				`gorm:"type: varchar(30) not null" json:"nome_projeto"`
+	Equipe_ID 		int					`json:"equipeid"`
+	Status			string				`json:"status"`
 }
 
 func (h handler) AddProject(c *gin.Context) {
