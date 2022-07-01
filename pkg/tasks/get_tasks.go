@@ -7,13 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 type Task struct {
-	ID_Task 			uint 		`json:"id_task"`
-	Descricao_Task 		string 		`json:"descricao_task"`
-	PessoaID 			int 		`json:"pessoa_id"`
-	Nome_Pessoa 		string 		`json:"nome_pessoa"`
-	ProjetoID 			int 		`json:"projeto_id"`
-	Nome_Projeto 		string 		`json:"nome_projeto"`
-	Status				int			`json:"status"`
+	ID_Task 			uint 			`json:"id_task"`
+	Descricao_Task 		string 			`json:"descricao_task"`
+	PessoaID 			int 			`json:"pessoa_id"`
+	Nome_Pessoa 		string 			`json:"nome_pessoa"`
+	ProjetoID 			int 			`json:"projeto_id"`
+	Nome_Projeto 		string 			`json:"nome_projeto"`
+	Status				string			`json:"status"`
 }
 
 func (h handler) GetTasks(c *gin.Context) {
