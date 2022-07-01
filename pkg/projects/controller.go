@@ -22,4 +22,5 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 	routes.GET("/:id/tasks", h.GetProjectTasks)
 	routes.PUT("/:id", h.UpdateProject)
 	routes.DELETE("/:id", h.DeleteProject)
+	
 }
