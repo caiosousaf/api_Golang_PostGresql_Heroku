@@ -8,7 +8,7 @@ Makefile:2: *** missing separator.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul  1 08:07:21 2022
+# Make data base, printed on Fri Jul  1 10:10:55 2022
 
 # Variables
 
@@ -157,7 +157,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-c6a36b7d-7514-4ddf-a1e5-accc91d0ef91.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-8405550f-369b-4a49-9032-a5e76a7d8962.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -273,11 +273,10 @@ server:
 
 # strcache buffers: 1 (0) / strings = 17 / storage = 130 B / avg = 7 B
 # current buf: size = 8162 B / used = 130 B / count = 17 / avg = 7 B
- 
 
 # strcache performance: lookups = 22 / hit rate = 22%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/22=5%
-# Finished Make data base on Fri Jul  1 08:07:21 2022
+# Finished Make data base on Fri Jul  1 10:10:55 2022
 
  
