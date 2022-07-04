@@ -27,7 +27,7 @@ func (h handler) AddProject(c *gin.Context) {
 
 	projeto.Nome_Projeto = body.Nome_Projeto
 	projeto.EquipeID = body.Equipe_ID
-	projeto.Status = body.Status
+	projeto.Status = "Não Iniciado"
 	projeto.Descricao_Projeto = body.Descricao_Projeto
 
 	if result := h.DB.Create(&projeto); result.Error != nil {

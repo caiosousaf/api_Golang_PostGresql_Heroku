@@ -30,7 +30,7 @@ func (h handler) AddTask(c *gin.Context) {
 	task.Descricao_Task = body.Descricao_Task
 	task.PessoaID = body.PessoaID
 	task.ProjetoID = body.ProjetoID
-	task.Status = body.Status
+	task.Status = "Não Iniciado"
 
 	if result := h.DB.Create(&task); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
