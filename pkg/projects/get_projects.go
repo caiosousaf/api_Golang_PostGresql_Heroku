@@ -17,7 +17,7 @@ type Projeto struct {
 func (h handler) GetProjects(c *gin.Context) {
 	var projetos []Projeto
 
-	if result := h.DB.Raw("select * from projetos order by id_projeto"); result.Error != nil {
+	if result := h.DB.Raw("select * from projetos order by id_projeto").Scan(projetos); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
