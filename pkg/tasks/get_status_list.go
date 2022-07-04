@@ -8,7 +8,7 @@ import (
 
 type GetStatusList struct {
 	Status		string	`json:"status"`
-	Quantidade	int		`json:"quantidade"`
+	Quantidade	int		`json:"count"`
 }
 
 func (h handler) GetStatusList(c *gin.Context) {
