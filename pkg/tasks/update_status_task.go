@@ -13,7 +13,7 @@ type UpdateStatusTaskRequestBody struct {
 
 func (h handler) UpdateStatusTask(c *gin.Context) {
 	id := c.Param("id")
-	body := UpdateTaskRequestBody{}
+	body := UpdateStatusTaskRequestBody{}
 
 	// getting request's body
 	if err := c.BindJSON(&body); err != nil {
