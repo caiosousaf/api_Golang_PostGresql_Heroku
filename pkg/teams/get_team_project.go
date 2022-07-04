@@ -12,17 +12,6 @@ type EquipeProjetos struct {
 	Nome_Projeto 	string  `json:"nome_projeto"`
 }
 
-func (h handler) GetTeamsProjects (c *gin.Context) {
-	var equipes []EquipeProjetos
-
-	if equipes := h.DB.Raw("select eq.nome_equipe, pr.id_projeto, pr.nome_projeto from equipes as eq inner join projetos as pr on eq.id_equipe = pr.equipe_id").Scan(&equipes); equipes.Error != nil {
-		c.AbortWithError(http.StatusNotFound, equipes.Error)
-		return
-	}
-
-	c.JSON(http.StatusOK, &equipes)
-}
-
 func (h handler) GetTeamProject (c *gin.Context) {
 	var equipe []EquipeProjetos
 	id := c.Param("id")

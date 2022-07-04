@@ -1,4 +1,4 @@
-package tasks
+package projetos
 
 import (
 	"net/http"
@@ -7,14 +7,14 @@ import (
 )
 
 type GetStatusList struct {
-	Status		string	`json:"status"`
-	Count	int		`json:"count"`
+	Status		string		`json:"status"`
+	Count		int			`json:"count"`
 }
 
 func (h handler) GetStatusList(c *gin.Context) {
 	var statuslist []GetStatusList
 
-	if result := h.DB.Raw("select status, count(*) from tasks group by status").Scan(&statuslist); result.Error != nil {
+	if result := h.DB.Raw("select status, count(*) from projetos group by status").Scan(&statuslist); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}

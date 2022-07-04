@@ -28,8 +28,6 @@ func (h handler) UpdateStatusTask(c *gin.Context) {
 		return
 	}
 
-
-
 	task.Status	= body.Status
 
 	if tasks := h.DB.Raw("update tasks set status = ? where id_task = ?", task.Status, id).Scan(&task); tasks.Error != nil {

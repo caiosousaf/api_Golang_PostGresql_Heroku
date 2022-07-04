@@ -19,7 +19,7 @@ func main() {
     viper.ReadInConfig()
     
 
-    port := os.Getenv("PORT")
+    port := os.Getenv("PORT") 
     dbUrl := viper.Get("DB_URL").(string)
 
     r := gin.Default()
@@ -35,4 +35,5 @@ func main() {
     // register more routes here
 
     r.Run(":"+port)
+    //r.Run("localhost:3000")
 }
