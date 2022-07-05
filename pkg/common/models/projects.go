@@ -6,4 +6,5 @@ type Projeto struct {
 	EquipeID 			int 		`json:"equipe_id"`
 	Status				string		`json:"status"`
 	Descricao_Projeto	string		`json:"descricao_projeto"`
+	Data_Criacao		string		`json:"data_criacao"`
 }

@@ -2,7 +2,7 @@ package pessoas
 
 import (
 	"net/http"
-
+	"time"
     "github.com/gin-gonic/gin"
     "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 )
@@ -23,12 +23,14 @@ func (h handler) AddPerson(c *gin.Context) {
 	}
 
 	var pessoa models.Pessoa
+	dt := time.Now()
 
 	pessoa.Nome_Pessoa = body.Nome_Pessoa
 	pessoa.Funcao_Pessoa = body.Funcao_Pessoa
 	pessoa.EquipeID = body.EquipeID
+	pessoa.Data_Contratacao = dt.Format("02-01-2006")
 
-	if result := h.DB.Raw(`insert into pessoas(nome_pessoa, funcao_pessoa, equipe_id) values(?, ?, ?)`, pessoa.Nome_Pessoa, pessoa.Funcao_Pessoa, pessoa.EquipeID).Scan(&pessoa); result.Error != nil {
+	if result := h.DB.Create(&pessoa).Scan(&pessoa); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}

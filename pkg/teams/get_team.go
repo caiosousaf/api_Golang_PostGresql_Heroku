@@ -10,6 +10,7 @@ import (
 type equipe struct{
 	Id_equipe 			uint `json:"id_equipe"`
 	Nome_Equipe       string `json:"nome_equipe"`
+	Data_Criacao	  string		`json:"data_criacao"`
 }
 
 func (h handler) GetTeam(c *gin.Context) {

@@ -12,6 +12,7 @@ type GetPessoasRequestBody struct {
     Nome_Pessoa		string 	`json:"nome_pessoa"`
 	Funcao_Pessoa	string 	`json:"funcao_pessoa"`
 	EquipeID		int 	`json:"id_equipe"`
+	Data_Contratacao string	`json:"data_contratacao"`
 }
 
 func (h handler) GetPeople(c *gin.Context) {
@@ -30,6 +31,7 @@ func (h handler) GetPeople(c *gin.Context) {
 		p.Nome_Pessoa = pe.Nome_Pessoa
 		p.Funcao_Pessoa = pe.Funcao_Pessoa
 		p.EquipeID = pe.EquipeID
+		p.Data_Contratacao = pe.Data_Contratacao
 
 		exibe = append(exibe, p)
 	}

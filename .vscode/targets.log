@@ -8,7 +8,7 @@ Makefile:2: *** missing separator.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul  4 08:04:18 2022
+# Make data base, printed on Tue Jul  5 08:04:05 2022
 
 # Variables
 
@@ -49,7 +49,7 @@ VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 8:53573
+JOURNAL_STREAM = 8:52754
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'Makefile', line 1)
@@ -69,7 +69,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1001/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 2168
+MANAGERPID = 2140
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -83,7 +83,7 @@ PATH = /usr/local/go/bin:/home/brisa/.nvm/versions/node/v16.15.1/bin:/usr/local/
 # environment
 GPG_AGENT_INFO = /run/user/1001/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2378,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2378
+SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2350,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2350
 # environment
 XDG_RUNTIME_DIR = /run/user/1001
 # environment
@@ -97,7 +97,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 0cfe9d8840924b78989b47ba16316803
+INVOCATION_ID = 239c0267d94c4a2a849433af3ff34c85
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -107,7 +107,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1001/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5257
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4743
 # automatic
 %F = $(notdir $%)
 # environment
@@ -119,7 +119,7 @@ PWD = /home/brisa/Documentos/api_Golang_PostGresql
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2343
+SSH_AGENT_PID = 2315
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -157,7 +157,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-c8028b6f-d529-40fb-9f55-c62cff8689f5.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-294f6c35-dd84-4b1b-8579-8cc3ec1a38fe.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -219,7 +219,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 5257
+VSCODE_PID = 4743
 # variable set hash-table stats:
 # Load=104/1024=10%, Rehash=0, Collisions=12/118=10%
 
@@ -277,6 +277,6 @@ server:
 # strcache performance: lookups = 23 / hit rate = 21%
 # hash-table stats:
 # Load=18/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Mon Jul  4 08:04:18 2022
+# Finished Make data base on Tue Jul  5 08:04:05 2022
 
  
