@@ -15,11 +15,12 @@ type Task struct {
 	Nome_Projeto 		string 			`json:"nome_projeto"`
 	Status				string			`json:"status"`
 	Data_Criacao		string			`json:"data_criacao"`
+	Data_Conclusao		string			`json:"data_conclusao"`
 }
 
 func (h handler) GetTasks(c *gin.Context) {
 	var tasks []Task
-	sql := "select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao from tasks as tk inner join pessoas as pe on tk.pessoa_id = pe.id_pessoa inner join projetos as pr on tk.projeto_id = pr.id_projeto order by id_task"
+	sql := "select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao, tk.data_conclusao from tasks as tk inner join pessoas as pe on tk.pessoa_id = pe.id_pessoa inner join projetos as pr on tk.projeto_id = pr.id_projeto order by id_task"
 	if tasks := h.DB.Raw(sql).Scan(&tasks); tasks.Error != nil {
 		c.AbortWithError(http.StatusNotFound, tasks.Error)
 		return

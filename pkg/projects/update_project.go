@@ -1,10 +1,11 @@
 package projetos
 
 import (
-    "net/http"
+	"net/http"
+	"time"
 
-    "github.com/gin-gonic/gin"
-    "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/gin-gonic/gin"
 )
 
 type UpdateProjetoRequestBody struct {
@@ -53,6 +54,7 @@ func (h handler) UpdateProject(c *gin.Context) {
 func (h handler) UpdateStatusProject(c *gin.Context) {
 	id := c.Param("id")
 	body := UpdateStatusProject{}
+	dt := time.Now()
 
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
@@ -61,6 +63,11 @@ func (h handler) UpdateStatusProject(c *gin.Context) {
 
 	if result := h.DB.Raw("update projetos set status = ? where id_projeto = ?", body.Status, id).Scan(&body); result.Error != nil {
 		c.AbortWithError(http.StatusNotModified, result.Error)
+		return
+	}
+
+	if result := h.DB.Raw("update projetos set data_conclusao = ? where status = 'Concluido' and id_task = ?",dt.Format("02-01-2006"), id).Scan(&body); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 

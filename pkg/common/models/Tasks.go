@@ -7,4 +7,5 @@ type Task struct {
 	ProjetoID 		int 	`json:"projeto_id"`
 	Status			string		`gorm:"varchar(20)" json:"status"`
 	Data_Criacao	string	`json:"data_criacao"`
+	Data_Conclusao	string	`json:"data_conclusao"`
 }

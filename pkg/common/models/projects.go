@@ -7,4 +7,5 @@ type Projeto struct {
 	Status				string		`json:"status"`
 	Descricao_Projeto	string		`json:"descricao_projeto"`
 	Data_Criacao		string		`json:"data_criacao"`
+	Data_Conclusao		string		`json:"data_conclusao"`
 }

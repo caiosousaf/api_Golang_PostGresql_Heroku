@@ -29,7 +29,7 @@ func (h handler) AddProject(c *gin.Context) {
 
 	projeto.Nome_Projeto = body.Nome_Projeto
 	projeto.EquipeID = body.EquipeID
-	projeto.Status = "Não Iniciado"
+	projeto.Status = "Em Andamento"
 	projeto.Descricao_Projeto = body.Descricao_Projeto
 	projeto.Data_Criacao = dt.Format("02-01-2006")
 

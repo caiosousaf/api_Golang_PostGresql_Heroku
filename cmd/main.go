@@ -1,7 +1,7 @@
 package main
 
 import (
-	"os"
+	//"os"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/people"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/projects"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/tasks"
@@ -19,7 +19,7 @@ func main() {
     viper.ReadInConfig()
     
 
-    port := os.Getenv("PORT") 
+    //port := os.Getenv("PORT") 
     dbUrl := viper.Get("DB_URL").(string)
 
     r := gin.Default()
@@ -34,6 +34,6 @@ func main() {
     tasks.RegisterRoutes(r, h)
     // register more routes here
 
-    r.Run(":"+port)
-    //r.Run("localhost:3000")
+    //r.Run(":"+port)
+    r.Run("localhost:3000")
 }
