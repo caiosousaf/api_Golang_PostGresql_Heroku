@@ -66,7 +66,7 @@ func (h handler) UpdateStatusProject(c *gin.Context) {
 		return
 	}
 
-	if result := h.DB.Raw("update projetos set data_conclusao = ? where status = 'Concluido' and id_task = ?",dt.Format("02-01-2006"), id).Scan(&body); result.Error != nil {
+	if result := h.DB.Raw("update projetos set data_conclusao = ? where status = 'Concluido' and id_projeto = ?",dt.Format("02-01-2006"), id).Scan(&body); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
