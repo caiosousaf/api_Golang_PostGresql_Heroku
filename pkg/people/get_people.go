@@ -11,7 +11,7 @@ type GetPessoasRequestBody struct {
 	ID_Pessoa 		uint	`json:"id_pessoa"`
     Nome_Pessoa		string 	`json:"nome_pessoa"`
 	Funcao_Pessoa	string 	`json:"funcao_pessoa"`
-	EquipeID		int 	`json:"id_equipe"`
+	EquipeID		int 	`json:"equipe_id"`
 	Data_Contratacao string	`json:"data_contratacao"`
 }
 
