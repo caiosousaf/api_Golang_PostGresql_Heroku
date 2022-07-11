@@ -24,4 +24,9 @@ select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_i
  where tk.id_task = 1
 
 select * from tasks where status = 'Em Andamento'
-*/
+
+    select pr.id_projeto, pr.nome_projeto from projetos as pr
+	inner join pessoas as pe
+	on pe.equipe_id = pr.equipe_id
+	where pe.id_pessoa = 4
+*/ 
