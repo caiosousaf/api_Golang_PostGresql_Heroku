@@ -27,6 +27,25 @@ select * from tasks where status = 'Em Andamento'
 
     select pr.id_projeto, pr.nome_projeto from projetos as pr
 	inner join pessoas as pe
-	on pe.equipe_id = pr.equipe_id
+	on pe.equipe_id = pr.equipe_id 
 	where pe.id_pessoa = 4
+
+
+
+
+
+
+	11/07/2022
+
+select pr.id_projeto, pr.nome_projeto, pr.equipe_id, eq.nome_equipe, pr.status, pr.descricao_projeto, 
+pr.data_criacao, pr.data_conclusao
+from projetos as pr inner join equipes as eq on pr.equipe_id = eq.id_equipe
+
+select * from tasks
+
+select pr.id_projeto, pr.nome_projeto, eq.nome_equipe,tk.id_task, tk.descricao_task, tk.status, 
+pe.nome_pessoa from 
+projetos as pr inner join tasks as tk on pr.id_projeto = tk.projeto_id inner join
+equipes as eq on pr.equipe_id = eq.id_equipe inner join
+pessoas as pe on pe.id_pessoa = tk.pessoa_id where id_projeto = 3 
 */ 

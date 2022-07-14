@@ -10,7 +10,7 @@ import (
 type AddPessoaRequestBody struct {
     Nome_Pessoa		string `json:"nome_pessoa"`
 	Funcao_Pessoa	string `json:"funcao_pessoa"`
-	EquipeID		int    `json:"equipeId"`
+	Equipe_ID		int    `json:"equipe_id"`
 }
 
 func (h handler) AddPerson(c *gin.Context) {
@@ -27,7 +27,7 @@ func (h handler) AddPerson(c *gin.Context) {
 
 	pessoa.Nome_Pessoa = body.Nome_Pessoa
 	pessoa.Funcao_Pessoa = body.Funcao_Pessoa
-	pessoa.EquipeID = body.EquipeID
+	pessoa.EquipeID = body.Equipe_ID
 	pessoa.Data_Contratacao = dt.Format("02-01-2006")
 
 	if result := h.DB.Create(&pessoa).Scan(&pessoa); result.Error != nil {

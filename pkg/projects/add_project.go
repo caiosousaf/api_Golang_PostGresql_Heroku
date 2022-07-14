@@ -9,7 +9,7 @@ import (
 
 type AddProjetoRequestBody struct {
 	Nome_Projeto		string 				`gorm:"type: varchar(30) not null" json:"nome_projeto"`
-	EquipeID 			int					`json:"equipeid"`
+	Equipe_ID 			int					`json:"equipe_id"`
 	Status				string				`json:"status"`
 	Descricao_Projeto	string				`json:"descricao_projeto"`
 	Data_Criacao		string				`json:"data_criacao"`
@@ -28,7 +28,7 @@ func (h handler) AddProject(c *gin.Context) {
 	dt := time.Now()
 
 	projeto.Nome_Projeto = body.Nome_Projeto
-	projeto.EquipeID = body.EquipeID
+	projeto.EquipeID = body.Equipe_ID
 	projeto.Status = "Em Andamento"
 	projeto.Descricao_Projeto = body.Descricao_Projeto
 	projeto.Data_Criacao = dt.Format("02-01-2006")
