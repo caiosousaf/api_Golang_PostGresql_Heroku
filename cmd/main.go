@@ -1,17 +1,18 @@
 package main
 
 import (
-	"os"
+	//"os"
+	user "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/User"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/people"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/projects"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/tasks"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/teams"
-    
+
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/db"
 	"github.com/gin-gonic/gin"
 
+	"github.com/gin-contrib/cors"
 	"github.com/spf13/viper"
-    "github.com/gin-contrib/cors"
 )
 
 func main() {
@@ -19,7 +20,7 @@ func main() {
     viper.ReadInConfig()
     
 
-    port := os.Getenv("PORT") 
+    //port := os.Getenv("PORT") 
     dbUrl := viper.Get("DB_URL").(string)
 
     r := gin.Default()
@@ -32,8 +33,9 @@ func main() {
     projetos.RegisterRoutes(r, h)
     equipes.RegisterRoutes(r, h)
     tasks.RegisterRoutes(r, h)
+    user.RegisterRoutes(r, h)
     // register more routes here
 
-    r.Run(":"+port)
-    //r.Run("localhost:3000")
+    //r.Run(":"+port)
+    r.Run("localhost:3000")
 }
