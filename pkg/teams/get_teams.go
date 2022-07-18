@@ -6,14 +6,36 @@ import (
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 	"github.com/gin-gonic/gin"
 )
+type GetMembers struct {
+	ID_Equipe 	uint 				`json:"id_equipe"`
+	Nome_Equipe string 				`json:"nome_equipe"`
+	Pessoas 	[]models.Pessoa 	`json:"pessoas"`
+}
+
 
 func (h handler) GetTeams(c *gin.Context) {
 	var equipes []models.Equipe
+	var eq		[]GetMembers
 
 	if result := h.DB.Find(&equipes); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-	c.JSON(http.StatusOK, &equipes)
+
+	
+	for i := 0; i < len(equipes); i++ {
+		var pessoas []models.Pessoa
+		if result := h.DB.Raw("select * from pessoas where equipe_id = ?", equipes[i].ID_Equipe).Scan(&pessoas); result.Error != nil {
+			c.AbortWithError(http.StatusNotFound, result.Error)
+			return
+		}
+		e := &GetMembers {
+				ID_Equipe: equipes[i].ID_Equipe,
+				Nome_Equipe: equipes[i].Nome_Equipe,
+				Pessoas: pessoas,
+			}
+			eq = append(eq, *e)
+	}
+	c.JSON(http.StatusOK, &eq)
 	
 }
