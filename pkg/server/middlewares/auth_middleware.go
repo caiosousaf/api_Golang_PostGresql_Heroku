@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Function to validate the user so that he has access to the content
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		const Bearer_schema = "Bearer "

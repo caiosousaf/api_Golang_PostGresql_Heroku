@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// Function for Crypto password
 func SHAR256Encoder(s string) string {
 	str := sha256.Sum256([]byte(s))
 

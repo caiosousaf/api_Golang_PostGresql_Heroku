@@ -17,10 +17,11 @@ func (h handler) CreateUser(c *gin.Context) {
 		return
 	}
 
+	// the password is encoded
 	p.Password = services.SHAR256Encoder(p.Password)
 
 
-
+	// If everything is ok, the user is created
 	if result := h.DB.Create(&p); result.Error != nil {
 		c.JSON(400, gin.H{
 			"error": "Cannot create user: " + err.Error(),

@@ -25,6 +25,7 @@ type Claim struct {
 	jwt.StandardClaims
 }
 
+// Token generation function 
 func (s *jwtService) GenerateToken(id uint) (string, error) {
 	claim := &Claim{
 		id,
@@ -45,6 +46,7 @@ func (s *jwtService) GenerateToken(id uint) (string, error) {
 	return t, nil
 }
 
+// Function for validate Token
 func (s *jwtService) ValidateToken(token string) bool {
 	_, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if _, isValid := t.Method.(*jwt.SigningMethodHMAC); !isValid {
