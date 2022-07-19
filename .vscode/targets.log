@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+Makefile:2: *** missing separator.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 18 08:06:49 2022
+# Make data base, printed on Tue Jul 19 08:08:05 2022
 
 # Variables
 
@@ -47,7 +49,7 @@ VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 8:39882
+JOURNAL_STREAM = 8:55431
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'Makefile', line 1)
@@ -67,7 +69,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1001/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 2126
+MANAGERPID = 2153
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -81,7 +83,7 @@ PATH = /usr/local/go/bin:/home/brisa/.nvm/versions/node/v16.15.1/bin:/usr/local/
 # environment
 GPG_AGENT_INFO = /run/user/1001/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2336,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2336
+SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2364,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2364
 # environment
 XDG_RUNTIME_DIR = /run/user/1001
 # environment
@@ -95,7 +97,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = e623fd58d7ad450ea0409e10be57ff85
+INVOCATION_ID = f890824322dd486db6b81e36759d7135
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -105,7 +107,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1001/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5614
+GIO_LAUNCHED_DESKTOP_FILE_PID = 5540
 # automatic
 %F = $(notdir $%)
 # environment
@@ -117,7 +119,7 @@ PWD = /home/brisa/Documentos/api_Golang_PostGresql
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2301
+SSH_AGENT_PID = 2327
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -155,7 +157,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-c60ee164-a5b2-49e0-944a-2c6abc5ea960.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-430e07cf-5532-46e0-91db-2fbc81871ebb.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -217,7 +219,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 5614
+VSCODE_PID = 5540
 # variable set hash-table stats:
 # Load=104/1024=10%, Rehash=0, Collisions=12/118=10%
 
@@ -275,8 +277,6 @@ server:
 # strcache performance: lookups = 22 / hit rate = 22%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/22=5%
-# Finished Make data base on Mon Jul 18 08:06:49 2022
+# Finished Make data base on Tue Jul 19 08:08:05 2022
 
  
-Makefile:2: *** missing separator.  Stop.
-
