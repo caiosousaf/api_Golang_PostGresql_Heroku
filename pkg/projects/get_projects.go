@@ -27,7 +27,6 @@ type CountTeams struct {
 
 func (h handler) GetProjects(c *gin.Context) {
 	var projetos []Projects
-	//var status []GetStatusList
 
 
 	if result := h.DB.Raw(`select pr.id_projeto, pr.nome_projeto, pr.equipe_id, eq.nome_equipe, pr.status, pr.descricao_projeto, 
@@ -37,12 +36,5 @@ func (h handler) GetProjects(c *gin.Context) {
 		return
 	}
 
-	/*if result := h.DB.Raw(`select status, count(*) from projetos group by status`).Scan(&status); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
-		return
-	}*/
-
-   
 	c.JSON(http.StatusOK, &projetos)
-	//c.JSON(http.StatusOK, &status)
 }

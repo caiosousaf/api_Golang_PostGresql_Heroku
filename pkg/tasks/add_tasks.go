@@ -2,7 +2,7 @@ package tasks
 
 import (
 	"net/http"
-	"time"
+
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 	"github.com/gin-gonic/gin"
 )
@@ -25,14 +25,14 @@ func (h handler) AddTask(c *gin.Context) {
 	}
 
 	var task models.Task
-	dt := time.Now()
+
 
 	task.ID_Task = body.ID_Task
 	task.Descricao_Task = body.Descricao_Task
 	task.PessoaID = body.PessoaID
 	task.ProjetoID = body.ProjetoID
 	task.Status = "Em Andamento"
-	task.Data_Criacao = dt.Format("02-01-2006")
+	
 	
 
 	if result := h.DB.Create(&task); result.Error != nil {
