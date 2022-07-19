@@ -2,7 +2,7 @@ package projetos
 
 import (
 	"net/http"
-	"time"
+
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +12,7 @@ type AddProjetoRequestBody struct {
 	Equipe_ID 			int					`json:"equipe_id"`
 	Status				string				`json:"status"`
 	Descricao_Projeto	string				`json:"descricao_projeto"`
-	Data_Criacao		string				`json:"data_criacao"`
+
 }
 
 func (h handler) AddProject(c *gin.Context) {
@@ -25,13 +25,13 @@ func (h handler) AddProject(c *gin.Context) {
 	}
 
 	var projeto models.Projeto
-	dt := time.Now()
+
 
 	projeto.Nome_Projeto = body.Nome_Projeto
 	projeto.EquipeID = body.Equipe_ID
 	projeto.Status = "Em Andamento"
 	projeto.Descricao_Projeto = body.Descricao_Projeto
-	projeto.Data_Criacao = dt.Format("02-01-2006")
+
 
 
 	if result := h.DB.Create(&projeto); result.Error != nil {

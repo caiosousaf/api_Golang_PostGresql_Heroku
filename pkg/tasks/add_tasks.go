@@ -32,7 +32,7 @@ func (h handler) AddTask(c *gin.Context) {
 	task.PessoaID = body.PessoaID
 	task.ProjetoID = body.ProjetoID
 	task.Status = "Em Andamento"
-	
+
 	
 
 	if result := h.DB.Create(&task); result.Error != nil {

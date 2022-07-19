@@ -2,6 +2,7 @@ package tasks
 
 import (
 	"net/http"
+	"time"
 
 	//"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/models"
 	"github.com/gin-gonic/gin"
@@ -14,8 +15,8 @@ type Task struct {
 	ProjetoID 			int 			`json:"projeto_id"`
 	Nome_Projeto 		string 			`json:"nome_projeto"`
 	Status				string			`json:"status"`
-	Data_Criacao		string			`json:"data_criacao"`
-	Data_Conclusao		string			`json:"data_conclusao"`
+	Data_Criacao		*time.Time			`json:"data_criacao"`
+	Data_Conclusao		*time.Time			`json:"data_conclusao"`
 }
 
 func (h handler) GetTasks(c *gin.Context) {
