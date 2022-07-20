@@ -19,7 +19,6 @@
 * [Projetos](#projetos)
     * [Exibir Todos os Projetos](#exibir-todos-os-projetos)
     * [Exibir Projeto Específico](#exibir-projeto-especifico)
-    * [Exibir Projeto Específico](#exibir-projeto-especifico)
     * [Exibir Tarefas de um Projeto](#exibir-tarefas-de-um-projeto)
     * [Exibir Projetos com um Status Específico](#exibir-projetos-com-um-status-especifico)
     * [Cadastrar Projeto](#cadastrar-projeto)

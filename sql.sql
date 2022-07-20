@@ -48,4 +48,9 @@ pe.nome_pessoa from
 projetos as pr inner join tasks as tk on pr.id_projeto = tk.projeto_id inner join
 equipes as eq on pr.equipe_id = eq.id_equipe inner join
 pessoas as pe on pe.id_pessoa = tk.pessoa_id where id_projeto = 3 
+
+
+20/07/2022
+
+select current_date + interval '26 DAYS' AS Data;
 */ 

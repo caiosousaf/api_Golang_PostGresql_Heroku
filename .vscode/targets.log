@@ -8,7 +8,7 @@ Makefile:2: *** missing separator.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jul 19 08:08:05 2022
+# Make data base, printed on Wed Jul 20 08:28:55 2022
 
 # Variables
 
@@ -26,8 +26,6 @@ DESKTOP_SESSION = ubuntu
 XDG_SESSION_CLASS = user
 # environment
 XDG_SESSION_TYPE = x11
-# environment
-VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
@@ -49,7 +47,7 @@ VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 8:55431
+JOURNAL_STREAM = 8:51795
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'Makefile', line 1)
@@ -67,9 +65,7 @@ VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1001/bus
 # environment
-VSCODE_VERBOSE_LOGGING = true
-# environment
-MANAGERPID = 2153
+MANAGERPID = 2209
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -83,7 +79,7 @@ PATH = /usr/local/go/bin:/home/brisa/.nvm/versions/node/v16.15.1/bin:/usr/local/
 # environment
 GPG_AGENT_INFO = /run/user/1001/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2364,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2364
+SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2421,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2421
 # environment
 XDG_RUNTIME_DIR = /run/user/1001
 # environment
@@ -93,11 +89,9 @@ NVM_BIN = /home/brisa/.nvm/versions/node/v16.15.1/bin
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
-VSCODE_LOG_STACK = false
-# environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = f890824322dd486db6b81e36759d7135
+INVOCATION_ID = 013b271dee9c44169aad08c2e9f2747f
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -107,19 +101,17 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1001/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5540
+GIO_LAUNCHED_DESKTOP_FILE_PID = 77140
 # automatic
 %F = $(notdir $%)
 # environment
 DISPLAY = :1
 # environment
-VSCODE_PIPE_LOGGING = true
-# environment
 PWD = /home/brisa/Documentos/api_Golang_PostGresql
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2327
+SSH_AGENT_PID = 2386
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -131,11 +123,11 @@ HOME = /home/brisa
 # environment
 LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
-VSCODE_CODE_CACHE_PATH = /home/brisa/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /home/brisa/.config/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # environment
 LOGNAME = brisa
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 NVM_CD_FLAGS = 
 # environment
@@ -156,8 +148,6 @@ QT_IM_MODULE = ibus
 SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
-# environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1001/vscode-ipc-430e07cf-5532-46e0-91db-2fbc81871ebb.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -177,7 +167,7 @@ MAKE_COMMAND := make
 # environment
 LANGUAGE = pt_BR:pt:en
 # environment
-VSCODE_IPC_HOOK = /run/user/1001/vscode-5bff865f-1.67.2-main.sock
+VSCODE_IPC_HOOK = /run/user/1001/vscode-5bff865f-1.69.2-main.sock
 # makefile
 MAKEFLAGS = pqrR
 # environment
@@ -219,9 +209,9 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 5540
+VSCODE_PID = 77140
 # variable set hash-table stats:
-# Load=104/1024=10%, Rehash=0, Collisions=12/118=10%
+# Load=99/1024=10%, Rehash=0, Collisions=11/113=10%
 
 # Pattern-specific Variable Values
 
@@ -277,6 +267,6 @@ server:
 # strcache performance: lookups = 22 / hit rate = 22%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/22=5%
-# Finished Make data base on Tue Jul 19 08:08:05 2022
+# Finished Make data base on Wed Jul 20 08:28:55 2022
 
  

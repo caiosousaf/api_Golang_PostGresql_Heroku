@@ -1,10 +1,11 @@
 package tasks
 
 import (
-    "net/http"
+	"net/http"
 
-    "github.com/gin-gonic/gin"
-    "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/gin-gonic/gin"
 )
 
 type UpdateStatusTaskRequestBody struct {
