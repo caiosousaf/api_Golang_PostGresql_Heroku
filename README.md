@@ -240,6 +240,13 @@ https://golang-posgre-brisanet.herokuapp.com/pessoas/:id/tarefas
 https://golang-posgre-brisanet.herokuapp.com/pessoas
 ```
 
+<p>Ex: POST</p>
+
+```
+	"nome_pessoa": "tavarez",
+	"funcao_pessoa": "Analista", 
+	"equipe_id": 9
+```
 ## Editar Pessoa
 <p>- Para editar uma pessoa, precisamos passar o ID da mesma como parametro</p>
 <p>- Com isso podemos usar o metodo PUT, para acessar o seguinte endereço:</p>
