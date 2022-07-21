@@ -6,4 +6,5 @@ type Task struct {
 	PessoaID  		int				`json:"pessoa_id"`
 	ProjetoID 		int 			`json:"projeto_id"`
 	Status			string			`gorm:"varchar(20)" json:"status"`
+	Prioridade		int				`json:"prioridade"`
 }
