@@ -1,7 +1,7 @@
 package tasks
 
 import (
-	"fmt"
+	
 	"net/http"
 	"time"
 
@@ -49,7 +49,7 @@ func (h handler) AddTask(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-	fmt.Println(t)
+
 
 	c.JSON(http.StatusCreated, &task)
 }
