@@ -329,8 +329,7 @@ https://golang-posgre-brisanet.herokuapp.com/tasks/:id
 
 
 # Relacionamento dos Elementos
-
-
+<img   src="BD.png" />
 
 # Avisos
   - O tratamento correto dos erros ainda está em andamento.
