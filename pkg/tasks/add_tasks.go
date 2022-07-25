@@ -35,7 +35,7 @@ func (h handler) AddTask(c *gin.Context) {
 	task.Descricao_Task = body.Descricao_Task
 	task.PessoaID = body.PessoaID
 	task.ProjetoID = body.ProjetoID
-	task.Status = "Em Andamento"
+	task.Status = body.Status
 	task.Prioridade = body.Prioridade
 	
 	
