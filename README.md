@@ -113,12 +113,22 @@ https://golang-posgre-brisanet.herokuapp.com/projetos/status/:status
   <li>Nome_Projeto</li>
   <li>Equipe_ID</li>
   <li>Descricao_Projeto</li>
+  <li>Prazo_Entrega</li>
 </ul>
 <p>Todos os projetos na hora da criação recebem a data de criação e o status: "Em Andamento"</p>
 <p>- Usando o método POST podemos acessar o seguinte endereço e cadastrar um elemento:</p>
 
 ```
 https://golang-posgre-brisanet.herokuapp.com/projetos
+```
+
+<p>Ex: POST</p>
+
+```
+	"nome_projeto": "Talvez...",
+	"equipe_id": 1,
+	"descricao_projeto": "Testando... o POST",
+	"prazo_entrega": 10
 ```
 
 ## Editar Projeto
@@ -180,6 +190,12 @@ https://golang-posgre-brisanet.herokuapp.com/equipes/:id/pessoas
 
 ```
 https://golang-posgre-brisanet.herokuapp.com/equipes
+```
+
+<p>Ex: POST</p>
+
+```
+	"nome_equipe": "Teste Data AA"
 ```
 
 ## Editar Equipe
@@ -307,6 +323,15 @@ https://golang-posgre-brisanet.herokuapp.com/tasks/status/:status
 
 ```
 https://golang-posgre-brisanet.herokuapp.com/tasks
+```
+<p>Ex: POST</p>
+
+```
+	"descricao_task": "Teste........",
+	"pessoa_id": 4,
+	"projeto_id": 24,
+	"prazo_entrega": 25,
+	"prioridade": 1
 ```
 
 ## Editar Tarefa
