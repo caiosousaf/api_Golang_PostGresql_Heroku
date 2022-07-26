@@ -35,19 +35,24 @@ func (h handler) AddProject(c *gin.Context) {
 	projeto.EquipeID = body.Equipe_ID
 	projeto.Status = "Em Andamento"
 	projeto.Descricao_Projeto = body.Descricao_Projeto
+	var count int
 	
-	
-	/*err := c.ShouldBindJSON(&projeto)
-	if result := h.DB.Raw("select count(*) from projetos where nome_projeto = ?", body.Nome_Projeto).Scan(&projeto); result.Error != nil {
+	err := c.ShouldBindJSON(&projeto)
+	if result := h.DB.Raw("select count(*) from projetos where nome_projeto = ?", body.Nome_Projeto).Scan(&count); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	} 
+
+	if(count == 0){
+		if result := h.DB.Create(&projeto); result.Error != nil {
+			c.AbortWithError(http.StatusNotFound, result.Error)
+			return
+		}
+		c.JSON(http.StatusCreated, &projeto)
+	} else{
 		c.JSON(400, gin.H{
 			"error": "Cannot create Project. already existing project: " + err.Error(),
 		})
-		return
-	} */
-
-	if result := h.DB.Create(&projeto); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
-		return
 	}
 
 	if result := h.DB.Model(&projeto).Where("id_projeto = ?", projeto.ID_Projeto).Update("prazo_entrega", data_limite.Format("2006-01-02")); result.Error != nil {
@@ -55,5 +60,4 @@ func (h handler) AddProject(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, &projeto)
 }
