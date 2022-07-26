@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,11 +8,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jul 26 08:08:17 2022
+# Make data base, printed on Tue Jul 26 10:11:48 2022
 
 # Variables
 
-# environment
+# 'override' directive
 GNUMAKEFLAGS := 
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
@@ -209,7 +211,7 @@ LANG = C
 # environment
 VSCODE_PID = 4664
 # variable set hash-table stats:
-# Load=99/1024=10%, Rehash=0, Collisions=11/113=10%
+# Load=99/1024=10%, Rehash=0, Collisions=13/124=10%
 
 # Pattern-specific Variable Values
 
@@ -230,17 +232,30 @@ VSCODE_PID = 4664
 # Not a target:
 all:
 #  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+go:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+cmd/main.go:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
 Makefile:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2022-07-26 10:11:42.15258978
+#  File has been updated.
+#  Successfully updated.
 
-server:
+server: go run cmd/main.go
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -251,22 +266,26 @@ server:
 #  Modification time never checked.
 #  File has not been updated.
 
+# Not a target:
+run:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 # files hash-table stats:
-# Load=5/1024=0%, Rehash=0, Collisions=0/6=0%
+# Load=8/1024=1%, Rehash=0, Collisions=0/21=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 18 / storage = 136 B / avg = 7 B
-# current buf: size = 8162 B / used = 136 B / count = 18 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 21 / storage = 155 B / avg = 7 B
+# current buf: size = 8162 B / used = 155 B / count = 21 / avg = 7 B
 
-# strcache performance: lookups = 23 / hit rate = 21%
+# strcache performance: lookups = 26 / hit rate = 19%
 # hash-table stats:
-# Load=18/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Tue Jul 26 08:08:17 2022
+# Load=21/8192=0%, Rehash=0, Collisions=1/26=4%
+# Finished Make data base on Tue Jul 26 10:11:48 2022
 
  
-Makefile:2: *** missing separator.  Stop.
-
