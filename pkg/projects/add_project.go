@@ -37,13 +37,13 @@ func (h handler) AddProject(c *gin.Context) {
 	projeto.Descricao_Projeto = body.Descricao_Projeto
 	
 	
-	err := c.ShouldBindJSON(&projeto)
+	/*err := c.ShouldBindJSON(&projeto)
 	if result := h.DB.Raw("select count(*) from projetos where nome_projeto = ?", body.Nome_Projeto).Scan(&projeto); result.Error != nil {
 		c.JSON(400, gin.H{
 			"error": "Cannot create Project. already existing project: " + err.Error(),
 		})
 		return
-	}
+	} */
 
 	if result := h.DB.Create(&projeto); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
