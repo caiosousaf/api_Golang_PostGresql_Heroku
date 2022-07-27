@@ -38,6 +38,7 @@ func (h handler) AddTask(c *gin.Context) {
 	task.Prioridade = body.Prioridade
 
 	var count int
+	var StatusCount int
 	var data_atual = time.Now()
 	data_limite := data_atual.AddDate(0, 0, t)
 	err := c.ShouldBindJSON(&task)
@@ -48,12 +49,25 @@ func (h handler) AddTask(c *gin.Context) {
 		return
 	}
 
+	if validationStatus := h.DB.Raw(`select count(*) from projetos where id_projeto = ?
+	  and status = 'Em Andamento'`, body.ProjetoID).Scan(&StatusCount); validationStatus.Error != nil {
+		c.AbortWithError(http.StatusBadRequest, validationStatus.Error)
+		return
+	}
+	// Se o count for > ) então quer dizer que a pessoa está na equipe em que o projeto foi atribuido
 	if count > 0 {
-		if result := h.DB.Create(&task); result.Error != nil {
+		// se o StatusCount for > 0 então quer dizer que o projeto ainda está com o status "Em Andamento" se não estiver então ele não cria a tarefa
+		if StatusCount > 0 {
+			if result := h.DB.Create(&task); result.Error != nil {
 			c.AbortWithError(http.StatusNotFound, result.Error)
 			return
 		}
 		c.JSON(http.StatusCreated, &task)
+		}	else {
+			c.JSON(400, gin.H{
+				"error": "Cannot create Task. Project is not under development: " + err.Error(),
+			})
+		}
 	} else {
 		c.JSON(400, gin.H{
 			"error": "Cannot create Task. person is not on the team for this project: " + err.Error(),
