@@ -7,16 +7,16 @@ import (
 )
 
 type TasksProjeto struct {
-	ID_Projeto 		uint 	`json:"id_projeto"`
-	Nome_Projeto 	string  `json:"nome_projeto"`
-	Nome_Equipe 	string  `json:"nome_equipe"`
-	ID_Task			string	`json:"id_task"`
-	Descricao_Task 	string  `json:"descricao_task"`
-	Status			string	`json:"status"`
-	Nome_Pessoa 	string  `json:"nome_pessoa"`
+	ID_Projeto     uint   `json:"id_projeto"`
+	Nome_Projeto   string `json:"nome_projeto"`
+	Nome_Equipe    string `json:"nome_equipe"`
+	ID_Task        string `json:"id_task"`
+	Descricao_Task string `json:"descricao_task"`
+	Status         string `json:"status"`
+	Nome_Pessoa    string `json:"nome_pessoa"`
 }
 
-func (h handler) GetProjectTasks (c *gin.Context) {
+func (h handler) GetProjectTasks(c *gin.Context) {
 	var tasks []TasksProjeto
 
 	id := c.Param("id")

@@ -1,9 +1,9 @@
 package projetos
 
 import (
-	"net/http"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func (h handler) GetStatusProjects(c *gin.Context) {

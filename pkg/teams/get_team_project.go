@@ -7,12 +7,12 @@ import (
 )
 
 type EquipeProjetos struct {
-	Nome_Equipe 	string  `json:"nome_equipe"`
-	ID_Projeto 		uint 	`json:"id_projeto"`
-	Nome_Projeto 	string  `json:"nome_projeto"`
+	Nome_Equipe  string `json:"nome_equipe"`
+	ID_Projeto   uint   `json:"id_projeto"`
+	Nome_Projeto string `json:"nome_projeto"`
 }
 
-func (h handler) GetTeamProject (c *gin.Context) {
+func (h handler) GetTeamProject(c *gin.Context) {
 	var equipe []EquipeProjetos
 	id := c.Param("id")
 

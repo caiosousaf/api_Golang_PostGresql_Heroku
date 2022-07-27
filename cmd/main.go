@@ -28,13 +28,13 @@ func main() {
 
     r.Use(cors.Default())
     
-
+    // rotas
     pessoas.RegisterRoutes(r, h)
     projetos.RegisterRoutes(r, h)
     equipes.RegisterRoutes(r, h)
     tasks.RegisterRoutes(r, h)
     user.RegisterRoutes(r, h)
-    // register more routes here
+    
 
     r.Run(":"+port)
     //r.Run("localhost:3000")

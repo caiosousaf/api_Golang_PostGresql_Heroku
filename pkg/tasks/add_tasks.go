@@ -40,8 +40,8 @@ func (h handler) AddTask(c *gin.Context) {
 	var count int
 	var data_atual = time.Now()
 	data_limite := data_atual.AddDate(0, 0, t)
-
 	err := c.ShouldBindJSON(&task)
+	// Verifica se a pessoa em questão está na equipe atribuida ao projeto, se não estiver ele ira criar a tarefa
 	if result := h.DB.Raw(`select count(*) from pessoas as pe inner join projetos as pr on pe.equipe_id = pr.equipe_id where pe.id_pessoa = ? and
 	 pr.id_projeto = ?`, body.PessoaID, body.ProjetoID).Scan(&count); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)

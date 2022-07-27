@@ -3,13 +3,12 @@ package tasks
 import (
 	"net/http"
 
-
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 	"github.com/gin-gonic/gin"
 )
 
 type UpdateStatusTaskRequestBody struct {
-	Status			string				`json:"status"`
+	Status string `json:"status"`
 }
 
 func (h handler) UpdateStatusTask(c *gin.Context) {
@@ -29,8 +28,7 @@ func (h handler) UpdateStatusTask(c *gin.Context) {
 		return
 	}
 
-	task.Status	= body.Status
-
+	task.Status = body.Status
 
 	if tasks := h.DB.Raw("update tasks set status = ? where id_task = ?", task.Status, id).Scan(&task); tasks.Error != nil {
 		c.AbortWithError(http.StatusNotFound, tasks.Error)

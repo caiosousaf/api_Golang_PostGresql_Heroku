@@ -1,15 +1,15 @@
 package pessoas
 
 import (
-	"net/http"
-	"strconv"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
 )
 
 type AddTaskRequestBody struct {
-	ID_Task			uint	`json:"id_task"`
-	Descricao_Task  string 	`json:"descricao_task"`
+	ID_Task        uint   `json:"id_task"`
+	Descricao_Task string `json:"descricao_task"`
 }
 
 func (h handler) AddTaskPessoa(c *gin.Context) {

@@ -3,8 +3,8 @@ package equipes
 import (
 	"net/http"
 
-    "github.com/gin-gonic/gin"
-    "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/gin-gonic/gin"
 )
 
 func (h handler) DeleteTeam(c *gin.Context) {

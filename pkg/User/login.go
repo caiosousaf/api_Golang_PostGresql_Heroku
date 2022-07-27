@@ -6,9 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//Login Function 
+//Login Function
 func (h handler) Login(c *gin.Context) {
-	
 
 	var p models.Login
 
@@ -21,7 +20,7 @@ func (h handler) Login(c *gin.Context) {
 	}
 
 	var user models.User
-	
+
 	// checks if the email entered exists in the database
 	if result := h.DB.Where("email = ?", p.Email).First(&user); result.Error != nil {
 		c.JSON(401, gin.H{
@@ -37,7 +36,7 @@ func (h handler) Login(c *gin.Context) {
 		})
 		return
 	}
-	
+
 	// Checks if there is an error in this request
 	token, err := services.NewJWTService().GenerateToken(user.ID_Usuario)
 	if err != nil {

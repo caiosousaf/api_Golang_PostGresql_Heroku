@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
 func (h handler) GetPeople(c *gin.Context) {
 	var pessoas []GetPessoa
 

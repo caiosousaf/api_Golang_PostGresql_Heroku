@@ -3,14 +3,14 @@ package pessoas
 import (
 	"net/http"
 
-    "github.com/gin-gonic/gin"
-    "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/gin-gonic/gin"
 )
 
 type AddPessoaRequestBody struct {
-    Nome_Pessoa		string `json:"nome_pessoa"`
-	Funcao_Pessoa	string `json:"funcao_pessoa"`
-	Equipe_ID		int    `json:"equipe_id"`
+	Nome_Pessoa   string `json:"nome_pessoa"`
+	Funcao_Pessoa string `json:"funcao_pessoa"`
+	Equipe_ID     int    `json:"equipe_id"`
 }
 
 func (h handler) AddPerson(c *gin.Context) {
@@ -23,7 +23,6 @@ func (h handler) AddPerson(c *gin.Context) {
 	}
 
 	var pessoa models.Pessoa
-
 
 	pessoa.Nome_Pessoa = body.Nome_Pessoa
 	pessoa.Funcao_Pessoa = body.Funcao_Pessoa

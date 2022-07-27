@@ -7,8 +7,8 @@ import (
 )
 
 type GetStatusList struct {
-	Status		string		`json:"status"`
-	Count		int			`json:"count"`
+	Status string `json:"status"`
+	Count  int    `json:"count"`
 }
 
 func (h handler) GetStatusList(c *gin.Context) {
@@ -18,6 +18,6 @@ func (h handler) GetStatusList(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, &statuslist)
 }

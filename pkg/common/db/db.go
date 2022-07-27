@@ -14,7 +14,7 @@ func Init(url string) *gorm.DB {
     if err != nil {
         log.Fatalln(err)
     }
-
+    // Migração automática dos dados
     db.AutoMigrate(&models.Pessoa{})
     db.AutoMigrate(&models.Projeto{})
     db.AutoMigrate(&models.Equipe{})

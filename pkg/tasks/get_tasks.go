@@ -7,18 +7,19 @@ import (
 	//"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/models"
 	"github.com/gin-gonic/gin"
 )
+
 type Task struct {
-	ID_Task 			uint 			`json:"id_task"`
-	Descricao_Task 		string 			`json:"descricao_task"`
-	PessoaID 			int 			`json:"pessoa_id"`
-	Nome_Pessoa 		string 			`json:"nome_pessoa"`
-	ProjetoID 			int 			`json:"projeto_id"`
-	Nome_Projeto 		string 			`json:"nome_projeto"`
-	Status				string			`json:"status"`
-	Data_Criacao		*time.Time		`json:"data_criacao"`
-	Data_Conclusao		*time.Time		`json:"data_conclusao"`
-	Prazo_Entrega		*time.Time		`json:"prazo_entrega"`
-	Prioridade			int				`json:"prioridade"`
+	ID_Task        uint       `json:"id_task"`
+	Descricao_Task string     `json:"descricao_task"`
+	PessoaID       int        `json:"pessoa_id"`
+	Nome_Pessoa    string     `json:"nome_pessoa"`
+	ProjetoID      int        `json:"projeto_id"`
+	Nome_Projeto   string     `json:"nome_projeto"`
+	Status         string     `json:"status"`
+	Data_Criacao   *time.Time `json:"data_criacao"`
+	Data_Conclusao *time.Time `json:"data_conclusao"`
+	Prazo_Entrega  *time.Time `json:"prazo_entrega"`
+	Prioridade     int        `json:"prioridade"`
 }
 
 func (h handler) GetTasks(c *gin.Context) {
@@ -28,6 +29,6 @@ func (h handler) GetTasks(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, tasks.Error)
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, &tasks)
 }

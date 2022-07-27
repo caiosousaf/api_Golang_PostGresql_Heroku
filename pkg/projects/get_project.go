@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	//"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
-
 )
 
 func (h handler) GetProject(c *gin.Context) {

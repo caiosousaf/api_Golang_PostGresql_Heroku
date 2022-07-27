@@ -8,7 +8,6 @@ import (
 	//"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/models"
 )
 
-
 func (h handler) GetTeam(c *gin.Context) {
 	id := c.Param("id")
 

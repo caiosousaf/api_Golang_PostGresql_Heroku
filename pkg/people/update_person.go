@@ -1,17 +1,17 @@
 package pessoas
 
 import (
-    "net/http"
+	"net/http"
 
-    "github.com/gin-gonic/gin"
-    "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/gin-gonic/gin"
 )
 
 type UpdatePessoaRequestBody struct {
-	ID_Pessoa		uint   `json:"id_pessoa"`
-	Nome_Pessoa		string `json:"nome_pessoa"`
-	Funcao_Pessoa 	string `json:"funcao_pessoa"`
-	EquipeID		int    `json:"equipeId"`
+	ID_Pessoa     uint   `json:"id_pessoa"`
+	Nome_Pessoa   string `json:"nome_pessoa"`
+	Funcao_Pessoa string `json:"funcao_pessoa"`
+	EquipeID      int    `json:"equipeId"`
 }
 
 func (h handler) UpdatePerson(c *gin.Context) {

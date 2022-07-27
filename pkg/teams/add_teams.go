@@ -1,14 +1,13 @@
 package equipes
 
 import (
-	"net/http"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 	"github.com/gin-gonic/gin"
-	
+	"net/http"
 )
 
 type AddEquipeRequestBody struct {
-	Nome_Equipe		string 			`json:"nome_equipe"`
+	Nome_Equipe string `json:"nome_equipe"`
 }
 
 func (h handler) AddTeam(c *gin.Context) {

@@ -8,18 +8,18 @@ import (
 )
 
 type result struct {
-	Nome_Pessoa 		string		`json:"nome_pessoa"`
-	Funcao_Pessoa		string 		`json:"funcao_pessoa"`
-	Nome_Equipe 	 	string		`json:"id_equipe"`
-	Nome_Projeto	 	string		`json:"nome_projeto"`
-	ID_Task			 	int			`json:"id_task"`
-	Descricao_Task	 	string		`json:"descricao_task"`
-	Projeto_ID		 	int			`json:"projeto_id"`		
-	Status			 	string		`json:"status"`
-	Data_Criacao	 	*time.Time	`json:"data_criacao"`
-	Data_Conclusao	 	*time.Time	`json:"data_conclusao"`
-	Prazo_Entrega		*time.Time	`json:"prazo_entrega"`
-	Prioridade			int			`json:"prioridade"`
+	Nome_Pessoa    string     `json:"nome_pessoa"`
+	Funcao_Pessoa  string     `json:"funcao_pessoa"`
+	Nome_Equipe    string     `json:"id_equipe"`
+	Nome_Projeto   string     `json:"nome_projeto"`
+	ID_Task        int        `json:"id_task"`
+	Descricao_Task string     `json:"descricao_task"`
+	Projeto_ID     int        `json:"projeto_id"`
+	Status         string     `json:"status"`
+	Data_Criacao   *time.Time `json:"data_criacao"`
+	Data_Conclusao *time.Time `json:"data_conclusao"`
+	Prazo_Entrega  *time.Time `json:"prazo_entrega"`
+	Prioridade     int        `json:"prioridade"`
 }
 
 func (h handler) GetTaskPerson(c *gin.Context) {
@@ -37,4 +37,3 @@ func (h handler) GetTaskPerson(c *gin.Context) {
 
 	c.JSON(http.StatusOK, &result)
 }
-
