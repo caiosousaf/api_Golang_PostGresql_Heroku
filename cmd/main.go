@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"os"
+	"os"
 
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/cmd/docs"
 	user "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/User"
@@ -31,7 +31,7 @@ func main() {
     viper.ReadInConfig()
     docs.SwaggerInfo.BasePath = "/"
 
-    //port := os.Getenv("PORT") 
+    port := os.Getenv("PORT") 
     dbUrl := viper.Get("DB_URL").(string)
 
     r := gin.Default()
@@ -47,7 +47,7 @@ func main() {
     user.RegisterRoutes(r, h)
     r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-    //r.Run(":"+port)
-    r.Run("localhost:3000")
+    r.Run(":"+port)
+    //r.Run("localhost:3000")
     //r.Run("localhost:8080")
 }
