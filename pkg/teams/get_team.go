@@ -20,7 +20,13 @@ func (h handler) GetTeam(c *gin.Context) {
 	}
 
 	var pessoas []models.Pessoa
+	var projetos []models.Projeto
 	if result := h.DB.Where("equipe_id = ?", equipe.ID_Equipe).Find(&pessoas); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	}
+
+	if result := h.DB.Where("equipe_id = ?", equipe.ID_Equipe).Find(&projetos); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
@@ -28,6 +34,7 @@ func (h handler) GetTeam(c *gin.Context) {
 	me.ID_Equipe = equipe.ID_Equipe
 	me.Nome_Equipe = equipe.Nome_Equipe
 	me.Pessoas = pessoas
+	me.Projetos = projetos
 
 	c.JSON(http.StatusOK, &me)
 }
