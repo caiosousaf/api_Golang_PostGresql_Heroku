@@ -147,4 +147,27 @@ ALTER TABLE IF EXISTS public.tasks
     ON DELETE SET NULL;
 
 END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 */ 
