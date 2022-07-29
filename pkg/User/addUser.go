@@ -30,3 +30,16 @@ func (h handler) CreateUser(c *gin.Context) {
 
 	c.Status(204)
 }
+/* Validation New User
+var count int
+
+if count == 0 {
+	
+} else {
+	c.JSON(400, gin.H{
+		"error": "Cannot create user: " + err.Error(),
+	})
+	return
+}
+
+*/

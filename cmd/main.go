@@ -13,7 +13,6 @@ import (
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/db"
 	"github.com/gin-gonic/gin"
 
-
 	"github.com/gin-contrib/cors"
 	"github.com/spf13/viper"
 	"github.com/swaggo/files"
@@ -27,27 +26,27 @@ import (
 // @license.name  BrisaNet 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
-    viper.SetConfigFile("./pkg/common/envs/.env")
-    viper.ReadInConfig()
-    docs.SwaggerInfo.BasePath = "/"
+	viper.SetConfigFile("./pkg/common/envs/.env")
+	viper.ReadInConfig()
+	docs.SwaggerInfo.BasePath = "/"
 
-    port := os.Getenv("PORT") 
-    dbUrl := viper.Get("DB_URL").(string)
+	port := os.Getenv("PORT")
+	dbUrl := viper.Get("DB_URL").(string)
 
-    r := gin.Default()
-    h := db.Init(dbUrl)
+	r := gin.Default()
+	h := db.Init(dbUrl)
 
-    r.Use(cors.Default())
-    
-    // rotas
-    pessoas.RegisterRoutes(r, h)
-    projetos.RegisterRoutes(r, h)
-    equipes.RegisterRoutes(r, h)
-    tasks.RegisterRoutes(r, h)
-    user.RegisterRoutes(r, h)
-    r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.Use(cors.Default())
 
-    r.Run(":"+port)
-    //r.Run("localhost:3000")
-    //r.Run("localhost:8080")
+	// rotas
+	pessoas.RegisterRoutes(r, h)
+	projetos.RegisterRoutes(r, h)
+	equipes.RegisterRoutes(r, h)
+	tasks.RegisterRoutes(r, h)
+	user.RegisterRoutes(r, h)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	r.Run(":" + port)
+	//r.Run("localhost:3000")
+	//r.Run("localhost:8080")
 }
