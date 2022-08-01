@@ -28,7 +28,12 @@ import (
 func main() {
 	viper.SetConfigFile("./pkg/common/envs/.env")
 	viper.ReadInConfig()
+	docs.SwaggerInfo.Title = "Teste Swagger"
+	docs.SwaggerInfo.Description = "REST API"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "localhost:3000"
 	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	port := os.Getenv("PORT")
 	dbUrl := viper.Get("DB_URL").(string)

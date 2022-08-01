@@ -28,6 +28,13 @@ type CountTeams struct {
 	Count int `json:"count_teams"`
 }
 
+// @BasePath /
+
+// Get Projects
+// @Summary Get All Projects
+// @Produce json
+// @Success 200 {array} projeto
+// @Router /projetos/ [get]
 func (h handler) GetProjects(c *gin.Context) {
 	var projetos []Projects
 
