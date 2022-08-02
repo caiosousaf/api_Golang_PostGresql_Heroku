@@ -55,7 +55,7 @@ func (h handler) AddTask(c *gin.Context) {
 		return
 	}
 	// Se o count for > ) então quer dizer que a pessoa está na equipe em que o projeto foi atribuido
-	if count > 0 {
+	
 		// se o StatusCount for > 0 então quer dizer que o projeto ainda está com o status "Em Andamento" se não estiver então ele não cria a tarefa
 		if StatusCount > 0 {
 			if result := h.DB.Create(&task); result.Error != nil {
@@ -68,11 +68,7 @@ func (h handler) AddTask(c *gin.Context) {
 				"error": "Cannot create Task. Project is not under development: " + err.Error(),
 			})
 		}
-	} else {
-		c.JSON(400, gin.H{
-			"error": "Cannot create Task. person is not on the team for this project: " + err.Error(),
-		})
-	}
+	
 
 	if result := h.DB.Model(&task).Where("id_task = ?", task.ID_Task).Update("prazo_entrega", data_limite.Format("2006-01-02")); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
