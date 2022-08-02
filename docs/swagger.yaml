@@ -1,4 +1,58 @@
 definitions:
+  equipes.GetMembers:
+    properties:
+      id_equipe:
+        type: integer
+      nome_equipe:
+        type: string
+      pessoas:
+        items:
+          $ref: '#/definitions/models.Pessoa'
+        type: array
+      projetos:
+        items:
+          $ref: '#/definitions/models.Projeto'
+        type: array
+    type: object
+  models.Pessoa:
+    properties:
+      equipe_id:
+        type: integer
+      funcao_pessoa:
+        type: string
+      id_pessoa:
+        type: integer
+      nome_pessoa:
+        type: string
+    type: object
+  models.Projeto:
+    properties:
+      descricao_projeto:
+        type: string
+      equipe_id:
+        type: integer
+      id_projeto:
+        type: integer
+      nome_projeto:
+        type: string
+      status:
+        type: string
+    type: object
+  pessoas.GetPessoa:
+    properties:
+      data_contratacao:
+        type: string
+      equipe_Id:
+        type: integer
+      funcao_pessoa:
+        type: string
+      id_pessoa:
+        type: integer
+      nome_equipe:
+        type: string
+      nome_pessoa:
+        type: string
+    type: object
   projetos.Projects:
     properties:
       data_conclusao:
@@ -54,6 +108,58 @@ info:
     name: BrisaNet 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 paths:
+  /equipes:
+    get:
+      consumes:
+      - application/json
+      description: Returns all registered teams, all their members and all projects
+        they are assigned to
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.GetMembers'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get All Teams
+      tags:
+      - Teams
+  /pessoas:
+    get:
+      consumes:
+      - application/json
+      description: Returns all registered people and the name of the team they are
+        assigned to
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pessoas.GetPessoa'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get All People
+      tags:
+      - Pessoas
   /projetos:
     get:
       consumes:

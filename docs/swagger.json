@@ -12,6 +12,82 @@
         }
     },
     "paths": {
+        "/equipes": {
+            "get": {
+                "description": "Returns all registered teams, all their members and all projects they are assigned to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get All Teams",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.GetMembers"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoas": {
+            "get": {
+                "description": "Returns all registered people and the name of the team they are assigned to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pessoas"
+                ],
+                "summary": "Get All People",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.GetPessoa"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/projetos": {
             "get": {
                 "description": "Get list all project",
@@ -90,6 +166,89 @@
         }
     },
     "definitions": {
+        "equipes.GetMembers": {
+            "type": "object",
+            "properties": {
+                "id_equipe": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "pessoas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Pessoa"
+                    }
+                },
+                "projetos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Projeto"
+                    }
+                }
+            }
+        },
+        "models.Pessoa": {
+            "type": "object",
+            "properties": {
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "funcao_pessoa": {
+                    "type": "string"
+                },
+                "id_pessoa": {
+                    "type": "integer"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Projeto": {
+            "type": "object",
+            "properties": {
+                "descricao_projeto": {
+                    "type": "string"
+                },
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "id_projeto": {
+                    "type": "integer"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "pessoas.GetPessoa": {
+            "type": "object",
+            "properties": {
+                "data_contratacao": {
+                    "type": "string"
+                },
+                "equipe_Id": {
+                    "type": "integer"
+                },
+                "funcao_pessoa": {
+                    "type": "string"
+                },
+                "id_pessoa": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                }
+            }
+        },
         "projetos.Projects": {
             "type": "object",
             "properties": {

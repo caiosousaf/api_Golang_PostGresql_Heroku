@@ -14,6 +14,15 @@ type GetMembers struct {
 	Projetos    []models.Projeto `json:"projetos"`
 }
 
+// Get Teams
+// @Summary Get All Teams
+// @Description Returns all registered teams, all their members and all projects they are assigned to
+// @Accept json
+// @Produce json
+// @Success 200 {array} GetMembers
+// @Failure 400,404 {string} string "error"
+// @Tags Teams
+// @Router /equipes [get]
 func (h handler) GetTeams(c *gin.Context) {
 	var equipes []models.Equipe
 	var eq []GetMembers
