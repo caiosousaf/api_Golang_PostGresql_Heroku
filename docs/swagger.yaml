@@ -1,0 +1,107 @@
+definitions:
+  projetos.Projects:
+    properties:
+      data_conclusao:
+        type: string
+      data_criacao:
+        type: string
+      descricao_projeto:
+        type: string
+      equipe_id:
+        type: integer
+      id_projeto:
+        type: integer
+      nome_equipe:
+        type: string
+      nome_projeto:
+        type: string
+      prazo_entrega:
+        type: string
+      status:
+        type: string
+    type: object
+  tasks.Task:
+    properties:
+      data_conclusao:
+        type: string
+      data_criacao:
+        type: string
+      descricao_task:
+        type: string
+      id_task:
+        type: integer
+      nome_pessoa:
+        type: string
+      nome_projeto:
+        type: string
+      pessoa_id:
+        type: integer
+      prazo_entrega:
+        type: string
+      prioridade:
+        type: integer
+      projeto_id:
+        type: integer
+      status:
+        type: string
+    type: object
+info:
+  contact:
+    email: caiosousafernandesferreira@hotmail.com
+    name: Caio Sousa
+    url: http://www.swagger.io/support
+  license:
+    name: BrisaNet 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+paths:
+  /projetos:
+    get:
+      consumes:
+      - application/json
+      description: Get list all project
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/projetos.Projects'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get All Projects
+      tags:
+      - Project
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get list all task
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tasks.Task'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get All Tasks
+      tags:
+      - Task
+swagger: "2.0"

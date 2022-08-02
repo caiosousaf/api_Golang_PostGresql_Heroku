@@ -1,0 +1,164 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {
+            "name": "Caio Sousa",
+            "url": "http://www.swagger.io/support",
+            "email": "caiosousafernandesferreira@hotmail.com"
+        },
+        "license": {
+            "name": "BrisaNet 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "paths": {
+        "/projetos": {
+            "get": {
+                "description": "Get list all project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Get All Projects",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.Projects"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks": {
+            "get": {
+                "description": "Get list all task",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Get All Tasks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.Task"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "projetos.Projects": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
+                "descricao_projeto": {
+                    "type": "string"
+                },
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "id_projeto": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "tasks.Task": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
+                "descricao_task": {
+                    "type": "string"
+                },
+                "id_task": {
+                    "type": "integer"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "pessoa_id": {
+                    "type": "integer"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "prioridade": {
+                    "type": "integer"
+                },
+                "projeto_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -20,21 +20,16 @@ type Projects struct {
 	Prazo_Entrega     *time.Time `json:"prazo_entrega"`
 }
 
-type CountProjects struct {
-	Count int `json:"count_projects"`
-}
-
-type CountTeams struct {
-	Count int `json:"count_teams"`
-}
-
-// @BasePath /
 
 // Get Projects
 // @Summary Get All Projects
+// @Description Get list all project
+// @Accept json
 // @Produce json
-// @Success 200 {array} projeto
-// @Router /projetos/ [get]
+// @Success 200 {array} Projects
+// @Failure 400,404 {string} string "error"
+// @Tags Project
+// @Router /projetos [get]
 func (h handler) GetProjects(c *gin.Context) {
 	var projetos []Projects
 
@@ -44,6 +39,5 @@ func (h handler) GetProjects(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-
 	c.JSON(http.StatusOK, &projetos)
 }

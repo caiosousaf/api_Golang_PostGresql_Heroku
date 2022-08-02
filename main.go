@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/cmd/docs"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/docs"
 	user "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/User"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/people"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/projects"
