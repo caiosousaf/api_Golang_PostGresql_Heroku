@@ -6,6 +6,16 @@ import (
 	"net/http"
 )
 
+// Get Projects with specific status
+// @Summary Get Status of Projects with a specific status with Param Status
+// @Description GET all registered projects that have the status passed as a parameter
+// @Param        status   path      string  true  "Status"
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.Projeto
+// @Failure 400,404 {string} string "error"
+// @Tags Projects
+// @Router /projetos/status/{status} [get]
 func (h handler) GetStatusProjects(c *gin.Context) {
 
 	status := c.Param("status")

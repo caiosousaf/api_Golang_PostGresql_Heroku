@@ -1,12 +1,14 @@
 <div align="center" display="flex">
   <img height="70px"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg" />
   <img height="70px" src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png'>
-  <h1 align="center">API com Golang, Gin-Gonic e PostgreSQL</h1>
+  <img height="70px" src='https://avatars.githubusercontent.com/u/53864671?v=4'>
+  <h1 align="center">API com Golang, Gin-Gonic e PostgreSQL. Teste e documentação com Swagger</h1>
 </div>
 
 ![Badge Concluido](http://img.shields.io/static/v1?label=STATUS&message=EM-DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
 
 <p>Disponível para acesso em: https://golang-posgre-brisanet.herokuapp.com/</p>
+<p>Disponível para testes com Swagger em: https://golang-posgre-brisanet.herokuapp.com/swagger/index.html#/</p>
 
 # Desenvolvedor
 <ul>

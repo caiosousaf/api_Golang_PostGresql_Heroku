@@ -14,7 +14,7 @@ import (
 // @Produce json
 // @Success 200 {array} GetPessoa
 // @Failure 400,404 {string} string "error"
-// @Tags Pessoas
+// @Tags People
 // @Router /pessoas [get]
 func (h handler) GetPeople(c *gin.Context) {
 	var pessoas []GetPessoa

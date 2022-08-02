@@ -74,6 +74,33 @@ definitions:
       status:
         type: string
     type: object
+  projetos.TasksProjeto:
+    properties:
+      data_conclusao:
+        type: string
+      data_criacao:
+        type: string
+      descricao_task:
+        type: string
+      id_projeto:
+        type: integer
+      id_task:
+        type: string
+      nome_equipe:
+        type: string
+      nome_pessoa:
+        type: string
+      nome_projeto:
+        type: string
+      pessoa_id:
+        type: integer
+      prazo_entrega:
+        type: string
+      prioridade:
+        type: integer
+      status:
+        type: string
+    type: object
   tasks.Task:
     properties:
       data_conclusao:
@@ -105,8 +132,8 @@ info:
     name: Caio Sousa
     url: http://www.swagger.io/support
   license:
-    name: BrisaNet 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: BrisaNet 1.0
+    url: https://www.mozilla.org/en-US/MPL/2.0/
 paths:
   /equipes:
     get:
@@ -159,7 +186,7 @@ paths:
             type: string
       summary: Get All People
       tags:
-      - Pessoas
+      - People
   /projetos:
     get:
       consumes:
@@ -184,7 +211,147 @@ paths:
             type: string
       summary: Get All Projects
       tags:
-      - Project
+      - Projects
+  /projetos/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GET a project with a specific ID
+      parameters:
+      - description: Projeto ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/projetos.Projects'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get Project with specific ID
+      tags:
+      - Projects
+    put:
+      consumes:
+      - application/json
+      description: PUT a specific project. For the request to be met, the "nome_projeto"
+        and "equipe_id" and "descricao_projeto" are required
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: nome_projeto
+        in: body
+        name: Nome_Projeto
+        required: true
+        schema:
+          type: string
+      - description: equipe_id
+        in: body
+        name: Equipe_ID
+        required: true
+        schema:
+          type: integer
+      - description: descricao_projeto
+        in: body
+        name: Descricao_Projeto
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: PUT Project with ID
+      tags:
+      - Projects
+  /projetos/{id}/tasks:
+    get:
+      consumes:
+      - application/json
+      description: GET all tasks of a project with ID_Projeto specific
+      parameters:
+      - description: Projeto ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/projetos.TasksProjeto'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get Tasks of Project with Param ID
+      tags:
+      - Projects
+  /projetos/status/{status}:
+    get:
+      consumes:
+      - application/json
+      description: GET all registered projects that have the status passed as a parameter
+      parameters:
+      - description: Status
+        in: path
+        name: status
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Projeto'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get Status of Projects with a specific status with Param Status
+      tags:
+      - Projects
   /tasks:
     get:
       consumes:

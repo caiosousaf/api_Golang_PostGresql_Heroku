@@ -23,6 +23,16 @@ type TasksProjeto struct {
 	Prioridade     int        `json:"prioridade"`
 }
 
+// Get Tasks of Project
+// @Summary Get Tasks of Project with Param ID
+// @Description GET all tasks of a project with ID_Projeto specific
+// @Param        id   path      int  true  "Projeto ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} TasksProjeto
+// @Failure 400,404 {string} string "error"
+// @Tags Projects
+// @Router /projetos/{id}/tasks [get]
 func (h handler) GetProjectTasks(c *gin.Context) {
 	var tasks []TasksProjeto
 

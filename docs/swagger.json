@@ -7,8 +7,8 @@
             "email": "caiosousafernandesferreira@hotmail.com"
         },
         "license": {
-            "name": "BrisaNet 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "BrisaNet 1.0",
+            "url": "https://www.mozilla.org/en-US/MPL/2.0/"
         }
     },
     "paths": {
@@ -60,7 +60,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Pessoas"
+                    "People"
                 ],
                 "summary": "Get All People",
                 "responses": {
@@ -98,7 +98,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Project"
+                    "Projects"
                 ],
                 "summary": "Get All Projects",
                 "responses": {
@@ -108,6 +108,216 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/projetos.Projects"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos/status/{status}": {
+            "get": {
+                "description": "GET all registered projects that have the status passed as a parameter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get Status of Projects with a specific status with Param Status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Status",
+                        "name": "status",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Projeto"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos/{id}": {
+            "get": {
+                "description": "GET a project with a specific ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get Project with specific ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Projeto ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.Projects"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "PUT a specific project. For the request to be met, the \"nome_projeto\" and \"equipe_id\" and \"descricao_projeto\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "PUT Project with ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "nome_projeto",
+                        "name": "Nome_Projeto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "equipe_id",
+                        "name": "Equipe_ID",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "descricao_projeto",
+                        "name": "Descricao_Projeto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos/{id}/tasks": {
+            "get": {
+                "description": "GET all tasks of a project with ID_Projeto specific",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get Tasks of Project with Param ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Projeto ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.TasksProjeto"
                             }
                         }
                     },
@@ -275,6 +485,47 @@
                 },
                 "prazo_entrega": {
                     "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "projetos.TasksProjeto": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
+                "descricao_task": {
+                    "type": "string"
+                },
+                "id_projeto": {
+                    "type": "integer"
+                },
+                "id_task": {
+                    "type": "string"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "pessoa_id": {
+                    "type": "integer"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "prioridade": {
+                    "type": "integer"
                 },
                 "status": {
                     "type": "string"

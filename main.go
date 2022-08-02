@@ -23,15 +23,15 @@ import (
 // @contact.url    http://www.swagger.io/support
 // @contact.email  caiosousafernandesferreira@hotmail.com
 
-// @license.name  BrisaNet 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+// @license.name  BrisaNet 1.0
+// @license.url   https://www.mozilla.org/en-US/MPL/2.0/
 func main() {
 	viper.SetConfigFile("./pkg/common/envs/.env")
 	viper.ReadInConfig()
 	docs.SwaggerInfo.Title = "Teste Swagger"
 	docs.SwaggerInfo.Description = "REST API"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:3000"
+	docs.SwaggerInfo.Host = "https://golang-posgre-brisanet.herokuapp.com"
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 

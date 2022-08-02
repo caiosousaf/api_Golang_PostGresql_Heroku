@@ -7,6 +7,16 @@ import (
 	//"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 )
 
+// Get Project
+// @Summary Get Project with specific ID
+// @Description GET a project with a specific ID
+// @Param        id   path      int  true  "Projeto ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} Projects
+// @Failure 400,404 {string} string "error"
+// @Tags Projects
+// @Router /projetos/{id} [get]
 func (h handler) GetProject(c *gin.Context) {
 	id := c.Param("id")
 
