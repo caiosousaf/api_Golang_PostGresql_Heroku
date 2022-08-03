@@ -136,6 +136,50 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "POST a new project. For the request to be met, the \"nome_projeto\", \"equipe_id\", \"descricao_projeto\" are required. The status already goes with a predefined value \"Em Andamento\". the \"prazo_entrega\" is the number of days that the delivery time will be",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "POST a new Project",
+                "parameters": [
+                    {
+                        "description": "NewProject",
+                        "name": "NewProject",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/projetos.AddProjetoRequestBody"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/projetos/status/{status}": {
@@ -246,32 +290,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id",
+                        "description": "Projeto ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "nome_projeto",
-                        "name": "Nome_Projeto",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "equipe_id",
-                        "name": "Equipe_ID",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "descricao_projeto",
-                        "name": "Descricao_Projeto",
+                        "description": "Project",
+                        "name": "Project",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -283,7 +309,105 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
+                            "$ref": "#/definitions/projetos.UpdateProjetoRequestBody"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
                             "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "DELETE a specific project. For the request to be met, the \"id_projeto\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Delete a specific Project",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Projeto ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Projeto"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos/{id}/status": {
+            "put": {
+                "description": "PUT Status of a specific project. For the request to be met, the \"status\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "PUT Status of a Project",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Status-Project",
+                        "name": "Status-Project",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/projetos.UpdateStatusProject"
                         }
                     },
                     "400": {
@@ -471,6 +595,26 @@ const docTemplate = `{
                 }
             }
         },
+        "projetos.AddProjetoRequestBody": {
+            "type": "object",
+            "properties": {
+                "descricao_projeto": {
+                    "type": "string"
+                },
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "prazo_entrega": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "projetos.Projects": {
             "type": "object",
             "properties": {
@@ -539,6 +683,28 @@ const docTemplate = `{
                 "prioridade": {
                     "type": "integer"
                 },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "projetos.UpdateProjetoRequestBody": {
+            "type": "object",
+            "properties": {
+                "descricao_projeto": {
+                    "type": "string"
+                },
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                }
+            }
+        },
+        "projetos.UpdateStatusProject": {
+            "type": "object",
+            "properties": {
                 "status": {
                     "type": "string"
                 }

@@ -11,10 +11,10 @@ import (
 type Projects struct {
 	ID_Projeto        uint       `gorm:"primary_key" json:"id_projeto"`
 	Nome_Projeto      string     `gorm:"type: varchar(30) not null" json:"nome_projeto"`
+	Descricao_Projeto string     `json:"descricao_projeto"`
 	EquipeID          int        `json:"equipe_id"`
 	Nome_Equipe       string     `json:"nome_equipe"`
 	Status            string     `json:"status"`
-	Descricao_Projeto string     `json:"descricao_projeto"`
 	Data_Criacao      string     `json:"data_criacao"`
 	Data_Conclusao    string     `json:"data_conclusao"`
 	Prazo_Entrega     *time.Time `json:"prazo_entrega"`

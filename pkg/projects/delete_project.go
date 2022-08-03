@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Delete a specific Project
+// @Description DELETE a specific project. For the request to be met, the "id_projeto" are required
+// @Param        ID   						path      	int  	true  	"Projeto ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.Projeto
+// @Failure 400,404 {string} string "error"
+// @Tags Projects
+// @Router /projetos/{id} [delete]
 func (h handler) DeleteProject(c *gin.Context) {
 	id := c.Param("id")
 

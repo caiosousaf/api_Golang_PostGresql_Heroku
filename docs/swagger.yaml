@@ -53,6 +53,19 @@ definitions:
       nome_pessoa:
         type: string
     type: object
+  projetos.AddProjetoRequestBody:
+    properties:
+      descricao_projeto:
+        type: string
+      equipe_id:
+        type: integer
+      nome_projeto:
+        type: string
+      prazo_entrega:
+        type: integer
+      status:
+        type: string
+    type: object
   projetos.Projects:
     properties:
       data_conclusao:
@@ -98,6 +111,20 @@ definitions:
         type: string
       prioridade:
         type: integer
+      status:
+        type: string
+    type: object
+  projetos.UpdateProjetoRequestBody:
+    properties:
+      descricao_projeto:
+        type: string
+      equipe_id:
+        type: integer
+      nome_projeto:
+        type: string
+    type: object
+  projetos.UpdateStatusProject:
+    properties:
       status:
         type: string
     type: object
@@ -212,7 +239,70 @@ paths:
       summary: Get All Projects
       tags:
       - Projects
+    post:
+      consumes:
+      - application/json
+      description: POST a new project. For the request to be met, the "nome_projeto",
+        "equipe_id", "descricao_projeto" are required. The status already goes with
+        a predefined value "Em Andamento". the "prazo_entrega" is the number of days
+        that the delivery time will be
+      parameters:
+      - description: NewProject
+        in: body
+        name: NewProject
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/projetos.AddProjetoRequestBody'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: POST a new Project
+      tags:
+      - Projects
   /projetos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DELETE a specific project. For the request to be met, the "id_projeto"
+        are required
+      parameters:
+      - description: Projeto ID
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Projeto'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Delete a specific Project
+      tags:
+      - Projects
     get:
       consumes:
       - application/json
@@ -249,26 +339,14 @@ paths:
       description: PUT a specific project. For the request to be met, the "nome_projeto"
         and "equipe_id" and "descricao_projeto" are required
       parameters:
-      - description: id
+      - description: Projeto ID
         in: path
         name: id
         required: true
         type: integer
-      - description: nome_projeto
+      - description: Project
         in: body
-        name: Nome_Projeto
-        required: true
-        schema:
-          type: string
-      - description: equipe_id
-        in: body
-        name: Equipe_ID
-        required: true
-        schema:
-          type: integer
-      - description: descricao_projeto
-        in: body
-        name: Descricao_Projeto
+        name: Project
         required: true
         schema:
           type: string
@@ -278,7 +356,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/projetos.UpdateProjetoRequestBody'
         "400":
           description: error
           schema:
@@ -288,6 +366,42 @@ paths:
           schema:
             type: string
       summary: PUT Project with ID
+      tags:
+      - Projects
+  /projetos/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: PUT Status of a specific project. For the request to be met, the
+        "status" are required
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Status-Project
+        in: body
+        name: Status-Project
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/projetos.UpdateStatusProject'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: PUT Status of a Project
       tags:
       - Projects
   /projetos/{id}/tasks:

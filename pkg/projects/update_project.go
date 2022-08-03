@@ -1,7 +1,6 @@
 package projetos
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
@@ -11,7 +10,6 @@ import (
 type UpdateProjetoRequestBody struct {
 	Nome_Projeto      string `json:"nome_projeto"`
 	Equipe_ID         int    `json:"equipe_id"`
-	Status            string `json:"status"`
 	Descricao_Projeto string `json:"descricao_projeto"`
 }
 
@@ -22,13 +20,11 @@ type UpdateStatusProject struct {
 // PUT Project
 // @Summary PUT Project with ID
 // @Description PUT a specific project. For the request to be met, the "nome_projeto" and "equipe_id" and "descricao_projeto" are required
-// @Param        id   path      int  true  "id"
-// @Param		Nome_Projeto	body	string 	true "nome_projeto"
-// @Param		Equipe_ID	body	int 	true "equipe_id"
-// @Param		Descricao_Projeto	body	string	true	"descricao_projeto"
+// @Param        id   				path      	int  	true  	"Projeto ID"
+// @Param		Project				body		string 	true 	"Project"
 // @Accept json
 // @Produce json
-// @Success 200 {string} projeto
+// @Success 200 {object} UpdateProjetoRequestBody
 // @Failure 400,404 {string} string "error"
 // @Tags Projects
 // @Router /projetos/{id} [put]
@@ -57,13 +53,21 @@ func (h handler) UpdateProject(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-	fmt.Println(body.Equipe_ID)
-	fmt.Println(body.Nome_Projeto)
 	h.DB.Save(&projeto)
 
 	c.JSON(http.StatusOK, &projeto)
 }
 
+// @Summary PUT Status of a Project
+// @Description PUT Status of a specific project. For the request to be met, the "status" are required
+// @Param        id   						path      	int  	true  	"id"
+// @Param		Status-Project				body		string 	true 	"Status-Project"
+// @Accept json
+// @Produce json
+// @Success 200 {object} UpdateStatusProject
+// @Failure 400,404 {string} string "error"
+// @Tags Projects
+// @Router /projetos/{id}/status [put]
 func (h handler) UpdateStatusProject(c *gin.Context) {
 	id := c.Param("id")
 	body := UpdateStatusProject{}
