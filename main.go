@@ -33,7 +33,7 @@ func main() {
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "golang-posgre-brisanet.herokuapp.com"
 	docs.SwaggerInfo.BasePath = "/"
-	docs.SwaggerInfo.Schemes = []string{"http"}
+	docs.SwaggerInfo.Schemes = []string{"https"}
 
 	port := os.Getenv("PORT")
 	dbUrl := viper.Get("DB_URL").(string)
