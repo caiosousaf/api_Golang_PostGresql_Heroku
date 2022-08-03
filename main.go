@@ -31,7 +31,7 @@ func main() {
 	docs.SwaggerInfo.Title = "Teste Swagger"
 	docs.SwaggerInfo.Description = "REST API"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "https://golang-posgre-brisanet.herokuapp.com"
+	docs.SwaggerInfo.Host = "golang-posgre-brisanet.herokuapp.com"
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
