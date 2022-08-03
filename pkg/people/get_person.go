@@ -15,6 +15,15 @@ type GetPessoa struct {
 	Data_Contratacao string `json:"data_contratacao"`
 }
 
+// @Summary GET a specific Person
+// @Description GET a specific person
+// @Param		id		path	int		true		"Pessoa_ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} GetPessoa
+// @Failure 400,404 {string} string "error"
+// @Tags People
+// @Router /pessoas/{id} [get]
 func (h handler) GetPerson(c *gin.Context) {
 	id := c.Param("id")
 

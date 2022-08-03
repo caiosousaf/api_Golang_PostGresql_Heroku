@@ -100,6 +100,145 @@ const docTemplate = `{
                 }
             }
         },
+        "/pessoas/{id}": {
+            "get": {
+                "description": "GET a specific person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "GET a specific Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.GetPessoa"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "DELETE a person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "DELETE a Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Pessoa"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoas/{id}/tasks": {
+            "get": {
+                "description": "GET the tasks registered and assigned to a specific person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "GET All Tasks of a specific Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.result"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/projetos": {
             "get": {
                 "description": "Get list all project",
@@ -591,6 +730,50 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nome_pessoa": {
+                    "type": "string"
+                }
+            }
+        },
+        "pessoas.result": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
+                "descricao_task": {
+                    "type": "string"
+                },
+                "funcao_pessoa": {
+                    "type": "string"
+                },
+                "id_equipe": {
+                    "type": "integer"
+                },
+                "id_task": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "prioridade": {
+                    "type": "integer"
+                },
+                "projeto_id": {
+                    "type": "integer"
+                },
+                "status": {
                     "type": "string"
                 }
             }

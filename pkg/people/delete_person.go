@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary DELETE a Person
+// @Description DELETE a person
+// @Param		id		path	int		true		"Pessoa_ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.Pessoa
+// @Failure 400,404 {string} string "error"
+// @Tags People
+// @Router /pessoas/{id} [delete]
 func (h handler) DeletePerson(c *gin.Context) {
 	id := c.Param("id")
 

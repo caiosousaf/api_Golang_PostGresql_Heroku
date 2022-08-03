@@ -53,6 +53,35 @@ definitions:
       nome_pessoa:
         type: string
     type: object
+  pessoas.result:
+    properties:
+      data_conclusao:
+        type: string
+      data_criacao:
+        type: string
+      descricao_task:
+        type: string
+      funcao_pessoa:
+        type: string
+      id_equipe:
+        type: integer
+      id_task:
+        type: integer
+      nome_equipe:
+        type: string
+      nome_pessoa:
+        type: string
+      nome_projeto:
+        type: string
+      prazo_entrega:
+        type: string
+      prioridade:
+        type: integer
+      projeto_id:
+        type: integer
+      status:
+        type: string
+    type: object
   projetos.AddProjetoRequestBody:
     properties:
       descricao_projeto:
@@ -212,6 +241,98 @@ paths:
           schema:
             type: string
       summary: Get All People
+      tags:
+      - People
+  /pessoas/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DELETE a person
+      parameters:
+      - description: Pessoa_ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Pessoa'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: DELETE a Person
+      tags:
+      - People
+    get:
+      consumes:
+      - application/json
+      description: GET a specific person
+      parameters:
+      - description: Pessoa_ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pessoas.GetPessoa'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: GET a specific Person
+      tags:
+      - People
+  /pessoas/{id}/tasks:
+    get:
+      consumes:
+      - application/json
+      description: GET the tasks registered and assigned to a specific person
+      parameters:
+      - description: Pessoa_ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pessoas.result'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: GET All Tasks of a specific Person
       tags:
       - People
   /projetos:
