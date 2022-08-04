@@ -1,4 +1,18 @@
 definitions:
+  equipes.AddEquipeRequestBody:
+    properties:
+      nome_equipe:
+        type: string
+    type: object
+  equipes.EquipeProjetos:
+    properties:
+      id_projeto:
+        type: integer
+      nome_equipe:
+        type: string
+      nome_projeto:
+        type: string
+    type: object
   equipes.GetMembers:
     properties:
       id_equipe:
@@ -13,6 +27,31 @@ definitions:
         items:
           $ref: '#/definitions/models.Projeto'
         type: array
+    type: object
+  equipes.Membros:
+    properties:
+      funcao_pessoa:
+        type: string
+      id_equipe:
+        type: integer
+      id_pessoa:
+        type: integer
+      nome_equipe:
+        type: string
+      nome_pessoa:
+        type: string
+    type: object
+  equipes.UpdateEquipeRequestBody:
+    properties:
+      nome_equipe:
+        type: string
+    type: object
+  models.Equipe:
+    properties:
+      id_equipe:
+        type: integer
+      nome_equipe:
+        type: string
     type: object
   models.Pessoa:
     properties:
@@ -235,6 +274,160 @@ paths:
           schema:
             type: string
       summary: Get All Teams
+      tags:
+      - Teams
+    post:
+      consumes:
+      - application/json
+      description: POST a new project. For the request to be met, the "nome_equipe"
+        are required.
+      parameters:
+      - description: NewTeam
+        in: body
+        name: Team
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/equipes.AddEquipeRequestBody'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: POST a new Project
+      tags:
+      - Teams
+  /equipes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DELETE a Team
+      parameters:
+      - description: Team_ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Equipe'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: DELETE a Team
+      tags:
+      - Teams
+    get:
+      consumes:
+      - application/json
+      description: Returns a team, all their members and all projects they are assigned
+        to
+      parameters:
+      - description: id_Team
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.GetMembers'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get Specific Team
+      tags:
+      - Teams
+  /equipes/{id}/pessoas:
+    get:
+      consumes:
+      - application/json
+      description: GET all members of a specific Team with ID
+      parameters:
+      - description: Team ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.Membros'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get Members of a specific Team
+      tags:
+      - Teams
+  /equipes/{id}/projetos:
+    get:
+      consumes:
+      - application/json
+      description: GET all projects of a specific Team with ID
+      parameters:
+      - description: Team ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.EquipeProjetos'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get Projects of a specific Team
       tags:
       - Teams
   /pessoas:
@@ -697,4 +890,40 @@ paths:
       summary: Get All Tasks
       tags:
       - Task
+  /teams/{id}:
+    put:
+      consumes:
+      - application/json
+      description: PUT a specific project. For the request to be met, the "nome_projeto"
+        and "equipe_id" and "descricao_projeto" are required
+      parameters:
+      - description: Team ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Team
+        in: body
+        name: Team
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/equipes.UpdateEquipeRequestBody'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: PUT Project with ID
+      tags:
+      - Teams
 swagger: "2.0"

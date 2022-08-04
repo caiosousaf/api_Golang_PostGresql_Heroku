@@ -13,6 +13,16 @@ type Membros struct {
 	Funcao_Pessoa string `json:"funcao_pessoa"`
 }
 
+
+// @Summary Get Members of a specific Team
+// @Description GET all members of a specific Team with ID
+// @Param        id   path      int  true  "Team ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} Membros
+// @Failure 400,404 {string} string "error"
+// @Tags Teams
+// @Router /equipes/{id}/pessoas [get]
 func (h handler) GetTeamMembers(c *gin.Context) {
 	id := c.Param("id")
 

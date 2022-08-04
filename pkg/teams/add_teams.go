@@ -10,6 +10,15 @@ type AddEquipeRequestBody struct {
 	Nome_Equipe string `json:"nome_equipe"`
 }
 
+// @Summary POST a new Project
+// @Description POST a new project. For the request to be met, the "nome_equipe" are required. 
+// @Param		Team		body	string		true	"NewTeam"
+// @Accept json
+// @Produce json
+// @Success 200 {object} AddEquipeRequestBody
+// @Failure 400,404 {string} string "error"
+// @Tags Teams
+// @Router /equipes [post]
 func (h handler) AddTeam(c *gin.Context) {
 	body := AddEquipeRequestBody{}
 

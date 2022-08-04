@@ -8,6 +8,16 @@ import (
 	//"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/models"
 )
 
+
+// @Summary Get Specific Team
+// @Description Returns a team, all their members and all projects they are assigned to
+// @Param		id		path	int		true	"id_Team"
+// @Accept json
+// @Produce json
+// @Success 200 {array} GetMembers
+// @Failure 400,404 {string} string "error"
+// @Tags Teams
+// @Router /equipes/{id} [get]
 func (h handler) GetTeam(c *gin.Context) {
 	id := c.Param("id")
 

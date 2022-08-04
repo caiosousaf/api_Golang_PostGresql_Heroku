@@ -48,6 +48,236 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "POST a new project. For the request to be met, the \"nome_equipe\" are required.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "POST a new Project",
+                "parameters": [
+                    {
+                        "description": "NewTeam",
+                        "name": "Team",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/equipes.AddEquipeRequestBody"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/equipes/{id}": {
+            "get": {
+                "description": "Returns a team, all their members and all projects they are assigned to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get Specific Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id_Team",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.GetMembers"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "DELETE a Team",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "DELETE a Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Equipe"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/equipes/{id}/pessoas": {
+            "get": {
+                "description": "GET all members of a specific Team with ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get Members of a specific Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.Membros"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/equipes/{id}/projetos": {
+            "get": {
+                "description": "GET all projects of a specific Team with ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get Projects of a specific Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.EquipeProjetos"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/pessoas": {
@@ -731,9 +961,84 @@
                     }
                 }
             }
+        },
+        "/teams/{id}": {
+            "put": {
+                "description": "PUT a specific project. For the request to be met, the \"nome_projeto\" and \"equipe_id\" and \"descricao_projeto\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "PUT Project with ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Team",
+                        "name": "Team",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/equipes.UpdateEquipeRequestBody"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "equipes.AddEquipeRequestBody": {
+            "type": "object",
+            "properties": {
+                "nome_equipe": {
+                    "type": "string"
+                }
+            }
+        },
+        "equipes.EquipeProjetos": {
+            "type": "object",
+            "properties": {
+                "id_projeto": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                }
+            }
+        },
         "equipes.GetMembers": {
             "type": "object",
             "properties": {
@@ -754,6 +1059,45 @@
                     "items": {
                         "$ref": "#/definitions/models.Projeto"
                     }
+                }
+            }
+        },
+        "equipes.Membros": {
+            "type": "object",
+            "properties": {
+                "funcao_pessoa": {
+                    "type": "string"
+                },
+                "id_equipe": {
+                    "type": "integer"
+                },
+                "id_pessoa": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                }
+            }
+        },
+        "equipes.UpdateEquipeRequestBody": {
+            "type": "object",
+            "properties": {
+                "nome_equipe": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Equipe": {
+            "type": "object",
+            "properties": {
+                "id_equipe": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
                 }
             }
         },
