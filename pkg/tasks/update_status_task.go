@@ -11,6 +11,16 @@ type UpdateStatusTaskRequestBody struct {
 	Status string `json:"status"`
 }
 
+// @Summary PUT Status of a Task
+// @Description PUT Status of a specific Task. For the request to be met, the "status" are required
+// @Param        id   				path      	int  	true  	"Task ID"
+// @Param		Status				body		string 	true 	"Status"
+// @Accept json
+// @Produce json
+// @Success 200 {object} UpdateStatusTaskRequestBody
+// @Failure 400,404 {string} string "error"
+// @Tags Tasks
+// @Router /tasks/{id}/status [put]
 func (h handler) UpdateStatusTask(c *gin.Context) {
 	id := c.Param("id")
 	body := UpdateStatusTaskRequestBody{}

@@ -53,5 +53,6 @@ func main() {
 
 	r.Run(":" + port)
 	//r.Run("localhost:3000")
+	//export PATH=$(go env GOPATH)/bin:$PATH
 	
 }

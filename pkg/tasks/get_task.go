@@ -7,6 +7,16 @@ import (
 	//"github.com/caiosousaf/api_desafio_BrisaNet/pkg/common/models"
 )
 
+
+// @Summary Get a specific Task
+// @Description Get a specific task with id
+// @Param	id		path	int		true	"Task ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} Task
+// @Failure 400,404 {string} string "error"
+// @Tags Tasks
+// @Router /tasks/{id} [get]
 func (h handler) GetTask(c *gin.Context) {
 	id := c.Param("id")
 

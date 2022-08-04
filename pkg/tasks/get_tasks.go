@@ -29,7 +29,7 @@ type Task struct {
 // @Produce json
 // @Success 200 {array} Task
 // @Failure 400,404 {string} string "error"
-// @Tags Task
+// @Tags Tasks
 // @Router /tasks [get]
 func (h handler) GetTasks(c *gin.Context) {
 	var tasks []Task

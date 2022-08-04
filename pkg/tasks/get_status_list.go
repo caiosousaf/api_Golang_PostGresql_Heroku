@@ -11,6 +11,15 @@ type GetStatusList struct {
 	Count  int    `json:"count"`
 }
 
+
+// @Summary Get a list of status of All Tasks
+// @Description Get list of status of all tasks registered
+// @Accept json
+// @Produce json
+// @Success 200 {array} GetStatusList
+// @Failure 400,404 {string} string "error"
+// @Tags Tasks
+// @Router /tasks/list [get]
 func (h handler) GetStatusList(c *gin.Context) {
 	var statuslist []GetStatusList
 

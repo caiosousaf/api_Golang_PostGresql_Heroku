@@ -934,7 +934,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Task"
+                    "Tasks"
                 ],
                 "summary": "Get All Tasks",
                 "responses": {
@@ -945,6 +945,331 @@
                             "items": {
                                 "$ref": "#/definitions/tasks.Task"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "POST a new task. For the request to be met, the \"descricao_task\", \"pessoa_id\", \"projeto_id\", \"prazo_entrega(in days)\", \"prioridade\" are required. The status already goes with a predefined value \"Em Andamento\". the \"prazo_entrega\" is the number of days that the delivery time will be",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "POST a new Task",
+                "parameters": [
+                    {
+                        "description": "NewTask",
+                        "name": "NewTask",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tasks.AddTaskRequestBody"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/list": {
+            "get": {
+                "description": "Get list of status of all tasks registered",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Get a list of status of All Tasks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.GetStatusList"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/status/{status}": {
+            "get": {
+                "description": "GET All tasks with a specific status. \"Em Andamento\" or \"Concluido\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "GET status of tasks",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Status",
+                        "name": "status",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.Task"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/{id}": {
+            "get": {
+                "description": "Get a specific task with id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Get a specific Task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.Task"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "PUT a specific task. For the request to be met, the \"descricao_task\" and \"pessoa_id\" and \"projeto_id\" and \"prioridade\" are required.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "PUT Task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "PUT Task",
+                        "name": "Task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tasks.UpdateTaskRequestBody"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "DELETE a Task with id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "DELETE a Task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Task"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/{id}/status": {
+            "put": {
+                "description": "PUT Status of a specific Task. For the request to be met, the \"status\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "PUT Status of a Task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Status",
+                        "name": "Status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tasks.UpdateStatusTaskRequestBody"
                         }
                     },
                     "400": {
@@ -1132,6 +1457,29 @@
                 },
                 "nome_projeto": {
                     "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Task": {
+            "type": "object",
+            "properties": {
+                "descricao_task": {
+                    "type": "string"
+                },
+                "id_task": {
+                    "type": "integer"
+                },
+                "pessoa_id": {
+                    "type": "integer"
+                },
+                "prioridade": {
+                    "type": "integer"
+                },
+                "projeto_id": {
+                    "type": "integer"
                 },
                 "status": {
                     "type": "string"
@@ -1351,6 +1699,37 @@
                 }
             }
         },
+        "tasks.AddTaskRequestBody": {
+            "type": "object",
+            "properties": {
+                "descricao_task": {
+                    "type": "string"
+                },
+                "pessoa_id": {
+                    "type": "integer"
+                },
+                "prazo_entrega": {
+                    "type": "integer"
+                },
+                "prioridade": {
+                    "type": "integer"
+                },
+                "projeto_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "tasks.GetStatusList": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "tasks.Task": {
             "type": "object",
             "properties": {
@@ -1386,6 +1765,31 @@
                 },
                 "status": {
                     "type": "string"
+                }
+            }
+        },
+        "tasks.UpdateStatusTaskRequestBody": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "tasks.UpdateTaskRequestBody": {
+            "type": "object",
+            "properties": {
+                "descricao_task": {
+                    "type": "string"
+                },
+                "pessoa_id": {
+                    "type": "integer"
+                },
+                "prioridade": {
+                    "type": "integer"
+                },
+                "projeto_id": {
+                    "type": "integer"
                 }
             }
         }

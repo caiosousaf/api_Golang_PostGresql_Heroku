@@ -77,6 +77,21 @@ definitions:
       status:
         type: string
     type: object
+  models.Task:
+    properties:
+      descricao_task:
+        type: string
+      id_task:
+        type: integer
+      pessoa_id:
+        type: integer
+      prioridade:
+        type: integer
+      projeto_id:
+        type: integer
+      status:
+        type: string
+    type: object
   pessoas.AddPessoaRequestBody:
     properties:
       equipe_id:
@@ -216,6 +231,26 @@ definitions:
       status:
         type: string
     type: object
+  tasks.AddTaskRequestBody:
+    properties:
+      descricao_task:
+        type: string
+      pessoa_id:
+        type: integer
+      prazo_entrega:
+        type: integer
+      prioridade:
+        type: integer
+      projeto_id:
+        type: integer
+    type: object
+  tasks.GetStatusList:
+    properties:
+      count:
+        type: integer
+      status:
+        type: string
+    type: object
   tasks.Task:
     properties:
       data_conclusao:
@@ -240,6 +275,22 @@ definitions:
         type: integer
       status:
         type: string
+    type: object
+  tasks.UpdateStatusTaskRequestBody:
+    properties:
+      status:
+        type: string
+    type: object
+  tasks.UpdateTaskRequestBody:
+    properties:
+      descricao_task:
+        type: string
+      pessoa_id:
+        type: integer
+      prioridade:
+        type: integer
+      projeto_id:
+        type: integer
     type: object
 info:
   contact:
@@ -889,7 +940,227 @@ paths:
             type: string
       summary: Get All Tasks
       tags:
-      - Task
+      - Tasks
+    post:
+      consumes:
+      - application/json
+      description: POST a new task. For the request to be met, the "descricao_task",
+        "pessoa_id", "projeto_id", "prazo_entrega(in days)", "prioridade" are required.
+        The status already goes with a predefined value "Em Andamento". the "prazo_entrega"
+        is the number of days that the delivery time will be
+      parameters:
+      - description: NewTask
+        in: body
+        name: NewTask
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tasks.AddTaskRequestBody'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: POST a new Task
+      tags:
+      - Tasks
+  /tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DELETE a Task with id
+      parameters:
+      - description: Task_ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: DELETE a Task
+      tags:
+      - Tasks
+    get:
+      consumes:
+      - application/json
+      description: Get a specific task with id
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tasks.Task'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get a specific Task
+      tags:
+      - Tasks
+    put:
+      consumes:
+      - application/json
+      description: PUT a specific task. For the request to be met, the "descricao_task"
+        and "pessoa_id" and "projeto_id" and "prioridade" are required.
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: PUT Task
+        in: body
+        name: Task
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tasks.UpdateTaskRequestBody'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: PUT Task
+      tags:
+      - Tasks
+  /tasks/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: PUT Status of a specific Task. For the request to be met, the "status"
+        are required
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Status
+        in: body
+        name: Status
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tasks.UpdateStatusTaskRequestBody'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: PUT Status of a Task
+      tags:
+      - Tasks
+  /tasks/list:
+    get:
+      consumes:
+      - application/json
+      description: Get list of status of all tasks registered
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tasks.GetStatusList'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: Get a list of status of All Tasks
+      tags:
+      - Tasks
+  /tasks/status/{status}:
+    get:
+      consumes:
+      - application/json
+      description: GET All tasks with a specific status. "Em Andamento" or "Concluido"
+      parameters:
+      - description: Status
+        in: path
+        name: status
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tasks.Task'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: GET status of tasks
+      tags:
+      - Tasks
   /teams/{id}:
     put:
       consumes:
