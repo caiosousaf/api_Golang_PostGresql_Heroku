@@ -38,6 +38,15 @@ definitions:
       status:
         type: string
     type: object
+  pessoas.AddPessoaRequestBody:
+    properties:
+      equipe_id:
+        type: integer
+      funcao_pessoa:
+        type: string
+      nome_pessoa:
+        type: string
+    type: object
   pessoas.GetPessoa:
     properties:
       data_contratacao:
@@ -50,6 +59,17 @@ definitions:
         type: integer
       nome_equipe:
         type: string
+      nome_pessoa:
+        type: string
+    type: object
+  pessoas.UpdatePessoaRequestBody:
+    properties:
+      equipe_id:
+        type: integer
+      funcao_pessoa:
+        type: string
+      id_pessoa:
+        type: integer
       nome_pessoa:
         type: string
     type: object
@@ -188,7 +208,7 @@ info:
     name: Caio Sousa
     url: http://www.swagger.io/support
   license:
-    name: BrisaNet 1.0
+    name: Mozilla Public License 2.0
     url: https://www.mozilla.org/en-US/MPL/2.0/
 paths:
   /equipes:
@@ -241,6 +261,36 @@ paths:
           schema:
             type: string
       summary: Get All People
+      tags:
+      - People
+    post:
+      consumes:
+      - application/json
+      description: POST a new Person. For the request to be met, the "nome_pessoa",
+        "funcao_pessoa", "equipe_id" are required.
+      parameters:
+      - description: New Person
+        in: body
+        name: Person
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pessoas.AddPessoaRequestBody'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: POST a new Person
       tags:
       - People
   /pessoas/{id}:
@@ -302,6 +352,41 @@ paths:
           schema:
             type: string
       summary: GET a specific Person
+      tags:
+      - People
+    put:
+      consumes:
+      - application/json
+      description: PUT a specific person. For the request to be met, the "nome_pessoa"
+        and "funcao_pessoa" and "equipe_id" are required
+      parameters:
+      - description: Pessoa ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Pessoa
+        in: body
+        name: Pessoa
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pessoas.UpdatePessoaRequestBody'
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: PUT Person with ID
       tags:
       - People
   /pessoas/{id}/tasks:

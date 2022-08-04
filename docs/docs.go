@@ -16,7 +16,7 @@ const docTemplate = `{
             "email": "caiosousafernandesferreira@hotmail.com"
         },
         "license": {
-            "name": "BrisaNet 1.0",
+            "name": "Mozilla Public License 2.0",
             "url": "https://www.mozilla.org/en-US/MPL/2.0/"
         },
         "version": "{{.Version}}"
@@ -98,6 +98,50 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "POST a new Person. For the request to be met, the \"nome_pessoa\", \"funcao_pessoa\", \"equipe_id\" are required.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "POST a new Person",
+                "parameters": [
+                    {
+                        "description": "New Person",
+                        "name": "Person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pessoas.AddPessoaRequestBody"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/pessoas/{id}": {
@@ -130,6 +174,57 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/pessoas.GetPessoa"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "PUT a specific person. For the request to be met, the \"nome_pessoa\" and \"funcao_pessoa\" and \"equipe_id\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "PUT Person with ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Pessoa",
+                        "name": "Pessoa",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pessoas.UpdatePessoaRequestBody"
                         }
                     },
                     "400": {
@@ -711,6 +806,20 @@ const docTemplate = `{
                 }
             }
         },
+        "pessoas.AddPessoaRequestBody": {
+            "type": "object",
+            "properties": {
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "funcao_pessoa": {
+                    "type": "string"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                }
+            }
+        },
         "pessoas.GetPessoa": {
             "type": "object",
             "properties": {
@@ -728,6 +837,23 @@ const docTemplate = `{
                 },
                 "nome_equipe": {
                     "type": "string"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                }
+            }
+        },
+        "pessoas.UpdatePessoaRequestBody": {
+            "type": "object",
+            "properties": {
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "funcao_pessoa": {
+                    "type": "string"
+                },
+                "id_pessoa": {
+                    "type": "integer"
                 },
                 "nome_pessoa": {
                     "type": "string"

@@ -13,6 +13,15 @@ type AddPessoaRequestBody struct {
 	Equipe_ID     int    `json:"equipe_id"`
 }
 
+// @Summary POST a new Person
+// @Description POST a new Person. For the request to be met, the "nome_pessoa", "funcao_pessoa", "equipe_id" are required. 
+// @Param		Person		body	string		true	"New Person"
+// @Accept json
+// @Produce json
+// @Success 200 {object} AddPessoaRequestBody
+// @Failure 400,404 {string} string "error"
+// @Tags People
+// @Router /pessoas [post]
 func (h handler) AddPerson(c *gin.Context) {
 	body := AddPessoaRequestBody{}
 

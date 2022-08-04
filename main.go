@@ -1,7 +1,7 @@
 package main
 
 import (
-	"os"
+	//"os"
 
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/docs"
 	user "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/User"
@@ -23,19 +23,19 @@ import (
 // @contact.url    http://www.swagger.io/support
 // @contact.email  caiosousafernandesferreira@hotmail.com
 
-// @license.name  BrisaNet 1.0
+// @license.name  Mozilla Public License 2.0
 // @license.url   https://www.mozilla.org/en-US/MPL/2.0/
 func main() {
 	viper.SetConfigFile("./pkg/common/envs/.env")
 	viper.ReadInConfig()
-	docs.SwaggerInfo.Title = "Teste Swagger"
-	docs.SwaggerInfo.Description = "REST API"
+	docs.SwaggerInfo.Title = "Gerenciador de Projetos"
+	docs.SwaggerInfo.Description = "REST API Desafio"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "golang-posgre-brisanet.herokuapp.com"
+	docs.SwaggerInfo.Host = "localhost:3000"
 	docs.SwaggerInfo.BasePath = "/"
-	docs.SwaggerInfo.Schemes = []string{"https"}
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
-	port := os.Getenv("PORT")
+	//port := os.Getenv("PORT")
 	dbUrl := viper.Get("DB_URL").(string)
 
 	r := gin.Default()
@@ -51,7 +51,7 @@ func main() {
 	user.RegisterRoutes(r, h)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.Run(":" + port)
-	//r.Run("localhost:3000")
-	//r.Run("localhost:8080")
+	//r.Run(":" + port)
+	r.Run("localhost:3000")
+	
 }
