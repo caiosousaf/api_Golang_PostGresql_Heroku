@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"os"
+	"os"
 
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/docs"
 	user "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/User"
@@ -31,11 +31,11 @@ func main() {
 	docs.SwaggerInfo.Title = "Gerenciador de Projetos"
 	docs.SwaggerInfo.Description = "REST API Desafio"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:3000"
+	docs.SwaggerInfo.Host = "golang-posgre-brisanet.herokuapp.com"
 	docs.SwaggerInfo.BasePath = "/"
-	docs.SwaggerInfo.Schemes = []string{"http"}
+	docs.SwaggerInfo.Schemes = []string{"https"}
 
-	//port := os.Getenv("PORT")
+	port := os.Getenv("PORT")
 	dbUrl := viper.Get("DB_URL").(string)
 
 	r := gin.Default()
@@ -51,8 +51,8 @@ func main() {
 	user.RegisterRoutes(r, h)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	//r.Run(":" + port)
-	r.Run("localhost:3000")
+	r.Run(":" + port)
+	//r.Run("localhost:3000")
 	//export PATH=$(go env GOPATH)/bin:$PATH
 	
 }
