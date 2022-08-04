@@ -1365,6 +1365,12 @@ const docTemplate = `{
         "equipes.EquipeProjetos": {
             "type": "object",
             "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
                 "id_projeto": {
                     "type": "integer"
                 },
@@ -1372,6 +1378,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nome_projeto": {
+                    "type": "string"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 }
             }

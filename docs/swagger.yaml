@@ -6,11 +6,19 @@ definitions:
     type: object
   equipes.EquipeProjetos:
     properties:
+      data_conclusao:
+        type: string
+      data_criacao:
+        type: string
       id_projeto:
         type: integer
       nome_equipe:
         type: string
       nome_projeto:
+        type: string
+      prazo_entrega:
+        type: string
+      status:
         type: string
     type: object
   equipes.GetMembers:
