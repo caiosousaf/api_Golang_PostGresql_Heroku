@@ -602,7 +602,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "POST a new project. For the request to be met, the \"nome_projeto\", \"equipe_id\", \"descricao_projeto\" are required. The status already goes with a predefined value \"Em Andamento\". the \"prazo_entrega\" is the number of days that the delivery time will be",
+                "description": "POST a new project. For the request to be met, the \"nome_projeto\", \"equipe_id\", \"descricao_projeto\" are required. The status already goes with a predefined value \"A Fazer\". the \"prazo_entrega\" is the number of days that the delivery time will be",
                 "consumes": [
                     "application/json"
                 ],
@@ -662,7 +662,9 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "enum": [
+                            "A Fazer",
                             "Em Andamento",
+                            "Em Teste",
                             "Concluido"
                         ],
                         "type": "string",
@@ -978,7 +980,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "POST a new task. For the request to be met, the \"descricao_task\", \"pessoa_id\", \"projeto_id\", \"prazo_entrega(in days)\", \"prioridade\" are required. The status already goes with a predefined value \"Em Andamento\". the \"prazo_entrega\" is the number of days that the delivery time will be",
+                "description": "POST a new task. For the request to be met, the \"descricao_task\", \"pessoa_id\", \"projeto_id\", \"prazo_entrega(in days)\", \"prioridade\" are required. The status already goes with a predefined value \"A Fazer\". the \"prazo_entrega\" is the number of days that the delivery time will be",
                 "consumes": [
                     "application/json"
                 ],
@@ -1076,7 +1078,9 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "enum": [
+                            "A Fazer",
                             "Em Andamento",
+                            "Em Teste",
                             "Concluido"
                         ],
                         "type": "string",

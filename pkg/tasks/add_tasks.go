@@ -17,7 +17,7 @@ type AddTaskRequestBody struct {
 }
 
 // @Summary POST a new Task
-// @Description POST a new task. For the request to be met, the "descricao_task", "pessoa_id", "projeto_id", "prazo_entrega(in days)", "prioridade" are required. The status already goes with a predefined value "Em Andamento". the "prazo_entrega" is the number of days that the delivery time will be
+// @Description POST a new task. For the request to be met, the "descricao_task", "pessoa_id", "projeto_id", "prazo_entrega(in days)", "prioridade" are required. The status already goes with a predefined value "A Fazer". the "prazo_entrega" is the number of days that the delivery time will be
 // @Param		NewTask		body	string		true	"NewTask"
 // @Accept json
 // @Produce json
@@ -40,7 +40,7 @@ func (h handler) AddTask(c *gin.Context) {
 	task.Descricao_Task = body.Descricao_Task
 	task.PessoaID = body.PessoaID
 	task.ProjetoID = body.ProjetoID
-	task.Status = "Em Andamento"
+	task.Status = "A Fazer"
 	task.Prioridade = body.Prioridade
 
 	var StatusCount int

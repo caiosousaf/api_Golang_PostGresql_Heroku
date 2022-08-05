@@ -9,7 +9,7 @@ import (
 
 // @Summary GET status of tasks
 // @Description GET All tasks with a specific status. "Em Andamento" or "Concluido"
-// @Param		status		path	string		true		"Status"	Enums(Em Andamento, Concluido)	
+// @Param		status		path	string		true		"Status"	Enums(A Fazer,Em Andamento,Em Teste,Concluido)
 // @Accept json
 // @Produce json
 // @Success 200 {array} Task

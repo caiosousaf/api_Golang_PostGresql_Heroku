@@ -15,7 +15,7 @@ type AddProjetoRequestBody struct {
 }
 
 // @Summary POST a new Project
-// @Description POST a new project. For the request to be met, the "nome_projeto", "equipe_id", "descricao_projeto" are required. The status already goes with a predefined value "Em Andamento". the "prazo_entrega" is the number of days that the delivery time will be
+// @Description POST a new project. For the request to be met, the "nome_projeto", "equipe_id", "descricao_projeto" are required. The status already goes with a predefined value "A Fazer". the "prazo_entrega" is the number of days that the delivery time will be
 // @Param		NewProject		body	string		true	"NewProject"
 // @Accept json
 // @Produce json
@@ -40,7 +40,7 @@ func (h handler) AddProject(c *gin.Context) {
 
 	projeto.Nome_Projeto = body.Nome_Projeto
 	projeto.EquipeID = body.Equipe_ID
-	projeto.Status = "Em Andamento" 
+	projeto.Status = "A Fazer" 
 	projeto.Descricao_Projeto = body.Descricao_Projeto
 	var count int
 

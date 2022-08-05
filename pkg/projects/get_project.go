@@ -13,7 +13,7 @@ import (
 // @Param        id   path      int  true  "Projeto ID"
 // @Accept json
 // @Produce json
-// @Success 200 {array} Projects
+// @Success 200 {array} Projects	"OK"
 // @Failure 400,404 {string} string "error"
 // @Tags Projects
 // @Router /projetos/{id} [get]
