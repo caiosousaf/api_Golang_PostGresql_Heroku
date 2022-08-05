@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Aug  4 08:25:42 2022
+# Make data base, printed on Fri Aug  5 08:11:55 2022
 
 # Variables
 
@@ -45,7 +45,7 @@ VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 8:49505
+JOURNAL_STREAM = 8:47975
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'Makefile', line 1)
@@ -63,7 +63,7 @@ VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1001/bus
 # environment
-MANAGERPID = 2031
+MANAGERPID = 2059
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -77,7 +77,7 @@ PATH = /usr/local/go/bin:/home/brisa/.nvm/versions/node/v16.15.1/bin:/usr/local/
 # environment
 GPG_AGENT_INFO = /run/user/1001/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2248,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2248
+SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2275,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2275
 # environment
 XDG_RUNTIME_DIR = /run/user/1001
 # environment
@@ -89,7 +89,7 @@ XDG_MENU_PREFIX = gnome-
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 31aa72bad47c4039a9c0dd5456553f68
+INVOCATION_ID = 3880b9b836a34f7c85f9d1e559c74ea0
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -99,7 +99,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1001/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4677
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4770
 # automatic
 %F = $(notdir $%)
 # environment
@@ -109,7 +109,7 @@ PWD = /home/brisa/Documentos/api_Golang_PostGresql
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2208
+SSH_AGENT_PID = 2237
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -207,7 +207,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4677
+VSCODE_PID = 4770
 # variable set hash-table stats:
 # Load=99/1024=10%, Rehash=0, Collisions=13/124=10%
 
@@ -237,7 +237,7 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-02 10:36:45.764989264
+#  Last modified 2022-08-04 08:37:23.591387266
 #  File has been updated.
 #  Successfully updated.
 
@@ -254,21 +254,28 @@ run:
 #  recipe to execute (from 'Makefile', line 2):
 	go run main.go
 
+swag:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 5):
+	swag init
+
 # files hash-table stats:
-# Load=5/1024=0%, Rehash=0, Collisions=0/15=0%
+# Load=6/1024=1%, Rehash=0, Collisions=0/16=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 19 / storage = 142 B / avg = 7 B
-# current buf: size = 8162 B / used = 142 B / count = 19 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 20 / storage = 147 B / avg = 7 B
+# current buf: size = 8162 B / used = 147 B / count = 20 / avg = 7 B
 
-# strcache performance: lookups = 24 / hit rate = 20%
+# strcache performance: lookups = 26 / hit rate = 23%
 # hash-table stats:
-# Load=19/8192=0%, Rehash=0, Collisions=1/24=4%
-# Finished Make data base on Thu Aug  4 08:25:42 2022
+# Load=20/8192=0%, Rehash=0, Collisions=1/26=4%
+# Finished Make data base on Fri Aug  5 08:11:55 2022
 
  
 make: *** No rule to make target 'all'.  Stop.

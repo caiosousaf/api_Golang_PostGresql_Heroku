@@ -12,7 +12,7 @@ type TasksProjeto struct {
 	ID_Projeto     uint       `json:"id_projeto"`
 	Nome_Projeto   string     `json:"nome_projeto"`
 	Nome_Equipe    string     `json:"nome_equipe"`
-	ID_Task        string     `json:"id_task"`
+	ID_Task        int     	  `json:"id_task"`
 	Descricao_Task string     `json:"descricao_task"`
 	Pessoa_ID      int        `json:"pessoa_id"`
 	Nome_Pessoa    string     `json:"nome_pessoa"`
