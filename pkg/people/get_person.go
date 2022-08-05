@@ -28,7 +28,7 @@ func (h handler) GetPerson(c *gin.Context) {
 	id := c.Param("id")
 
 	var pessoa GetPessoa
-	var sla = "nome_pessoa"
+	sla := "nome_pessoa"
 
 	if pessoa := h.DB.Raw(`select ? from pessoas where id_pessoa = ?`, sla,  id).Scan(&pessoa); pessoa.Error != nil {
 		c.AbortWithError(http.StatusNotFound, pessoa.Error)
