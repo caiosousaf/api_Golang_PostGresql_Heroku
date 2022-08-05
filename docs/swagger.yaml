@@ -2,6 +2,7 @@ definitions:
   equipes.AddEquipeRequestBody:
     properties:
       nome_equipe:
+        example: Krutaya Komanda
         type: string
     type: object
   equipes.EquipeProjetos:
@@ -51,7 +52,11 @@ definitions:
     type: object
   equipes.UpdateEquipeRequestBody:
     properties:
+      id_equipe:
+        example: 1
+        type: integer
       nome_equipe:
+        example: Krutaya Komanda
         type: string
     type: object
   models.Equipe:
@@ -103,17 +108,20 @@ definitions:
   pessoas.AddPessoaRequestBody:
     properties:
       equipe_id:
+        example: 1
         type: integer
       funcao_pessoa:
+        example: Back-End Developer
         type: string
       nome_pessoa:
+        example: Caio Sousa
         type: string
     type: object
   pessoas.GetPessoa:
     properties:
       data_contratacao:
         type: string
-      equipe_Id:
+      equipe_id:
         type: integer
       funcao_pessoa:
         type: string
@@ -167,35 +175,46 @@ definitions:
   projetos.AddProjetoRequestBody:
     properties:
       descricao_projeto:
+        example: Projeto teste para exemplo do Swagger
         type: string
       equipe_id:
+        example: 1
         type: integer
       nome_projeto:
+        example: Projeto Teste
         type: string
       prazo_entrega:
+        example: 10
         type: integer
-      status:
-        type: string
     type: object
   projetos.Projects:
     properties:
       data_conclusao:
+        example: ""
         type: string
       data_criacao:
+        example: "2022-07-25"
         type: string
       descricao_projeto:
+        example: Descricao
         type: string
       equipe_id:
+        example: 2
         type: integer
       id_projeto:
+        example: 58
         type: integer
       nome_equipe:
+        example: Cariri Inovação
         type: string
       nome_projeto:
+        example: Nome
         type: string
       prazo_entrega:
+        example: "2022-07-25"
         type: string
       status:
+        example: Concluido
         type: string
     type: object
   projetos.TasksProjeto:
@@ -209,7 +228,7 @@ definitions:
       id_projeto:
         type: integer
       id_task:
-        type: string
+        type: integer
       nome_equipe:
         type: string
       nome_pessoa:
@@ -242,14 +261,19 @@ definitions:
   tasks.AddTaskRequestBody:
     properties:
       descricao_task:
+        example: Descrição Teste
         type: string
       pessoa_id:
+        example: 4
         type: integer
       prazo_entrega:
+        example: 17
         type: integer
       prioridade:
+        example: 1
         type: integer
       projeto_id:
+        example: 24
         type: integer
     type: object
   tasks.GetStatusList:
@@ -282,6 +306,9 @@ definitions:
       projeto_id:
         type: integer
       status:
+        enum:
+        - Em Andamento
+        - ' Concluido'
         type: string
     type: object
   tasks.UpdateStatusTaskRequestBody:
@@ -338,8 +365,8 @@ paths:
     post:
       consumes:
       - application/json
-      description: POST a new project. For the request to be met, the "nome_equipe"
-        are required.
+      description: POST a new Team. For the request to be met, the "nome_equipe" are
+        required.
       parameters:
       - description: NewTeam
         in: body
@@ -362,7 +389,7 @@ paths:
           description: error
           schema:
             type: string
-      summary: POST a new Project
+      summary: POST a new Team
       tags:
       - Teams
   /equipes/{id}:
@@ -900,6 +927,9 @@ paths:
       description: GET all registered projects that have the status passed as a parameter
       parameters:
       - description: Status
+        enum:
+        - Em Andamento
+        - Concluido
         in: path
         name: status
         required: true
@@ -1145,6 +1175,9 @@ paths:
       description: GET All tasks with a specific status. "Em Andamento" or "Concluido"
       parameters:
       - description: Status
+        enum:
+        - Em Andamento
+        - Concluido
         in: path
         name: status
         required: true
@@ -1173,8 +1206,8 @@ paths:
     put:
       consumes:
       - application/json
-      description: PUT a specific project. For the request to be met, the "nome_projeto"
-        and "equipe_id" and "descricao_projeto" are required
+      description: PUT a specific Team. For the request to be met, the "id_equipe"
+        and "nome_equipe" are required
       parameters:
       - description: Team ID
         in: path
@@ -1202,7 +1235,7 @@ paths:
           description: error
           schema:
             type: string
-      summary: PUT Project with ID
+      summary: PUT Team with ID
       tags:
       - Teams
 swagger: "2.0"

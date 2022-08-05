@@ -8,12 +8,13 @@ import (
 )
 
 type UpdateEquipeRequestBody struct {
-	Nome_Equipe string `json:"nome_equipe"`
+	Team_ID		int		`json:"id_equipe" example:"1"`
+	Nome_Equipe string `json:"nome_equipe" example:"Krutaya Komanda"`
 }
 
-// PUT Project
-// @Summary PUT Project with ID
-// @Description PUT a specific project. For the request to be met, the "nome_projeto" and "equipe_id" and "descricao_projeto" are required
+// PUT Team
+// @Summary PUT Team with ID
+// @Description PUT a specific Team. For the request to be met, the "id_equipe" and "nome_equipe" are required
 // @Param        id   				path      	int  	true  	"Team ID"
 // @Param		Team				body		string 	true 	"Team"
 // @Accept json

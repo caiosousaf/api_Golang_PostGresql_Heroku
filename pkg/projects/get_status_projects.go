@@ -9,7 +9,7 @@ import (
 // Get Projects with specific status
 // @Summary Get Status of Projects with a specific status with Param Status
 // @Description GET all registered projects that have the status passed as a parameter
-// @Param        status   path      string  true  "Status"
+// @Param        status   path      string  true  "Status"		Enums(Em Andamento, Concluido)
 // @Accept json
 // @Produce json
 // @Success 200 {array} models.Projeto

@@ -62,7 +62,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "POST a new project. For the request to be met, the \"nome_equipe\" are required.",
+                "description": "POST a new Team. For the request to be met, the \"nome_equipe\" are required.",
                 "consumes": [
                     "application/json"
                 ],
@@ -72,7 +72,7 @@ const docTemplate = `{
                 "tags": [
                     "Teams"
                 ],
-                "summary": "POST a new Project",
+                "summary": "POST a new Team",
                 "parameters": [
                     {
                         "description": "NewTeam",
@@ -661,6 +661,10 @@ const docTemplate = `{
                 "summary": "Get Status of Projects with a specific status with Param Status",
                 "parameters": [
                     {
+                        "enum": [
+                            "Em Andamento",
+                            "Concluido"
+                        ],
                         "type": "string",
                         "description": "Status",
                         "name": "status",
@@ -1071,6 +1075,10 @@ const docTemplate = `{
                 "summary": "GET status of tasks",
                 "parameters": [
                     {
+                        "enum": [
+                            "Em Andamento",
+                            "Concluido"
+                        ],
                         "type": "string",
                         "description": "Status",
                         "name": "status",
@@ -1301,7 +1309,7 @@ const docTemplate = `{
         },
         "/teams/{id}": {
             "put": {
-                "description": "PUT a specific project. For the request to be met, the \"nome_projeto\" and \"equipe_id\" and \"descricao_projeto\" are required",
+                "description": "PUT a specific Team. For the request to be met, the \"id_equipe\" and \"nome_equipe\" are required",
                 "consumes": [
                     "application/json"
                 ],
@@ -1311,7 +1319,7 @@ const docTemplate = `{
                 "tags": [
                     "Teams"
                 ],
-                "summary": "PUT Project with ID",
+                "summary": "PUT Team with ID",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1358,7 +1366,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "nome_equipe": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Krutaya Komanda"
                 }
             }
         },
@@ -1434,8 +1443,13 @@ const docTemplate = `{
         "equipes.UpdateEquipeRequestBody": {
             "type": "object",
             "properties": {
+                "id_equipe": {
+                    "type": "integer",
+                    "example": 1
+                },
                 "nome_equipe": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Krutaya Komanda"
                 }
             }
         },
@@ -1514,13 +1528,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "equipe_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "funcao_pessoa": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Back-End Developer"
                 },
                 "nome_pessoa": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Caio Sousa"
                 }
             }
         },
@@ -1530,7 +1547,7 @@ const docTemplate = `{
                 "data_contratacao": {
                     "type": "string"
                 },
-                "equipe_Id": {
+                "equipe_id": {
                     "type": "integer"
                 },
                 "funcao_pessoa": {
@@ -1612,19 +1629,20 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "descricao_projeto": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Projeto teste para exemplo do Swagger"
                 },
                 "equipe_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "nome_projeto": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Projeto Teste"
                 },
                 "prazo_entrega": {
-                    "type": "integer"
-                },
-                "status": {
-                    "type": "string"
+                    "type": "integer",
+                    "example": 10
                 }
             }
         },
@@ -1632,31 +1650,40 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data_conclusao": {
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "data_criacao": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-07-25"
                 },
                 "descricao_projeto": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Descricao"
                 },
                 "equipe_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 },
                 "id_projeto": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 58
                 },
                 "nome_equipe": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Cariri Inovação"
                 },
                 "nome_projeto": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Nome"
                 },
                 "prazo_entrega": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-07-25"
                 },
                 "status": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Concluido"
                 }
             }
         },
@@ -1676,7 +1703,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "id_task": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "nome_equipe": {
                     "type": "string"
@@ -1727,19 +1754,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "descricao_task": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Descrição Teste"
                 },
                 "pessoa_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 4
                 },
                 "prazo_entrega": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 17
                 },
                 "prioridade": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "projeto_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 24
                 }
             }
         },
@@ -1788,7 +1820,11 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "Em Andamento",
+                        " Concluido"
+                    ]
                 }
             }
         },

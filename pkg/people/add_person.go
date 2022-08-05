@@ -8,9 +8,9 @@ import (
 )
 
 type AddPessoaRequestBody struct {
-	Nome_Pessoa   string `json:"nome_pessoa"`
-	Funcao_Pessoa string `json:"funcao_pessoa"`
-	Equipe_ID     int    `json:"equipe_id"`
+	Nome_Pessoa   string `json:"nome_pessoa" example:"Caio Sousa"`
+	Funcao_Pessoa string `json:"funcao_pessoa" example:"Back-End Developer"`
+	Equipe_ID     int    `json:"equipe_id" example:"1"`
 }
 
 // @Summary POST a new Person

@@ -15,7 +15,7 @@ type Task struct {
 	Nome_Pessoa    string     `json:"nome_pessoa"`
 	ProjetoID      int        `json:"projeto_id"`
 	Nome_Projeto   string     `json:"nome_projeto"`
-	Status         string     `json:"status"`
+	Status         string     `json:"status" enums:"Em Andamento, Concluido"`
 	Data_Criacao   *time.Time `json:"data_criacao"`
 	Data_Conclusao *time.Time `json:"data_conclusao"`
 	Prazo_Entrega  *time.Time `json:"prazo_entrega"`

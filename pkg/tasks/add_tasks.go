@@ -9,11 +9,11 @@ import (
 )
 
 type AddTaskRequestBody struct {
-	Descricao_Task string `json:"descricao_task"`
-	PessoaID       int    `json:"pessoa_id"`
-	ProjetoID      int    `json:"projeto_id"`
-	Prazo          int    `json:"prazo_entrega"`
-	Prioridade     int    `json:"prioridade"`
+	Descricao_Task string `json:"descricao_task" example:"Descrição Teste"`
+	PessoaID       int    `json:"pessoa_id" example:"4"`
+	ProjetoID      int    `json:"projeto_id" example:"24"`
+	Prazo          int    `json:"prazo_entrega" example:"17"`
+	Prioridade     int    `json:"prioridade" example:"1"`
 }
 
 // @Summary POST a new Task
@@ -43,7 +43,6 @@ func (h handler) AddTask(c *gin.Context) {
 	task.Status = "Em Andamento"
 	task.Prioridade = body.Prioridade
 
-
 	var StatusCount int
 	var data_atual = time.Now()
 	data_limite := data_atual.AddDate(0, 0, t)
@@ -62,12 +61,11 @@ func (h handler) AddTask(c *gin.Context) {
 			return
 		}
 		c.JSON(http.StatusCreated, &task)
-		}	else {
-			c.JSON(400, gin.H{
-				"error": "Cannot create Task. Project is not under development: " + err.Error(),
-			})
-		}
-	
+	} else {
+		c.JSON(400, gin.H{
+			"error": "Cannot create Task. Project is not under development: " + err.Error(),
+		})
+	}
 
 	if result := h.DB.Model(&task).Where("id_task = ?", task.ID_Task).Update("prazo_entrega", data_limite.Format("2006-01-02")); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)

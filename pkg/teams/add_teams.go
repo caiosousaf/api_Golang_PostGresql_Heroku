@@ -7,11 +7,11 @@ import (
 )
 
 type AddEquipeRequestBody struct {
-	Nome_Equipe string `json:"nome_equipe"`
+	Nome_Equipe string `json:"nome_equipe" example:"Krutaya Komanda"`
 }
 
-// @Summary POST a new Project
-// @Description POST a new project. For the request to be met, the "nome_equipe" are required. 
+// @Summary POST a new Team
+// @Description POST a new Team. For the request to be met, the "nome_equipe" are required. 
 // @Param		Team		body	string		true	"NewTeam"
 // @Accept json
 // @Produce json

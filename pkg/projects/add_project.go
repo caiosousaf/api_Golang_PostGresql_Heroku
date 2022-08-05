@@ -8,11 +8,10 @@ import (
 )
 
 type AddProjetoRequestBody struct {
-	Nome_Projeto      string `gorm:"type: varchar(30) not null" json:"nome_projeto"`
-	Equipe_ID         int    `json:"equipe_id"`
-	Status            string `json:"status"`
-	Descricao_Projeto string `json:"descricao_projeto"`
-	Prazo             int    `json:"prazo_entrega"`
+	Nome_Projeto      string `gorm:"type: varchar(30) not null" json:"nome_projeto" example:"Projeto Teste"`
+	Equipe_ID         int    `json:"equipe_id" example:"1"`
+	Descricao_Projeto string `json:"descricao_projeto" example:"Projeto teste para exemplo do Swagger"`
+	Prazo             int    `json:"prazo_entrega" example:"10"`
 }
 
 // @Summary POST a new Project

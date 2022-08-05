@@ -22,7 +22,8 @@ func (h handler) GetProject(c *gin.Context) {
 
 	var projeto []Projects
 
-	if result := h.DB.Raw("select * from projetos where id_projeto = ?", id).Scan(&projeto); result.Error != nil {
+	if result := h.DB.Raw(`select pr.*, eq.nome_equipe from projetos pr inner join equipes eq
+	 on pr.equipe_id = eq.id_equipe where id_projeto = ?`, id).Scan(&projeto); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
