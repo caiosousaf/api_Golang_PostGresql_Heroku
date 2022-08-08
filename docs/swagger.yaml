@@ -699,6 +699,45 @@ paths:
       summary: GET All Tasks of a specific Person
       tags:
       - People
+  /pessoas/filtros/:
+    get:
+      consumes:
+      - application/json
+      description: GET a specific person by Name
+      parameters:
+      - description: name_person
+        in: query
+        name: person
+        type: string
+      - description: funcao_person
+        enum:
+        - Back-End
+        - Front-End
+        - Analista
+        - Tester
+        in: query
+        name: person_function
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pessoas.GetPessoa'
+            type: array
+        "400":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      summary: GET a specific Person by Name
+      tags:
+      - People
   /projetos:
     get:
       consumes:

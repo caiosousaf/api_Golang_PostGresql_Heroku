@@ -1,4 +1,5 @@
-/*
+/* kill -9 $(lsof -t -i tcp:3000)
+
 alter table tasks 
 ADD COLUMN status varchar(20)
 

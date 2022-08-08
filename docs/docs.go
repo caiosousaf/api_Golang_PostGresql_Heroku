@@ -374,6 +374,64 @@ const docTemplate = `{
                 }
             }
         },
+        "/pessoas/filtros/": {
+            "get": {
+                "description": "GET a specific person by Name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "GET a specific Person by Name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name_person",
+                        "name": "person",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "Back-End",
+                            "Front-End",
+                            "Analista",
+                            "Tester"
+                        ],
+                        "type": "string",
+                        "description": "funcao_person",
+                        "name": "person_function",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.GetPessoa"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/pessoas/{id}": {
             "get": {
                 "description": "GET a specific person",

@@ -47,8 +47,8 @@ func (h handler) AddTask(c *gin.Context) {
 	var data_atual = time.Now()
 	data_limite := data_atual.AddDate(0, 0, t)
 	err := c.ShouldBindJSON(&task)
-	// Verifica se a pessoa em questão está na equipe atribuida ao projeto, se não estiver ele ira criar a tarefa
-
+	
+	// ve se o projeto está em desenvolvimento
 	if validationStatus := h.DB.Raw(`select count(*) from projetos where id_projeto = ?
 	  and status = 'Em Andamento'`, body.ProjetoID).Scan(&StatusCount); validationStatus.Error != nil {
 		c.AbortWithError(http.StatusBadRequest, validationStatus.Error)
