@@ -26,7 +26,7 @@ const docTemplate = `{
     "paths": {
         "/equipes": {
             "get": {
-                "description": "Returns all registered teams, all their members and all projects they are assigned to",
+                "description": "Returns all registered teams and all their members they are assigned to",
                 "consumes": [
                     "application/json"
                 ],
@@ -108,7 +108,7 @@ const docTemplate = `{
         },
         "/equipes/{id}": {
             "get": {
-                "description": "Returns a team, all their members and all projects they are assigned to",
+                "description": "Returns a team, all their members, all projects and all tasks they are assigned to",
                 "consumes": [
                     "application/json"
                 ],
@@ -134,7 +134,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/equipes.GetMembers"
+                                "$ref": "#/definitions/equipes.GetProjectsMembersTasks"
                             }
                         }
                     },
@@ -1473,11 +1473,34 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.Pessoa"
                     }
+                }
+            }
+        },
+        "equipes.GetProjectsMembersTasks": {
+            "type": "object",
+            "properties": {
+                "id_equipe": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "pessoas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Pessoa"
+                    }
                 },
                 "projetos": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Projeto"
+                    }
+                },
+                "tasks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TasksbyTeam"
                     }
                 }
             }
@@ -1583,6 +1606,39 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "string"
+                }
+            }
+        },
+        "models.TasksbyTeam": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
+                "descricao_task": {
+                    "type": "string"
+                },
+                "id_task": {
+                    "type": "integer"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "prioridade": {
+                    "type": "integer"
+                },
+                "projeto_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "Em Andamento",
+                        " Concluido"
+                    ]
                 }
             }
         },

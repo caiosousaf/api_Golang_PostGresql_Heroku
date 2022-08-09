@@ -32,9 +32,24 @@ definitions:
         items:
           $ref: '#/definitions/models.Pessoa'
         type: array
+    type: object
+  equipes.GetProjectsMembersTasks:
+    properties:
+      id_equipe:
+        type: integer
+      nome_equipe:
+        type: string
+      pessoas:
+        items:
+          $ref: '#/definitions/models.Pessoa'
+        type: array
       projetos:
         items:
           $ref: '#/definitions/models.Projeto'
+        type: array
+      tasks:
+        items:
+          $ref: '#/definitions/models.TasksbyTeam'
         type: array
     type: object
   equipes.Membros:
@@ -103,6 +118,28 @@ definitions:
       projeto_id:
         type: integer
       status:
+        type: string
+    type: object
+  models.TasksbyTeam:
+    properties:
+      data_conclusao:
+        type: string
+      data_criacao:
+        type: string
+      descricao_task:
+        type: string
+      id_task:
+        type: integer
+      prazo_entrega:
+        type: string
+      prioridade:
+        type: integer
+      projeto_id:
+        type: integer
+      status:
+        enum:
+        - Em Andamento
+        - ' Concluido'
         type: string
     type: object
   pessoas.AddPessoaRequestBody:
@@ -340,8 +377,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Returns all registered teams, all their members and all projects
-        they are assigned to
+      description: Returns all registered teams and all their members they are assigned
+        to
       produces:
       - application/json
       responses:
@@ -426,8 +463,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Returns a team, all their members and all projects they are assigned
-        to
+      description: Returns a team, all their members, all projects and all tasks they
+        are assigned to
       parameters:
       - description: id_Team
         in: path
@@ -441,7 +478,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/equipes.GetMembers'
+              $ref: '#/definitions/equipes.GetProjectsMembersTasks'
             type: array
         "400":
           description: error

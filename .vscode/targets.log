@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Aug  8 08:02:13 2022
+# Make data base, printed on Tue Aug  9 08:06:24 2022
 
 # Variables
 
@@ -47,7 +45,7 @@ VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 8:46643
+JOURNAL_STREAM = 8:50587
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'Makefile', line 1)
@@ -65,7 +63,7 @@ VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1001/bus
 # environment
-MANAGERPID = 2053
+MANAGERPID = 2034
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -79,7 +77,7 @@ PATH = /usr/local/go/bin:/home/brisa/.nvm/versions/node/v16.15.1/bin:/usr/local/
 # environment
 GPG_AGENT_INFO = /run/user/1001/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2269,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2269
+SESSION_MANAGER = local/brisa-OptiPlex-5090:@/tmp/.ICE-unix/2250,unix/brisa-OptiPlex-5090:/tmp/.ICE-unix/2250
 # environment
 XDG_RUNTIME_DIR = /run/user/1001
 # environment
@@ -91,7 +89,7 @@ XDG_MENU_PREFIX = gnome-
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 78b1c48fe11d48b2a03d0e45b224b179
+INVOCATION_ID = 2a86569c61194ae484c8fa016704b4e2
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -101,7 +99,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1001/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4622
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3746
 # automatic
 %F = $(notdir $%)
 # environment
@@ -111,7 +109,7 @@ PWD = /home/brisa/Documentos/api_Golang_PostGresql
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2231
+SSH_AGENT_PID = 2210
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -209,7 +207,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4622
+VSCODE_PID = 3746
 # variable set hash-table stats:
 # Load=99/1024=10%, Rehash=0, Collisions=13/124=10%
 
@@ -277,6 +275,8 @@ swag:
 # strcache performance: lookups = 26 / hit rate = 23%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=1/26=4%
-# Finished Make data base on Mon Aug  8 08:02:13 2022
+# Finished Make data base on Tue Aug  9 08:06:24 2022
 
  
+make: *** No rule to make target 'all'.  Stop.
+
