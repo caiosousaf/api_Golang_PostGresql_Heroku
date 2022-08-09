@@ -24,7 +24,7 @@ func (h handler) Login(c *gin.Context) {
 	// checks if the email entered exists in the database
 	if result := h.DB.Where("email = ?", p.Email).First(&user); result.Error != nil {
 		c.JSON(401, gin.H{
-			"error": "cannot find user: ",
+			"error": "Invalid Credentials: ",
 		})
 		return
 	}

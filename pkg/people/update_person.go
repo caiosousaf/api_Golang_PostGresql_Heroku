@@ -37,6 +37,7 @@ func (h handler) UpdatePerson(c *gin.Context) {
 
 	var pessoa models.Pessoa
 
+	// Find first person with specific id
 	if result := h.DB.First(&pessoa, id); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return

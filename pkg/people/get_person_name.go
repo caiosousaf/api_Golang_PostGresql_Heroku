@@ -33,7 +33,7 @@ func (h handler) GetPersonName(c *gin.Context) {
 	var pessoa []GetPessoa
 	fmt.Println(name)
 	if pessoa := h.DB.Raw(`select pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, pe.equipe_id, eq.nome_equipe, pe.data_contratacao 
-	from pessoas as pe inner join equipes as eq on pe.equipe_id = eq.id_equipe where `+ sla + `= ?` , name).Scan(&pessoa); pessoa.Error != nil {
+	from pessoas as pe inner join equipes as eq on pe.equipe_id = eq.id_equipe where `+ sla + ` ilike ?` , name).Scan(&pessoa); pessoa.Error != nil {
 		c.AbortWithError(http.StatusNotFound, pessoa.Error)
 		return
 	}

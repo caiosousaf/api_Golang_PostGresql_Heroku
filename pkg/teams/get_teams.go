@@ -35,12 +35,7 @@ func (h handler) GetTeams(c *gin.Context) {
 
 	for i := 0; i < len(equipes); i++ {
 		var pessoas []models.Pessoa
-		var projetos []models.Projeto
 		if result := h.DB.Raw("select * from pessoas where equipe_id = ?", equipes[i].ID_Equipe).Scan(&pessoas); result.Error != nil {
-			c.AbortWithError(http.StatusNotFound, result.Error)
-			return
-		}
-		if result := h.DB.Raw("select * from projetos where equipe_id = ?", equipes[i].ID_Equipe).Scan(&projetos); result.Error != nil {
 			c.AbortWithError(http.StatusNotFound, result.Error)
 			return
 		}
