@@ -622,12 +622,6 @@ paths:
             items:
               $ref: '#/definitions/models.Error400Create'
             type: array
-        "404":
-          description: Not Found
-          schema:
-            items:
-              $ref: '#/definitions/models.Error404Message'
-            type: array
       summary: POST a new Person
       tags:
       - People

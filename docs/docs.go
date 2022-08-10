@@ -367,15 +367,6 @@ const docTemplate = `{
                                 "$ref": "#/definitions/models.Error400Create"
                             }
                         }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Error404Message"
-                            }
-                        }
                     }
                 }
             }
