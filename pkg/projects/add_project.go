@@ -48,7 +48,9 @@ func (h handler) AddProject(c *gin.Context) {
 
 	// Verificando se já existe um projeto com o nome digitado
 	if result := h.DB.Raw("select count(*) from projetos where nome_projeto = ?", body.Nome_Projeto).Scan(&count); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
+		c.JSON(400, gin.H{
+			"message": "Could not create. Parameters were not passed correctly",
+		})
 		return
 	}
 	// Se não existir nenhum projeto com esse nome ele cria um novo projeto com sucesso
@@ -59,9 +61,10 @@ func (h handler) AddProject(c *gin.Context) {
 		}
 		c.JSON(http.StatusCreated, &projeto)
 	} else {
-		c.JSON(400, gin.H{
-			"message": "Could not create. Parameters were not passed correctly",
+		c.JSON(404, gin.H{
+			"message": "Sla Cara. Descobre aí",
 		})
+		return
 	}
 
 	if result := h.DB.Model(&projeto).Where("id_projeto = ?", projeto.ID_Projeto).Update("prazo_entrega", data_limite.Format("2006-01-02")); result.Error != nil {
