@@ -23,7 +23,7 @@ func (h handler) GetPersonName(c *gin.Context) {
 
 	sla := "nome_pessoa"
 
-	if function_pe == "Back-End" || function_pe == "Front-End" || function_pe == "Analperson_funcsta" || function_pe == "Tester"{
+	if function_pe == "Back-End" || function_pe == "Front-End" || function_pe == "Analista" || function_pe == "Tester"{
 		sla = "funcao_pessoa"
 	}
 	if name == "" {
