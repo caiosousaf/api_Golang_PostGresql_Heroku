@@ -19,7 +19,7 @@ type AddPessoaRequestBody struct {
 // @Accept json
 // @Produce json
 // @Success 200 {object} AddPessoaRequestBody
-// @Failure 400,404 {string} string "error"
+// @Failure 400 {array} models.Error400Create
 // @Tags People
 // @Router /pessoas [post]
 func (h handler) AddPerson(c *gin.Context) {
@@ -38,7 +38,9 @@ func (h handler) AddPerson(c *gin.Context) {
 	pessoa.EquipeID = body.Equipe_ID
 
 	if result := h.DB.Create(&pessoa).Scan(&pessoa); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
+		c.JSON(400, gin.H{
+			"message": "Could not create. Parameters were not passed correctly" ,
+		})
 		return
 	}
 

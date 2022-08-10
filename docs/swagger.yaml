@@ -81,6 +81,24 @@ definitions:
       nome_equipe:
         type: string
     type: object
+  models.Error400Create:
+    properties:
+      message:
+        example: Could not create. Parameters were not passed correctly
+        type: string
+    type: object
+  models.Error400Get:
+    properties:
+      message:
+        example: Data not found with the passed parameters
+        type: string
+    type: object
+  models.Error404Message:
+    properties:
+      message:
+        example: Cannot BindJSON
+        type: string
+    type: object
   models.Pessoa:
     properties:
       equipe_id:
@@ -599,13 +617,17 @@ paths:
           schema:
             $ref: '#/definitions/pessoas.AddPessoaRequestBody'
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Create'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Message'
+            type: array
       summary: POST a new Person
       tags:
       - People
@@ -822,13 +844,17 @@ paths:
           schema:
             $ref: '#/definitions/projetos.AddProjetoRequestBody'
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Create'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Message'
+            type: array
       summary: POST a new Project
       tags:
       - Projects
@@ -986,13 +1012,17 @@ paths:
               $ref: '#/definitions/projetos.TasksProjeto'
             type: array
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Get'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Message'
+            type: array
       summary: Get Tasks of Project with Param ID
       tags:
       - Projects

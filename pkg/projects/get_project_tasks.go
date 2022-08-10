@@ -30,11 +30,13 @@ type TasksProjeto struct {
 // @Accept json
 // @Produce json
 // @Success 200 {array} TasksProjeto
-// @Failure 400,404 {string} string "error"
+// @Failure 400 {array} models.Error400Get
+// @Failure 404 {array} models.Error404Message
 // @Tags Projects
 // @Router /projetos/{id}/tasks [get]
 func (h handler) GetProjectTasks(c *gin.Context) {
 	var tasks []TasksProjeto
+	var CheckProjectid int
 
 	id := c.Param("id")
 	sql := `select tk.*, pr.id_projeto, pr.nome_projeto, eq.nome_equipe,
@@ -43,10 +45,23 @@ func (h handler) GetProjectTasks(c *gin.Context) {
 	equipes as eq on pr.equipe_id = eq.id_equipe inner join
 	pessoas as pe on pe.id_pessoa = tk.pessoa_id where id_projeto = ?`
 
-	if tasks := h.DB.Raw(sql, id).Scan(&tasks); tasks.Error != nil {
-		c.AbortWithError(http.StatusNotFound, tasks.Error)
+	if result := h.DB.Raw("select count(id_projeto) from projetos where id_projeto = ?", id).Scan(&CheckProjectid); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	}
+	if CheckProjectid > 0 {
+		if tasks := h.DB.Raw(sql, id).Scan(&tasks); tasks.Error != nil {
+			c.AbortWithError(http.StatusNotFound, tasks.Error)
+			return
+		}
+		c.JSON(http.StatusOK, &tasks)
+		
+	} else {
+		c.JSON(400, gin.H{
+			"message": "Data not found with the passed parameters" ,
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, &tasks)
+	
 }

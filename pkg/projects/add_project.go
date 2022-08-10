@@ -20,7 +20,8 @@ type AddProjetoRequestBody struct {
 // @Accept json
 // @Produce json
 // @Success 200 {object} AddProjetoRequestBody
-// @Failure 400,404 {string} string "error"
+// @Failure 400 {array} models.Error400Create
+// @Failure 404 {array} models.Error404Message
 // @Tags Projects
 // @Router /projetos [post]
 func (h handler) AddProject(c *gin.Context) {
@@ -44,7 +45,7 @@ func (h handler) AddProject(c *gin.Context) {
 	projeto.Descricao_Projeto = body.Descricao_Projeto
 	var count int
 
-	err := c.ShouldBindJSON(&projeto)
+
 	// Verificando se já existe um projeto com o nome digitado
 	if result := h.DB.Raw("select count(*) from projetos where nome_projeto = ?", body.Nome_Projeto).Scan(&count); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
@@ -59,7 +60,7 @@ func (h handler) AddProject(c *gin.Context) {
 		c.JSON(http.StatusCreated, &projeto)
 	} else {
 		c.JSON(400, gin.H{
-			"error": "Cannot create Project. already existing project: " + err.Error(),
+			"message": "Could not create. Parameters were not passed correctly",
 		})
 	}
 

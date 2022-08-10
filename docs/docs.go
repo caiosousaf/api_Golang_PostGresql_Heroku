@@ -360,15 +360,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Create"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Message"
+                            }
                         }
                     }
                 }
@@ -690,15 +696,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Create"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Message"
+                            }
                         }
                     }
                 }
@@ -986,15 +998,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Get"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Message"
+                            }
                         }
                     }
                 }
@@ -1546,6 +1564,33 @@ const docTemplate = `{
                 },
                 "nome_equipe": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Error400Create": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Could not create. Parameters were not passed correctly"
+                }
+            }
+        },
+        "models.Error400Get": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Data not found with the passed parameters"
+                }
+            }
+        },
+        "models.Error404Message": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Cannot BindJSON"
                 }
             }
         },
