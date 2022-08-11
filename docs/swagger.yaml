@@ -87,16 +87,52 @@ definitions:
         example: Could not create. Parameters were not passed correctly
         type: string
     type: object
+  models.Error400Delete:
+    properties:
+      message:
+        example: 'Unable to delete. non-existent ID '
+        type: string
+    type: object
   models.Error400Get:
     properties:
       message:
         example: Data not found with the passed parameters
         type: string
     type: object
+  models.Error400Update:
+    properties:
+      message:
+        example: 'could not be modified. The parameters do not meet the requirements '
+        type: string
+    type: object
+  models.Error404Create:
+    properties:
+      message:
+        example: Loss of contact with the database
+        type: string
+    type: object
+  models.Error404Delete:
+    properties:
+      message:
+        example: Loss of contact with the database
+        type: string
+    type: object
+  models.Error404Get:
+    properties:
+      message:
+        example: Loss of contact with the database
+        type: string
+    type: object
   models.Error404Message:
     properties:
       message:
         example: Cannot BindJSON
+        type: string
+    type: object
+  models.Error404Update:
+    properties:
+      message:
+        example: Loss of contact with the database
         type: string
     type: object
   models.Pessoa:
@@ -586,14 +622,12 @@ paths:
             items:
               $ref: '#/definitions/pessoas.GetPessoa'
             type: array
-        "400":
-          description: error
-          schema:
-            type: string
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Get'
+            type: array
       summary: Get All People
       tags:
       - People
@@ -612,8 +646,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/pessoas.AddPessoaRequestBody'
         "400":
@@ -621,6 +655,12 @@ paths:
           schema:
             items:
               $ref: '#/definitions/models.Error400Create'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/models.Error404Create'
             type: array
       summary: POST a new Person
       tags:
@@ -646,13 +686,17 @@ paths:
               $ref: '#/definitions/models.Pessoa'
             type: array
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Delete'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Delete'
+            type: array
       summary: DELETE a Person
       tags:
       - People
@@ -676,13 +720,17 @@ paths:
               $ref: '#/definitions/pessoas.GetPessoa'
             type: array
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Get'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Get'
+            type: array
       summary: GET a specific Person
       tags:
       - People
@@ -711,13 +759,17 @@ paths:
           schema:
             $ref: '#/definitions/pessoas.UpdatePessoaRequestBody'
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Update'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Update'
+            type: array
       summary: PUT Person with ID
       tags:
       - People
@@ -742,13 +794,17 @@ paths:
               $ref: '#/definitions/pessoas.result'
             type: array
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Get'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Get'
+            type: array
       summary: GET All Tasks of a specific Person
       tags:
       - People

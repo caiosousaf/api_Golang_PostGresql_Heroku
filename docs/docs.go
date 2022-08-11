@@ -315,16 +315,13 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Get"
+                            }
                         }
                     }
                 }
@@ -353,8 +350,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/pessoas.AddPessoaRequestBody"
                         }
@@ -365,6 +362,15 @@ const docTemplate = `{
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/models.Error400Create"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Create"
                             }
                         }
                     }
@@ -462,15 +468,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Get"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Get"
+                            }
                         }
                     }
                 }
@@ -513,15 +525,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Update"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Update"
+                            }
                         }
                     }
                 }
@@ -558,15 +576,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Delete"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Delete"
+                            }
                         }
                     }
                 }
@@ -605,15 +629,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Get"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Get"
+                            }
                         }
                     }
                 }
@@ -1567,6 +1597,15 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Error400Delete": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Unable to delete. non-existent ID "
+                }
+            }
+        },
         "models.Error400Get": {
             "type": "object",
             "properties": {
@@ -1576,12 +1615,57 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Error400Update": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "could not be modified. The parameters do not meet the requirements "
+                }
+            }
+        },
+        "models.Error404Create": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Loss of contact with the database"
+                }
+            }
+        },
+        "models.Error404Delete": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Loss of contact with the database"
+                }
+            }
+        },
+        "models.Error404Get": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Loss of contact with the database"
+                }
+            }
+        },
         "models.Error404Message": {
             "type": "object",
             "properties": {
                 "message": {
                     "type": "string",
                     "example": "Cannot BindJSON"
+                }
+            }
+        },
+        "models.Error404Update": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Loss of contact with the database"
                 }
             }
         },

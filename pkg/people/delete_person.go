@@ -13,20 +13,35 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {array} models.Pessoa
-// @Failure 400,404 {string} string "error"
+// @Failure 400 {array} models.Error400Delete
+// @Failure 404 {array} models.Error404Delete
 // @Tags People
 // @Router /pessoas/{id} [delete]
 func (h handler) DeletePerson(c *gin.Context) {
 	id := c.Param("id")
-
+	var IdExist	int
 	var pessoa models.Pessoa
 
-	if result := h.DB.First(&pessoa, id); result.Error != nil {
+	// Search the database if the person with the selected id exists
+	if result := h.DB.Raw("select count(*) from pessoas where id_pessoa = ?", id).Scan(&IdExist); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 
-	h.DB.Delete(&pessoa)
+	// if it exists then delete it
+	if IdExist == 1 {
+		if result := h.DB.First(&pessoa, id); result.Error != nil {
+			c.AbortWithError(http.StatusNotFound, result.Error)
+			return
+		}
+	
+		h.DB.Delete(&pessoa)
+		c.Status(http.StatusOK)
+	} else {
+		c.JSON(400, gin.H{
+			"message": "Unable to delete. non-existent ID " ,
+		})
+		return
+	}
 
-	c.Status(http.StatusOK)
 }

@@ -30,21 +30,37 @@ type result struct {
 // @Accept json
 // @Produce json
 // @Success 200 {array} result
-// @Failure 400,404 {string} string "error"
+// @Failure 400 {array} models.Error400Get
+// @Failure 404 {array} models.Error404Get
 // @Tags People
 // @Router /pessoas/{id}/tasks [get]
 func (h handler) GetTaskPerson(c *gin.Context) {
+	var IdExist int
 	id := c.Param("id")
+
+	if result := h.DB.Raw("select count(*) from pessoas where id_pessoa = ?", id).Scan(&IdExist); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	}
+
 	sql := `SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, eq.id_equipe, eq.nome_equipe, pr.nome_projeto,tk.id_task, tk.descricao_task, tk.projeto_id,
 	 tk.status, tk.data_criacao, tk.data_conclusao, tk.prazo_entrega, tk.prioridade FROM
 	 pessoas AS pe INNER JOIN equipes AS eq ON pe.equipe_id = eq.id_equipe INNER JOIN projetos AS pr ON pr.equipe_id = eq.id_equipe 
 	 INNER JOIN tasks as tk ON tk.projeto_id = pr.id_projeto AND tk.pessoa_id = pe.id_pessoa WHERE pe.id_pessoa = ?`
 	var result []result
 
-	if result := h.DB.Raw(sql, id).Scan(&result); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
+	if IdExist == 1 {
+		if result := h.DB.Raw(sql, id).Scan(&result); result.Error != nil {
+			c.AbortWithError(http.StatusNotFound, result.Error)
+			return
+		}
+	
+		c.JSON(http.StatusOK, &result)
+	} else {
+		c.JSON(400, gin.H{
+			"message": "Data not found with the passed parameters " ,
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, &result)
 }

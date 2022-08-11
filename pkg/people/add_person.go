@@ -18,8 +18,9 @@ type AddPessoaRequestBody struct {
 // @Param		Person		body	string		true	"New Person"
 // @Accept json
 // @Produce json
-// @Success 200 {object} AddPessoaRequestBody
+// @Success 201 {object} AddPessoaRequestBody
 // @Failure 400 {array} models.Error400Create
+// @Failure 404 {array} models.Error404Create
 // @Tags People
 // @Router /pessoas [post]
 func (h handler) AddPerson(c *gin.Context) {
@@ -27,22 +28,26 @@ func (h handler) AddPerson(c *gin.Context) {
 
 	// getting request's body
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.JSON(400, gin.H{
+			"message": "Could not create. Parameters were not passed correctly " + err.Error() ,
+		})
 		return
 	}
-
+	
 	var pessoa models.Pessoa
 
 	pessoa.Nome_Pessoa = body.Nome_Pessoa
 	pessoa.Funcao_Pessoa = body.Funcao_Pessoa
 	pessoa.EquipeID = body.Equipe_ID
 
+	// Function that creates a new person
 	if result := h.DB.Create(&pessoa).Scan(&pessoa); result.Error != nil {
-		c.JSON(400, gin.H{
-			"message": "Could not create. Parameters were not passed correctly" ,
+		c.JSON(404, gin.H{
+			"message": "Loss of contact with the database " ,
 		})
 		return
 	}
 
+	// Show what you just created
 	c.JSON(http.StatusCreated, &pessoa)
 }

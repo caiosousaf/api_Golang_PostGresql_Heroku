@@ -22,7 +22,8 @@ type UpdatePessoaRequestBody struct {
 // @Accept json
 // @Produce json
 // @Success 200 {object} UpdatePessoaRequestBody
-// @Failure 400,404 {string} string "error"
+// @Failure 400	{array} models.Error400Update
+// @Failure 404 {array} models.Error404Update
 // @Tags People
 // @Router /pessoas/{id} [put]
 func (h handler) UpdatePerson(c *gin.Context) {
@@ -31,7 +32,9 @@ func (h handler) UpdatePerson(c *gin.Context) {
 
 	// getting request's body
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.JSON(400, gin.H{
+			"message": "could not be modified. The parameters do not meet the requirements " + err.Error() ,
+		})
 		return
 	}
 
@@ -48,7 +51,9 @@ func (h handler) UpdatePerson(c *gin.Context) {
 	pessoa.EquipeID = body.Equipe_ID
 
 	if result := h.DB.Raw("update pessoas set nome_pessoa = ?, funcao_pessoa = ?, equipe_id = ? where id_pessoa = ?", pessoa.Nome_Pessoa, pessoa.Funcao_Pessoa, pessoa.EquipeID, pessoa.ID_Pessoa).Scan(&pessoa); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
+		c.JSON(404, gin.H{
+			"message": "Loss of contact with the database " ,
+		})
 		return
 	}
 
