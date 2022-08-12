@@ -65,6 +65,7 @@ func (h handler) UpdateProject(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} UpdateStatusProject
+// @Failure 304	{string}	string "Not Modified"
 // @Failure 400,404 {string} string "error"
 // @Tags Projects
 // @Router /projetos/{id}/status [put]

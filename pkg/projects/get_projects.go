@@ -27,7 +27,7 @@ type Projects struct {
 // @Accept json
 // @Produce json
 // @Success 200 {array} Projects
-// @Failure 400,404 {string} string "error"
+// @Failure 404 {string} string "error"
 // @Tags Projects
 // @Router /projetos [get]
 func (h handler) GetProjects(c *gin.Context) {

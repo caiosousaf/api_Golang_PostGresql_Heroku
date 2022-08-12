@@ -13,7 +13,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {array} models.Projeto
-// @Failure 400,404 {string} string "error"
+// @Failure 404 {string} string "error"
 // @Tags Projects
 // @Router /projetos/status/{status} [get]
 func (h handler) GetStatusProjects(c *gin.Context) {

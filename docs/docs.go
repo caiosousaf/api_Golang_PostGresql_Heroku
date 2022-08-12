@@ -672,12 +672,6 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     "404": {
                         "description": "error",
                         "schema": {
@@ -710,8 +704,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/projetos.AddProjetoRequestBody"
                         }
@@ -730,7 +724,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Error404Message"
+                                "$ref": "#/definitions/models.Error404Create"
                             }
                         }
                     }
@@ -775,12 +769,6 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     "404": {
                         "description": "error",
                         "schema": {
@@ -823,15 +811,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Get"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Get"
+                            }
                         }
                     }
                 }
@@ -903,7 +897,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Projeto ID",
-                        "name": "ID",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }
@@ -919,15 +913,21 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "error",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error400Delete"
+                            }
                         }
                     },
                     "404": {
-                        "description": "error",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Error404Delete"
+                            }
                         }
                     }
                 }
@@ -969,6 +969,12 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/projetos.UpdateStatusProject"
+                        }
+                    },
+                    "304": {
+                        "description": "Not Modified",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "400": {

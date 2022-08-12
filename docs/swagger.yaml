@@ -861,10 +861,6 @@ paths:
             items:
               $ref: '#/definitions/projetos.Projects'
             type: array
-        "400":
-          description: error
-          schema:
-            type: string
         "404":
           description: error
           schema:
@@ -889,8 +885,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/projetos.AddProjetoRequestBody'
         "400":
@@ -903,7 +899,7 @@ paths:
           description: Not Found
           schema:
             items:
-              $ref: '#/definitions/models.Error404Message'
+              $ref: '#/definitions/models.Error404Create'
             type: array
       summary: POST a new Project
       tags:
@@ -917,7 +913,7 @@ paths:
       parameters:
       - description: Projeto ID
         in: path
-        name: ID
+        name: id
         required: true
         type: integer
       produces:
@@ -930,13 +926,17 @@ paths:
               $ref: '#/definitions/models.Projeto'
             type: array
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Delete'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Delete'
+            type: array
       summary: Delete a specific Project
       tags:
       - Projects
@@ -960,13 +960,17 @@ paths:
               $ref: '#/definitions/projetos.Projects'
             type: array
         "400":
-          description: error
+          description: Bad Request
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error400Get'
+            type: array
         "404":
-          description: error
+          description: Not Found
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Error404Get'
+            type: array
       summary: Get Project with specific ID
       tags:
       - Projects
@@ -1030,6 +1034,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/projetos.UpdateStatusProject'
+        "304":
+          description: Not Modified
+          schema:
+            type: string
         "400":
           description: error
           schema:
@@ -1101,10 +1109,6 @@ paths:
             items:
               $ref: '#/definitions/models.Projeto'
             type: array
-        "400":
-          description: error
-          schema:
-            type: string
         "404":
           description: error
           schema:

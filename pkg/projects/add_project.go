@@ -19,9 +19,9 @@ type AddProjetoRequestBody struct {
 // @Param		NewProject		body	string		true	"NewProject"
 // @Accept json
 // @Produce json
-// @Success 200 {object} AddProjetoRequestBody
+// @Success 201 {object} AddProjetoRequestBody
 // @Failure 400 {array} models.Error400Create
-// @Failure 404 {array} models.Error404Message
+// @Failure 404 {array} models.Error404Create
 // @Tags Projects
 // @Router /projetos [post]
 func (h handler) AddProject(c *gin.Context) {
@@ -29,7 +29,9 @@ func (h handler) AddProject(c *gin.Context) {
 
 	// getting request's body
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.JSON(400, gin.H{
+			"message": "Could not create. Parameters were not passed correctly " + err.Error() ,
+		})
 		return
 	}
 
