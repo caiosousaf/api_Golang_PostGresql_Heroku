@@ -49,8 +49,7 @@ func (h handler) AddTask(c *gin.Context) {
 	err := c.ShouldBindJSON(&task)
 	
 	// ve se o projeto está em desenvolvimento
-	if validationStatus := h.DB.Raw(`select count(*) from projetos where id_projeto = ?
-	  and status = 'Em Andamento'`, body.ProjetoID).Scan(&StatusCount); validationStatus.Error != nil {
+	if validationStatus := h.DB.Raw(`select count(*) from projetos where id_projeto = ?`, body.ProjetoID).Scan(&StatusCount); validationStatus.Error != nil {
 		c.AbortWithError(http.StatusBadRequest, validationStatus.Error)
 		return
 	}
