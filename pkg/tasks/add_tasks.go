@@ -49,12 +49,13 @@ func (h handler) AddTask(c *gin.Context) {
 	err := c.ShouldBindJSON(&task)
 	
 	// ve se o projeto está em desenvolvimento
-	if validationStatus := h.DB.Raw(`select count(*) from projetos where id_projeto = ?`, body.ProjetoID).Scan(&StatusCount); validationStatus.Error != nil {
+	if validationStatus := h.DB.Raw(`select count(*) from projetos where id_projeto = ?
+	  and status = 'Concluido'`, body.ProjetoID).Scan(&StatusCount); validationStatus.Error != nil {
 		c.AbortWithError(http.StatusBadRequest, validationStatus.Error)
 		return
 	}
 	// se o StatusCount for > 0 então quer dizer que o projeto ainda está com o status "Em Andamento" se não estiver então ele não cria a tarefa
-	if StatusCount > 0 {
+	if StatusCount == 0 {
 		if result := h.DB.Create(&task); result.Error != nil {
 			c.AbortWithError(http.StatusNotFound, result.Error)
 			return
