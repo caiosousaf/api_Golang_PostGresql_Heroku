@@ -1,2 +1,2 @@
-.vscode/
-pkg/common/envs/.env
+# Ignore arquivos relacionados às chaves de API
+.env
