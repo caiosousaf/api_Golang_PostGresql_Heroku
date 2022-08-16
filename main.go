@@ -36,7 +36,7 @@ func main() {
 	docs.SwaggerInfo.Schemes = []string{"https"}
 
 	port := os.Getenv("PORT")
-	dbUrl := viper.Get("DB_URL").(string)
+	dbUrl := os.Getenv("DB_URL")
 
 	r := gin.Default()
 	h := db.Init(dbUrl)
