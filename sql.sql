@@ -169,6 +169,35 @@ END;
 
 
 
+public class ExemploArray {
+    //@Test
+    public void exemploArrayChar() {
+        char[] nomeCaio = new char[5];
+        nomeCaio[0] = 'C';
+        System.out.println(nomeCaio[0]);
+    }
 
+    //@Test
+    public void exemploArrayInt() {
+        int[] arrayInteiros = new int[5];
+        arrayInteiros[0] = 1;
+        System.out.println(arrayInteiros[0]);
+    }
+
+     //@Test
+     public void exemploArrayString() {
+        String[] arrayString = new String[5];
+        arrayString[0] = "Caio";
+        System.out.println(arrayString[0]);
+    }
+
+    //@Test
+    public void exemploArrayObjetos() {
+        Pessoa[] arrayString = new Pessoa[5];
+        Pessoa caio = new Pessoa("Caio", "12345", "1234567890");
+        arrayString[0] = "Caio";
+        System.out.println(arrayString[0]);
+    }
+}
 
 */ 
