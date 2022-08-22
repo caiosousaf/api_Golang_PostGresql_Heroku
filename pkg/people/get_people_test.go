@@ -1,6 +1,7 @@
 package pessoas
 
 import (
+	"bytes"
 	"encoding/json"
 
 	"net/http"
@@ -14,7 +15,7 @@ import (
 )
 
 //go test -v -cover ./...
-// go test -coverprofile cover.out && go tool cover -html=cover.out -o cover.html 
+// go test -coverprofile cover.out && go tool cover -html=cover.out -o cover.html
 func  Test_handler_GetPeople(t *testing.T) {
 
 
@@ -77,7 +78,7 @@ func  Test_handler_GetPeople(t *testing.T) {
 		
 		
 		
-		t.Run("ErrorBadGatewayBuscaPessoa", func(t *testing.T) { 
+		t.Run("ErrorStatusNotFoundBuscaPessoa", func(t *testing.T) { 
 			
 			reqNotFound, _ := http.NewRequest("GET", "/pessoas/c" , nil)
 			w := httptest.NewRecorder()
@@ -85,5 +86,135 @@ func  Test_handler_GetPeople(t *testing.T) {
 			assert.Equal(t, http.StatusNotFound, w.Code)
 		})
 	})
+
+	t.Run("BuscaTasksDePessoa", func(t *testing.T) {
+		router.GET("/pessoas/0/tasks", h.GetPeople)
+		req, _ := http.NewRequest("GET", "/pessoas/4/tasks", nil)
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
+
+		var result []result
+
+		json.Unmarshal(w.Body.Bytes(), &result)
+
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, result)
+
+		t.Run("BadRequestBuscaTasksDePessoa", func(t *testing.T) {
+			reqBadRequest, _ := http.NewRequest("GET", "/pessoas/600/tasks", nil)
+			w := httptest.NewRecorder()
+			router.ServeHTTP(w, reqBadRequest)
+			assert.Equal(t, http.StatusBadRequest, w.Code)
+	
+		})
+
+		t.Run("StatusNotFoundBuscaTasksDePessoa", func(t *testing.T) { 
+			
+			reqNotFound, _ := http.NewRequest("GET", "/pessoas/c/tasks" , nil)
+			w := httptest.NewRecorder()
+			router.ServeHTTP(w, reqNotFound)
+			assert.Equal(t, http.StatusNotFound, w.Code)
+		})
+	})
+
+
 	
 }
+
+func  Test_handler_PostPeople(t *testing.T) {
+	router := gin.Default()
+	
+
+	dbUrl := "postgres://icsebrcphzbchf:02fde9fd34225b556aed45e81ca823f3c50b594f2530b3f95e8d2b1fe6517473@ec2-23-23-151-191.compute-1.amazonaws.com:5432/dcqvoffgfp6u50"
+	c := db.Init(dbUrl)
+	//n := r.Group("")
+	//r.RouterGroup = *n
+	
+	RegisterRoutes(router, c)
+	h := &handler{
+		DB: c,
+	}
+
+	router.POST("/pessoas", h.AddPerson)
+	
+	pessoa := AddPessoaRequestBody{
+		Nome_Pessoa: "Matheus Brisa",
+		Funcao_Pessoa: "Back-End",
+		Equipe_ID: 1,
+	}
+	jsonValue, _ := json.Marshal(pessoa)
+	req, _ := http.NewRequest("POST", "/pessoas", bytes.NewBuffer(jsonValue))
+
+	w := httptest.NewRecorder()
+    router.ServeHTTP(w, req)
+    assert.Equal(t, http.StatusCreated, w.Code)
+
+	t.Run("BadRequestBuscaTasksDePessoa", func(t *testing.T) {
+		type AddPessoaWithError struct {
+			Nome_Pessoa   string 
+			Funcao_Pessoa string 
+			Equipe_ID     string 
+		}
+		pessoa := AddPessoaWithError{
+			Nome_Pessoa: "Matheus Brisa",
+			Funcao_Pessoa: "",
+			Equipe_ID: "1",
+		}
+		jsonValue, _ := json.Marshal(pessoa)
+		reqBadRequest, _ := http.NewRequest("POST", "/pessoas", bytes.NewBuffer(jsonValue))
+	
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, reqBadRequest)
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+
+	})
+
+	t.Run("StatusNotFoundBuscaTasksDePessoa", func(t *testing.T) {
+		
+		pessoa := AddPessoaRequestBody{
+			Nome_Pessoa: "Matheus Brisa",
+			Funcao_Pessoa: "",
+			Equipe_ID: 100,
+		}
+		jsonValue, _ := json.Marshal(pessoa)
+		reqStatusNotFound, _ := http.NewRequest("POST", "/pessoas", bytes.NewBuffer(jsonValue))
+	
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, reqStatusNotFound)
+		assert.Equal(t, http.StatusNotFound, w.Code)
+
+	})
+}
+
+func Test_handler_PutPeople(t *testing.T) {
+	router := gin.Default()
+	
+
+	dbUrl := "postgres://icsebrcphzbchf:02fde9fd34225b556aed45e81ca823f3c50b594f2530b3f95e8d2b1fe6517473@ec2-23-23-151-191.compute-1.amazonaws.com:5432/dcqvoffgfp6u50"
+	c := db.Init(dbUrl)
+	//n := r.Group("")
+	//r.RouterGroup = *n
+	
+	RegisterRoutes(router, c)
+	h := &handler{
+		DB: c,
+	}
+
+	router.PUT("/pessoas/0", h.UpdatePerson)
+	
+	pessoa := UpdatePessoaRequestBody{
+		Nome_Pessoa: "Matheus Brisa",
+		Funcao_Pessoa: "Back-End",
+		Equipe_ID: 1,
+	}
+	jsonValue, _ := json.Marshal(pessoa)
+	req, _ := http.NewRequest("PUT", "/pessoas/36", bytes.NewBuffer(jsonValue))
+
+	w := httptest.NewRecorder()
+    router.ServeHTTP(w, req)
+    assert.Equal(t, http.StatusOK, w.Code)
+
+}
+
+

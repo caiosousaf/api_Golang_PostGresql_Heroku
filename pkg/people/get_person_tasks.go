@@ -51,7 +51,6 @@ func (h handler) GetTaskPerson(c *gin.Context) {
 
 	if IdExist == 1 {
 		if result := h.DB.Raw(sql, id).Scan(&result); result.Error != nil {
-			c.AbortWithError(http.StatusNotFound, result.Error)
 			return
 		}
 	
