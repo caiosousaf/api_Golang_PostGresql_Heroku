@@ -275,7 +275,7 @@ func Test_handler_DeletePerson(t *testing.T) {
 
 	w := httptest.NewRecorder()
 
-	id := "74"
+	id := "82"
 
 	req, _ := http.NewRequest("DELETE", "/pessoas/"+id, nil)
 
@@ -290,18 +290,59 @@ func Test_handler_DeletePerson(t *testing.T) {
 		router.DELETE("/pessoas/00", h.DeletePerson)
 
 		w := httptest.NewRecorder()
-	
-		id := "74"
-	
+
+		id := "82"
+
 		req, _ := http.NewRequest("DELETE", "/pessoas/"+id, nil)
-	
+
 		router.ServeHTTP(w, req)
-	
+
 		var pessoas models.Pessoa
 		json.Unmarshal(w.Body.Bytes(), &pessoas)
-	
+
 		assert.Equal(t, http.StatusBadRequest, w.Code)
 
 	})
 
+}
+
+func Test_handler_GetPersonName(t *testing.T) {
+	router := gin.Default()
+
+	dbUrl := "postgres://icsebrcphzbchf:02fde9fd34225b556aed45e81ca823f3c50b594f2530b3f95e8d2b1fe6517473@ec2-23-23-151-191.compute-1.amazonaws.com:5432/dcqvoffgfp6u50"
+	c := db.Init(dbUrl)
+	//n := r.Group("")
+	//r.RouterGroup = *n
+
+	RegisterRoutes(router, c)
+	h := &handler{
+		DB: c,
+	}
+
+	w := httptest.NewRecorder()
+
+	id := "?person=caio%20swagger"
+	router.GET("/pessoas/filtros/00", h.GetPersonName)
+	req, _ := http.NewRequest("GET", "/pessoas/filtros/"+id, nil)
+
+	router.ServeHTTP(w, req)
+
+	var pessoas GetPessoa
+	json.Unmarshal(w.Body.Bytes(), &pessoas)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	t.Run("FiltroByFunction", func(t *testing.T) {
+		id := "?person_function=Back-End"
+
+		router.GET("/pessoas/filtros/01", h.GetPersonName)
+		req, _ := http.NewRequest("GET", "/pessoas/filtros/"+id, nil)
+
+		router.ServeHTTP(w, req)
+
+		var pessoas []GetPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoas)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+	})
 }
