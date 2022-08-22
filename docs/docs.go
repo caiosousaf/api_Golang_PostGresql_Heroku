@@ -1750,6 +1750,12 @@ const docTemplate = `{
                 "id_task": {
                     "type": "integer"
                 },
+                "nome_pessoa": {
+                    "type": "string"
+                },
+                "pessoa_id": {
+                    "type": "integer"
+                },
                 "prazo_entrega": {
                     "type": "string"
                 },
