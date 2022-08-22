@@ -47,7 +47,8 @@ func (h handler) GetTeam(c *gin.Context) {
 		return
 	}
 
-	if result := h.DB.Raw(`select tk.id_task, tk.descricao_task, tk.projeto_id, tk.status, tk.data_criacao, tk.prazo_entrega, tk.data_conclusao
+	if result := h.DB.Raw(`select tk.id_task, pe.nome_pessoa, tk.pessoa_id, tk.descricao_task, tk.projeto_id, tk.status,
+	tk.data_criacao, tk.prazo_entrega, tk.data_conclusao
 	from tasks tk 
 	inner join pessoas pe on pe.id_pessoa = tk.pessoa_id 
 	inner join equipes eq on eq.id_equipe = pe.equipe_id	
