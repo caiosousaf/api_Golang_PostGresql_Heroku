@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            go test -v -cover ./...
+            go test -v -cover ./pkg/people
       - store_test_results:
           path: /tmp/test-reports
 
