@@ -140,7 +140,7 @@ func Test_handler_PostPerson(t *testing.T) {
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusCreated, w.Code)
 
-	t.Run("BadRequestBuscaTasksDePessoa", func(t *testing.T) {
+	t.Run("BadRequestPostDePessoa", func(t *testing.T) {
 		type AddPessoaWithError struct {
 			Nome_Pessoa   string
 			Funcao_Pessoa string
@@ -160,7 +160,7 @@ func Test_handler_PostPerson(t *testing.T) {
 
 	})
 
-	t.Run("StatusNotFoundBuscaTasksDePessoa", func(t *testing.T) {
+	t.Run("StatusNotFoundPostDePessoa", func(t *testing.T) {
 
 		pessoa := AddPessoaRequestBody{
 			Nome_Pessoa:   "Matheus Brisa",
@@ -198,7 +198,7 @@ func Test_handler_PutPerson(t *testing.T) {
 		Equipe_ID:     1,
 	}
 	jsonValue, _ := json.Marshal(pessoa)
-	req, _ := http.NewRequest("PUT", "/pessoas/36", bytes.NewBuffer(jsonValue))
+	req, _ := http.NewRequest("PUT", "/pessoas/33", bytes.NewBuffer(jsonValue))
 
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
@@ -275,7 +275,7 @@ func Test_handler_DeletePerson(t *testing.T) {
 
 	w := httptest.NewRecorder()
 
-	id := "90"
+	id := "117"
 
 	req, _ := http.NewRequest("DELETE", "/pessoas/"+id, nil)
 
@@ -291,7 +291,7 @@ func Test_handler_DeletePerson(t *testing.T) {
 
 		w := httptest.NewRecorder()
 
-		id := "90"
+		id := "117"
 
 		req, _ := http.NewRequest("DELETE", "/pessoas/"+id, nil)
 

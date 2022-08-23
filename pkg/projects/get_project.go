@@ -23,7 +23,9 @@ func (h handler) GetProject(c *gin.Context) {
 	var IdExist int
 
 	if result := h.DB.Raw("select count(*) from projetos where id_projeto = ?", id).Scan(&IdExist); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
+		c.JSON(404, gin.H{
+			"message": "Cannot BindJSON. Type of ID-Project Invalid"  ,
+		})
 		return
 	}
 
