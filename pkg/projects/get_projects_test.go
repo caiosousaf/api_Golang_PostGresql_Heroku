@@ -229,7 +229,7 @@ func Test_handler_DeleteProject(t *testing.T) {
 	t.Run("SucessoDeleteDeProjeto", func(t *testing.T) {
 		w := httptest.NewRecorder()
 
-		id := "105"
+		id := "108"
 
 		req, _ := http.NewRequest("DELETE", "/projetos/"+id, nil)
 

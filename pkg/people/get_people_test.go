@@ -232,7 +232,7 @@ func Test_handler_PutPerson(t *testing.T) {
 			Equipe_ID:     1000,
 		}
 		jsonValue, _ := json.Marshal(pessoa)
-		reqNotFound, _ := http.NewRequest("PUT", "/pessoas/36", bytes.NewBuffer(jsonValue))
+		reqNotFound, _ := http.NewRequest("PUT", "/pessoas/33", bytes.NewBuffer(jsonValue))
 
 		w := httptest.NewRecorder()
 		router.ServeHTTP(w, reqNotFound)
@@ -275,7 +275,7 @@ func Test_handler_DeletePerson(t *testing.T) {
 
 	w := httptest.NewRecorder()
 
-	id := "117"
+	id := "119"
 
 	req, _ := http.NewRequest("DELETE", "/pessoas/"+id, nil)
 
@@ -291,7 +291,7 @@ func Test_handler_DeletePerson(t *testing.T) {
 
 		w := httptest.NewRecorder()
 
-		id := "117"
+		id := "119"
 
 		req, _ := http.NewRequest("DELETE", "/pessoas/"+id, nil)
 
