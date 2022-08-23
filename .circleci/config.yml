@@ -13,4 +13,4 @@ jobs:
       - go/save-cache
       - run:
           name: Run tests
-          command: go test -v
+          command: go test -v -cover ./...
