@@ -275,7 +275,7 @@ func Test_handler_DeletePerson(t *testing.T) {
 
 	w := httptest.NewRecorder()
 
-	id := "86"
+	id := "88"
 
 	req, _ := http.NewRequest("DELETE", "/pessoas/"+id, nil)
 
@@ -291,7 +291,7 @@ func Test_handler_DeletePerson(t *testing.T) {
 
 		w := httptest.NewRecorder()
 
-		id := "86"
+		id := "88"
 
 		req, _ := http.NewRequest("DELETE", "/pessoas/"+id, nil)
 
