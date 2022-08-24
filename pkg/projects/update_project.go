@@ -59,6 +59,7 @@ func (h handler) UpdateProject(c *gin.Context) {
 	c.JSON(http.StatusOK, &projeto)
 }
 
+// @Security bearerAuth
 // @Summary PUT Status of a Project
 // @Description PUT Status of a specific project. For the request to be met, the "status" are required
 // @Param        id   						path      	int  	true  	"id"
