@@ -10,6 +10,7 @@ import (
 
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/db"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/server/middlewares"
 	"github.com/gin-gonic/gin"
 
 	"github.com/stretchr/testify/assert"
@@ -58,6 +59,8 @@ func Test_handler_GetProject(t *testing.T) {
 	h := &handler{
 		DB: c,
 	}
+
+	r.Use(middlewares.Auth())
 
 	r.GET("/projetos/0", h.GetProject)
 

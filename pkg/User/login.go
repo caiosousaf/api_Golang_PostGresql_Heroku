@@ -6,7 +6,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//Login Function
+// Authenticate godoc
+// @Summary Provides a JSON Web Token
+// @Description Authenticates a user and provides a JWT to Authorize API calls
+// @ID Authentication
+// @Consume application/x-www-form-urlencoded
+// @Produce json
+// @Param email formData string true "email"
+// @Param password formData string true "password"
+// @Success 200 {string} string "ok"
+// @Failure 401 {string} string "error"
+// @Router /user/login [post]
 func (h handler) Login(c *gin.Context) {
 
 	var p models.Login

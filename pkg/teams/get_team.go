@@ -14,6 +14,7 @@ type GetProjectsMembersTasks struct {
 	Tasks		[]models.TasksbyTeam		`json:"tasks"`		
 }
 
+// @Security bearerAuth
 // @Summary Get Specific Team
 // @Description Returns a team, all their members, all projects and all tasks they are assigned to
 // @Param		id		path	int		true	"id_Team"

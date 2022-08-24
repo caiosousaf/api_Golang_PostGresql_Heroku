@@ -546,6 +546,8 @@ paths:
           description: error
           schema:
             type: string
+      security:
+      - bearerAuth: []
       summary: Get Specific Team
       tags:
       - Teams
@@ -1406,4 +1408,31 @@ paths:
       summary: PUT Team with ID
       tags:
       - Teams
+  /user/login:
+    post:
+      description: Authenticates a user and provides a JWT to Authorize API calls
+      operationId: Authentication
+      parameters:
+      - description: email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "401":
+          description: error
+          schema:
+            type: string
+      summary: Provides a JSON Web Token
 swagger: "2.0"
