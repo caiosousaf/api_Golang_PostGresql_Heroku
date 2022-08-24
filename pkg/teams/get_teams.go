@@ -16,6 +16,7 @@ type GetMembers struct {
 }
 
 // Get Teams
+// @Security bearerAuth
 // @Summary Get All Teams
 // @Description Returns all registered teams and all their members they are assigned to
 // @Accept json

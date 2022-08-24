@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security bearerAuth
 // @Summary DELETE a Task
 // @Description DELETE a Task with id
 // @Param		id		path	int		true		"Task_ID"

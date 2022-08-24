@@ -14,6 +14,7 @@ type AddProjetoRequestBody struct {
 	Prazo             int    `json:"prazo_entrega" example:"10"`
 }
 
+// @Security bearerAuth
 // @Summary POST a new Project
 // @Description POST a new project. For the request to be met, the "nome_projeto", "equipe_id", "descricao_projeto" are required. The status already goes with a predefined value "A Fazer". the "prazo_entrega" is the number of days that the delivery time will be
 // @Param		NewProject		body	string		true	"NewProject"

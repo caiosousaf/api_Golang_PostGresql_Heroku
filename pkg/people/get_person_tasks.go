@@ -24,6 +24,7 @@ type result struct {
 }
 
  
+// @Security bearerAuth
 // @Summary GET All Tasks of a specific Person
 // @Description GET the tasks registered and assigned to a specific person
 // @Param		id		path	int		true		"Pessoa_ID"

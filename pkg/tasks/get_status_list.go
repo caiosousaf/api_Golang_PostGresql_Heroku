@@ -12,6 +12,7 @@ type GetStatusList struct {
 }
 
 
+// @Security bearerAuth
 // @Summary Get a list of status of All Tasks
 // @Description Get list of status of all tasks registered
 // @Accept json

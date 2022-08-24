@@ -13,6 +13,7 @@ type UpdateEquipeRequestBody struct {
 }
 
 // PUT Team
+// @Security bearerAuth
 // @Summary PUT Team with ID
 // @Description PUT a specific Team. For the request to be met, the "id_equipe" and "nome_equipe" are required
 // @Param        id   				path      	int  	true  	"Team ID"

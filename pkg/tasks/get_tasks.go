@@ -22,6 +22,7 @@ type Task struct {
 	Prioridade     int        `json:"prioridade"`
 }
 
+// @Security bearerAuth
 // Get Tasks
 // @Summary Get All Tasks
 // @Description Get list all task

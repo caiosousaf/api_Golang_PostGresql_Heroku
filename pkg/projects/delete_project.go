@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security bearerAuth
 // @Summary Delete a specific Project
 // @Description DELETE a specific project. For the request to be met, the "id_projeto" are required
 // @Param        id   		path      	int  	true  	"Projeto ID"

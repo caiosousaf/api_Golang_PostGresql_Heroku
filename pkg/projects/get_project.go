@@ -7,6 +7,7 @@ import (
 	//"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
 )
 
+// @Security bearerAuth
 // Get Project
 // @Summary Get Project with specific ID
 // @Description GET a project with a specific ID

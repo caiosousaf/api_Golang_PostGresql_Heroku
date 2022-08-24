@@ -26,6 +26,11 @@ const docTemplate = `{
     "paths": {
         "/equipes": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "Returns all registered teams and all their members they are assigned to",
                 "consumes": [
                     "application/json"
@@ -62,6 +67,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "POST a new Team. For the request to be met, the \"nome_equipe\" are required.",
                 "consumes": [
                     "application/json"
@@ -158,6 +168,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "DELETE a Team",
                 "consumes": [
                     "application/json"
@@ -205,6 +220,11 @@ const docTemplate = `{
         },
         "/equipes/{id}/pessoas": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET all members of a specific Team with ID",
                 "consumes": [
                     "application/json"
@@ -252,6 +272,11 @@ const docTemplate = `{
         },
         "/equipes/{id}/projetos": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET all projects of a specific Team with ID",
                 "consumes": [
                     "application/json"
@@ -299,6 +324,11 @@ const docTemplate = `{
         },
         "/pessoas": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "Returns all registered people and the name of the team they are assigned to",
                 "consumes": [
                     "application/json"
@@ -332,6 +362,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "POST a new Person. For the request to be met, the \"nome_pessoa\", \"funcao_pessoa\", \"equipe_id\" are required.",
                 "consumes": [
                     "application/json"
@@ -384,6 +419,11 @@ const docTemplate = `{
         },
         "/pessoas/filtros/": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET a specific person by Name",
                 "consumes": [
                     "application/json"
@@ -442,6 +482,11 @@ const docTemplate = `{
         },
         "/pessoas/{id}": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET a specific person",
                 "consumes": [
                     "application/json"
@@ -493,6 +538,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "PUT a specific person. For the request to be met, the \"nome_pessoa\" and \"funcao_pessoa\" and \"equipe_id\" are required",
                 "consumes": [
                     "application/json"
@@ -550,6 +600,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "DELETE a person",
                 "consumes": [
                     "application/json"
@@ -603,6 +658,11 @@ const docTemplate = `{
         },
         "/pessoas/{id}/tasks": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET the tasks registered and assigned to a specific person",
                 "consumes": [
                     "application/json"
@@ -656,6 +716,11 @@ const docTemplate = `{
         },
         "/projetos": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "Get list all project",
                 "consumes": [
                     "application/json"
@@ -686,6 +751,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "POST a new project. For the request to be met, the \"nome_projeto\", \"equipe_id\", \"descricao_projeto\" are required. The status already goes with a predefined value \"A Fazer\". the \"prazo_entrega\" is the number of days that the delivery time will be",
                 "consumes": [
                     "application/json"
@@ -738,6 +808,11 @@ const docTemplate = `{
         },
         "/projetos/status/{status}": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET all registered projects that have the status passed as a parameter",
                 "consumes": [
                     "application/json"
@@ -785,6 +860,11 @@ const docTemplate = `{
         },
         "/projetos/{id}": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET a project with a specific ID",
                 "consumes": [
                     "application/json"
@@ -836,6 +916,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "PUT a specific project. For the request to be met, the \"nome_projeto\" and \"equipe_id\" and \"descricao_projeto\" are required",
                 "consumes": [
                     "application/json"
@@ -887,6 +972,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "DELETE a specific project. For the request to be met, the \"id_projeto\" are required",
                 "consumes": [
                     "application/json"
@@ -999,6 +1089,11 @@ const docTemplate = `{
         },
         "/projetos/{id}/tasks": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET all tasks of a project with ID_Projeto specific",
                 "consumes": [
                     "application/json"
@@ -1052,6 +1147,11 @@ const docTemplate = `{
         },
         "/tasks": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "Get list all task",
                 "consumes": [
                     "application/json"
@@ -1088,6 +1188,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "POST a new task. For the request to be met, the \"descricao_task\", \"pessoa_id\", \"projeto_id\", \"prazo_entrega(in days)\", \"prioridade\" are required. The status already goes with a predefined value \"A Fazer\". the \"prazo_entrega\" is the number of days that the delivery time will be",
                 "consumes": [
                     "application/json"
@@ -1134,6 +1239,11 @@ const docTemplate = `{
         },
         "/tasks/list": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "Get list of status of all tasks registered",
                 "consumes": [
                     "application/json"
@@ -1172,6 +1282,11 @@ const docTemplate = `{
         },
         "/tasks/status/{status}": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "GET All tasks with a specific status. \"Em Andamento\" or \"Concluido\"",
                 "consumes": [
                     "application/json"
@@ -1225,6 +1340,11 @@ const docTemplate = `{
         },
         "/tasks/{id}": {
             "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "Get a specific task with id",
                 "consumes": [
                     "application/json"
@@ -1270,6 +1390,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "PUT a specific task. For the request to be met, the \"descricao_task\" and \"pessoa_id\" and \"projeto_id\" and \"prioridade\" are required.",
                 "consumes": [
                     "application/json"
@@ -1321,6 +1446,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "DELETE a Task with id",
                 "consumes": [
                     "application/json"
@@ -1368,6 +1498,11 @@ const docTemplate = `{
         },
         "/tasks/{id}/status": {
             "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "PUT Status of a specific Task. For the request to be met, the \"status\" are required",
                 "consumes": [
                     "application/json"
@@ -1421,6 +1556,11 @@ const docTemplate = `{
         },
         "/teams/{id}": {
             "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "PUT a specific Team. For the request to be met, the \"id_equipe\" and \"nome_equipe\" are required",
                 "consumes": [
                     "application/json"

@@ -11,6 +11,7 @@ type UpdateStatusTaskRequestBody struct {
 	Status string `json:"status"`
 }
 
+// @Security bearerAuth
 // @Summary PUT Status of a Task
 // @Description PUT Status of a specific Task. For the request to be met, the "status" are required
 // @Param        id   				path      	int  	true  	"Task ID"

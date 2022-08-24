@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security bearerAuth
 // @Summary DELETE a Person
 // @Description DELETE a person
 // @Param		id		path	int		true		"Pessoa_ID"

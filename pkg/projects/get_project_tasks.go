@@ -23,6 +23,7 @@ type TasksProjeto struct {
 	Prioridade     int        `json:"prioridade"`
 }
 
+// @Security bearerAuth
 // Get Tasks of Project
 // @Summary Get Tasks of Project with Param ID
 // @Description GET all tasks of a project with ID_Projeto specific

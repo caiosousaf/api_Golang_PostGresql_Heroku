@@ -14,6 +14,7 @@ type UpdateTaskRequestBody struct {
 	Prioridade     int    `json:"prioridade"`
 }
 
+// @Security bearerAuth
 // @Summary PUT Task 
 // @Description PUT a specific task. For the request to be met, the "descricao_task" and "pessoa_id" and "projeto_id" and "prioridade" are required.
 // @Param        id   				path      	int  	true  	"Task ID"

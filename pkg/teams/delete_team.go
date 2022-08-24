@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security bearerAuth
 // @Summary DELETE a Team
 // @Description DELETE a Team
 // @Param		id		path	int		true		"Team_ID"

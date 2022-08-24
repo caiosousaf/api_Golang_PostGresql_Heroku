@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// @Security bearerAuth
 // Get Projects with specific status
 // @Summary Get Status of Projects with a specific status with Param Status
 // @Description GET all registered projects that have the status passed as a parameter

@@ -13,6 +13,7 @@ type AddPessoaRequestBody struct {
 	Equipe_ID     int    `json:"equipe_id" example:"1"`
 }
 
+// @Security bearerAuth
 // @Summary POST a new Person
 // @Description POST a new Person. For the request to be met, the "nome_pessoa", "funcao_pessoa", "equipe_id" are required. 
 // @Param		Person		body	string		true	"New Person"

@@ -8,6 +8,7 @@ import (
 )
 
 
+// @Security bearerAuth
 // @Summary Get a specific Task
 // @Description Get a specific task with id
 // @Param	id		path	int		true	"Task ID"

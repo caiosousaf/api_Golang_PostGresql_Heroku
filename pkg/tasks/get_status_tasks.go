@@ -7,6 +7,7 @@ import (
 )
 
 
+// @Security bearerAuth
 // @Summary GET status of tasks
 // @Description GET All tasks with a specific status. "Em Andamento" or "Concluido"
 // @Param		status		path	string		true		"Status"	Enums(A Fazer,Em Andamento,Em Teste,Concluido)

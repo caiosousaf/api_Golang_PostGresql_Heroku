@@ -20,7 +20,7 @@ type Projects struct {
 	Prazo_Entrega     *time.Time `json:"prazo_entrega" example:"2022-07-25"`
 }
 
-
+// @Security bearerAuth
 // Get Projects
 // @Summary Get All Projects
 // @Description Get list all project

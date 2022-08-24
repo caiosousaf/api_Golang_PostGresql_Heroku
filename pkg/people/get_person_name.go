@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security bearerAuth
 // @Summary GET a specific Person by Name
 // @Description GET a specific person by Name
 // @Param		person				query			string				false		"name_person"

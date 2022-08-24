@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security bearerAuth
 // Get People
 // @Summary Get All People
 // @Description Returns all registered people and the name of the team they are assigned to

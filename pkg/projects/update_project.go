@@ -18,6 +18,7 @@ type UpdateStatusProject struct {
 }
 
 // PUT Project
+// @Security bearerAuth
 // @Summary PUT Project with ID
 // @Description PUT a specific project. For the request to be met, the "nome_projeto" and "equipe_id" and "descricao_projeto" are required
 // @Param        id   				path      	int  	true  	"Projeto ID"

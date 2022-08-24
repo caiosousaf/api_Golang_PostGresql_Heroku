@@ -15,6 +15,7 @@ type UpdatePessoaRequestBody struct {
 }
 
 
+// @Security bearerAuth
 // @Summary PUT Person with ID
 // @Description PUT a specific person. For the request to be met, the "nome_pessoa" and "funcao_pessoa" and "equipe_id" are required
 // @Param        id   				path      	int  	true  	"Pessoa ID"

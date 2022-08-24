@@ -14,6 +14,7 @@ type Membros struct {
 }
 
 
+// @Security bearerAuth
 // @Summary Get Members of a specific Team
 // @Description GET all members of a specific Team with ID
 // @Param        id   path      int  true  "Team ID"

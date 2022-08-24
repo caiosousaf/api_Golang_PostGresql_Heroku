@@ -16,6 +16,7 @@ type EquipeProjetos struct {
     Prazo_Entrega     *time.Time 	`json:"prazo_entrega"`
 }
 
+// @Security bearerAuth
 // @Summary Get Projects of a specific Team
 // @Description GET all projects of a specific Team with ID
 // @Param        id   path      int  true  "Team ID"

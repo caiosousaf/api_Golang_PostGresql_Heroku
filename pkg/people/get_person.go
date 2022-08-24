@@ -16,6 +16,7 @@ type GetPessoa struct {
 	Data_Contratacao string `json:"data_contratacao"`
 }
 
+// @Security bearerAuth
 // @Summary GET a specific Person
 // @Description GET a specific person
 // @Param		id		path	int		true		"Pessoa_ID"
