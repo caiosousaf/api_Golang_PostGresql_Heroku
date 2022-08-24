@@ -10,7 +10,7 @@ import (
 // @Summary Provides a JSON Web Token
 // @Description Authenticates a user and provides a JWT to Authorize API calls
 // @ID Authentication
-// @Consume application/x-www-form-urlencoded
+// @Accept json
 // @Produce json
 // @Param		Login		body	string		true	"Login"
 // @Success 200 {string} string "ok"

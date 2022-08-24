@@ -25,6 +25,9 @@ import (
 
 // @license.name  Mozilla Public License 2.0
 // @license.url   https://www.mozilla.org/en-US/MPL/2.0/
+// @securityDefinitions.apikey bearerAuth
+// @in header
+// @name Authorization
 func main() {
 	
 

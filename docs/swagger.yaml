@@ -1410,6 +1410,8 @@ paths:
       - Teams
   /user/login:
     post:
+      consumes:
+      - application/json
       description: Authenticates a user and provides a JWT to Authorize API calls
       operationId: Authentication
       parameters:
@@ -1431,4 +1433,9 @@ paths:
           schema:
             type: string
       summary: Provides a JSON Web Token
+securityDefinitions:
+  bearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

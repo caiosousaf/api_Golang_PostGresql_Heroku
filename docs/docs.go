@@ -1475,6 +1475,9 @@ const docTemplate = `{
         "/user/login": {
             "post": {
                 "description": "Authenticates a user and provides a JWT to Authorize API calls",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -2142,6 +2145,13 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "bearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
