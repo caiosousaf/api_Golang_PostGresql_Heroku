@@ -12,8 +12,7 @@ import (
 // @ID Authentication
 // @Consume application/x-www-form-urlencoded
 // @Produce json
-// @Param email formData string true "email"
-// @Param password formData string true "password"
+// @Param		Login		body	string		true	"Login"
 // @Success 200 {string} string "ok"
 // @Failure 401 {string} string "error"
 // @Router /user/login [post]
