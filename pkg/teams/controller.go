@@ -3,7 +3,7 @@ package equipes
 import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	//"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/server/middlewares"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/server/middlewares"
 )
 
 type handler struct {
@@ -16,7 +16,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 	}
 
 	//routes := r.Group("/equipes", middlewares.Auth())
-	routes := r.Group("/equipes")
+	routes := r.Group("/equipes", middlewares.Auth())
 	routes.GET("/", h.GetTeams)
 	routes.POST("/", h.AddTeam)
 	routes.GET("/:id", h.GetTeam)

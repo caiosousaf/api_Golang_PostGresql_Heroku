@@ -175,6 +175,7 @@ func Test_handler_AddProject(t *testing.T) {
 
 	r.POST("/projetos", h.AddProject)
 
+	// Esse post funciona pois não existe nenhum projeto cadastrado com esse nome
 	t.Run("SucessoPostDeProjeto", func(t *testing.T) {
 
 		projeto := AddProjetoRequestBody{
@@ -192,6 +193,7 @@ func Test_handler_AddProject(t *testing.T) {
 		assert.Equal(t, http.StatusCreated, w.Code)
 	})
 
+	// Não é possivel criar um projeto com o mesmo nome de outro projeto que já esteja cadastrado
 	t.Run("StatusNotFoundPostDeProjeto", func(t *testing.T) {
 
 		projeto := AddProjetoRequestBody{
@@ -229,7 +231,7 @@ func Test_handler_DeleteProject(t *testing.T) {
 	t.Run("SucessoDeleteDeProjeto", func(t *testing.T) {
 		w := httptest.NewRecorder()
 
-		id := "108"
+		id := "121"
 
 		req, _ := http.NewRequest("DELETE", "/projetos/"+id, nil)
 
@@ -239,5 +241,36 @@ func Test_handler_DeleteProject(t *testing.T) {
 		json.Unmarshal(w.Body.Bytes(), &projeto)
 
 		assert.Equal(t, http.StatusOK, w.Code)
+
+	})
+
+	t.Run("BadRequestDeleteDeProjeto", func(t *testing.T) {
+		w := httptest.NewRecorder()
+
+		id := "121"
+
+		req, _ := http.NewRequest("DELETE", "/projetos/"+id, nil)
+
+		r.ServeHTTP(w, req)
+
+		var projeto models.Projeto
+		json.Unmarshal(w.Body.Bytes(), &projeto)
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+	})
+
+	t.Run("StatusNotFoundDeleteDeProjeto", func(t *testing.T) {
+		w := httptest.NewRecorder()
+
+		id := "c"
+
+		req, _ := http.NewRequest("DELETE", "/projetos/"+id, nil)
+
+		r.ServeHTTP(w, req)
+
+		var projeto models.Projeto
+		json.Unmarshal(w.Body.Bytes(), &projeto)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
 	})
 }

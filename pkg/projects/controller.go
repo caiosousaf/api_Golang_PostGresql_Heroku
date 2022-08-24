@@ -3,6 +3,7 @@ package projetos
 import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/server/middlewares"
 )
 
 type handler struct {
@@ -14,7 +15,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 		DB: db,
 	}
 
-	routes := r.Group("/projetos")
+	routes := r.Group("/projetos", middlewares.Auth())
 	routes.POST("/", h.AddProject)
 	routes.GET("/", h.GetProjects)
 	routes.GET("/:id", h.GetProject)
