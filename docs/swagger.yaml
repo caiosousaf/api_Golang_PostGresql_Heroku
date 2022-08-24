@@ -1413,16 +1413,12 @@ paths:
       description: Authenticates a user and provides a JWT to Authorize API calls
       operationId: Authentication
       parameters:
-      - description: email
-        in: formData
-        name: email
+      - description: Login
+        in: body
+        name: Login
         required: true
-        type: string
-      - description: password
-        in: formData
-        name: password
-        required: true
-        type: string
+        schema:
+          type: string
       produces:
       - application/json
       responses:
