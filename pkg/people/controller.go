@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/server/middlewares"
+	"github.com/gin-contrib/cors"
 )
 
 type handler struct {
@@ -14,7 +15,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 	h := &handler{
 		DB: db,
 	}
-		r.Use(middlewares.CORSMiddleware())
+	r.Use(cors.Default())
 
 	routes := r.Group("/pessoas", middlewares.Auth())
 	routes.POST("/", h.AddPerson)
