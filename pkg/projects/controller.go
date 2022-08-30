@@ -15,6 +15,8 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 		DB: db,
 	}
 
+	r.Use(middlewares.CORSMiddleware())
+
 	routes := r.Group("/projetos", middlewares.Auth())
 	routes.POST("/", h.AddProject)
 	routes.GET("/", h.GetProjects)
