@@ -61,7 +61,7 @@ func (h handler) AddTask(c *gin.Context) {
 	if(checkE > 0){
 
 		var checkS int
-		verifica_status := "select count(id_projeto) from projetos where id_projeto = ? and status = 'Em desenvolvimento' or status = 'Em planejamento'"
+		verifica_status := "select count(id_projeto) from projetos where id_projeto = ? and status = 'Em desenvolvimento'"
 
 		if result := h.DB.Raw(verifica_status, body.ProjetoID).Scan(&checkS); result.Error != nil {
 			c.AbortWithError(http.StatusNotFound, result.Error)
@@ -76,7 +76,7 @@ func (h handler) AddTask(c *gin.Context) {
 		
 			c.JSON(http.StatusCreated, &task)
 		} else {
-			c.JSON(http.StatusNotFound, gin.H{"error":"Tasks não podem ser adicionadas a projetos concluídos."})
+			c.JSON(http.StatusNotFound, gin.H{"error":"Tasks só podem ser cadastradas em projetos que estão 'Em desenvolvimento'."})
 			return
 		}
 	} else {
