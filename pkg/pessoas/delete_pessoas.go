@@ -1,4 +1,4 @@
-package tasks
+package pessoas
 
 import (
 	"net/http"
@@ -7,17 +7,17 @@ import (
     "github.com/Brun0Nasc/sys-projetos/pkg/common/models"
 )
 
-func (h handler) DeleteTask(c *gin.Context) {
+func (h handler) DeletePessoa(c *gin.Context) {
 	id := c.Param("id")
 
-	var task models.Task
+	var pessoa models.Pessoa
 
-	if result := h.DB.First(&task, id); result.Error != nil {
+	if result := h.DB.First(&pessoa, id); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 
-	h.DB.Delete(&task)
+	h.DB.Delete(&pessoa)
 
 	c.Status(http.StatusOK)
 }

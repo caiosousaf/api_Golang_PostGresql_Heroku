@@ -1,24 +1,26 @@
 package db
 
 import (
-    "log"
+	"log"
 
-    "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
-    "gorm.io/driver/postgres"
-    "gorm.io/gorm"
+	"github.com/Brun0Nasc/sys-projetos/pkg/common/models"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func Init(url string) *gorm.DB {
-    db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
+	//Migração dos modelos definidos na API para o banco de dados PostgreSQL
+	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 
-    if err != nil {
-        log.Fatalln(err)
-    }
-    // Migração automática dos dados
-    db.AutoMigrate(&models.Pessoa{})
-    db.AutoMigrate(&models.Projeto{})
-    db.AutoMigrate(&models.Equipe{})
-    db.AutoMigrate(&models.Task{})
-    db.AutoMigrate(&models.User{})
-    return db
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	db.AutoMigrate(&models.Equipe{})
+	db.AutoMigrate(&models.Pessoa{})
+	db.AutoMigrate(&models.Projeto{})
+	db.AutoMigrate(&models.Task{})
+	db.AutoMigrate(&models.User{})
+
+	return db
 }

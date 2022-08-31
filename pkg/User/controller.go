@@ -1,7 +1,7 @@
 package user
 
 import (
-	//"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/server/middlewares"
+	"github.com/Brun0Nasc/sys-projetos/pkg/common/middlewares"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -11,11 +11,13 @@ type handler struct {
 }
 
 func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
+	r.Use(middlewares.CORSMiddleware())
+	
 	h := &handler{
 		DB: db,
 	}
-	//middlewares.Auth()
-	routes := r.Group("/user")
-	routes.POST("/", h.CreateUser)
-	routes.POST("/login", h.Login)
+	
+	routes := r.Group("/user", middlewares.Auth())
+	routes.POST("/", h.AddUser)
 }
+

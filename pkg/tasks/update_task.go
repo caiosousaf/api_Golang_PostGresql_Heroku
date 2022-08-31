@@ -1,30 +1,23 @@
 package tasks
 
 import (
-	"net/http"
-
-	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/common/models"
-	"github.com/gin-gonic/gin"
+    "net/http"
+	"strconv"
+    "github.com/gin-gonic/gin"
+    "github.com/Brun0Nasc/sys-projetos/pkg/common/models"
 )
 
 type UpdateTaskRequestBody struct {
-	Descricao_Task string `json:"descricao_task"`
-	PessoaID       int    `json:"pessoa_id"`
-	ProjetoID      int    `json:"projeto_id"`
-	Prioridade     int    `json:"prioridade"`
+	Descricao_Task  string 	`json:"descricao_task"`
+	Nivel			string	`json:"nivel"`
+	PessoaID		string 	`json:"pessoa_id"`
+	ProjetoID		string 	`json:"projeto_id"`
 }
 
-// @Security bearerAuth
-// @Summary PUT Task 
-// @Description PUT a specific task. For the request to be met, the "descricao_task" and "pessoa_id" and "projeto_id" and "prioridade" are required.
-// @Param        id   				path      	int  	true  	"Task ID"
-// @Param		Task				body		string 	true 	"PUT Task"
-// @Accept json
-// @Produce json
-// @Success 200 {object} UpdateTaskRequestBody
-// @Failure 400,404 {string} string "error"
-// @Tags Tasks
-// @Router /tasks/{id} [put]
+type UpdateStatus struct {
+	Status string `json:"status"`
+}
+
 func (h handler) UpdateTask(c *gin.Context) {
 	id := c.Param("id")
 	body := UpdateTaskRequestBody{}
@@ -42,12 +35,37 @@ func (h handler) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	task.Descricao_Task = body.Descricao_Task
-	task.PessoaID = body.PessoaID
-	task.ProjetoID = body.ProjetoID
-	task.Prioridade = body.Prioridade
+	prId, err := strconv.Atoi(body.ProjetoID)
+	peId, err2 := strconv.Atoi(body.PessoaID)
+
+	if err == nil && err2 == nil{
+		task.Descricao_Task = body.Descricao_Task
+		task.Nivel = body.Nivel
+		task.PessoaID = peId
+		task.ProjetoID = prId
+	} else{
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
 
 	h.DB.Save(&task)
 
 	c.JSON(http.StatusOK, &task)
+}
+
+func (h handler) UpdateStatus(c *gin.Context) {
+	id := c.Param("id")
+	body := UpdateStatus{}
+
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	if result := h.DB.Raw("update tasks set status = ? where id_task = ?", body.Status, id).Scan(&body); result.Error != nil {
+		c.AbortWithError(http.StatusNotModified, result.Error)
+		return
+	}
+
+	c.JSON(http.StatusOK, &body)
 }

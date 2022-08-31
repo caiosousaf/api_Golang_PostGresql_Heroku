@@ -1,4 +1,4 @@
-package tasks
+package projetos
 
 import (
 	"net/http"
@@ -7,17 +7,17 @@ import (
     "github.com/Brun0Nasc/sys-projetos/pkg/common/models"
 )
 
-func (h handler) DeleteTask(c *gin.Context) {
+func (h handler) DeleteProjeto(c *gin.Context) {
 	id := c.Param("id")
 
-	var task models.Task
+	var projeto models.Projeto
 
-	if result := h.DB.First(&task, id); result.Error != nil {
+	if result := h.DB.First(&projeto, id); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 
-	h.DB.Delete(&task)
+	h.DB.Delete(&projeto)
 
 	c.Status(http.StatusOK)
 }

@@ -8,6 +8,7 @@ type Config struct {
 }
 
 func LoadConfig() (c Config, err error) {
+    //Definição das configurações de ambiente
     viper.AddConfigPath("./pkg/common/config/envs")
     viper.SetConfigName("dev")
     viper.SetConfigType("env")

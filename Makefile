@@ -1,5 +1,2 @@
-run:
-	go run main.go
-
-swag:
-	swag init
+server:
+	go run cmd/main.go

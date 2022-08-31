@@ -1,4 +1,4 @@
-package tasks
+package projetos
 
 import (
 	"github.com/Brun0Nasc/sys-projetos/pkg/common/middlewares"
@@ -17,11 +17,11 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 		DB: db,
 	}
 
-	routes := r.Group("/tasks", middlewares.Auth())
-	routes.POST("/", h.AddTask)
-	routes.GET("/", h.GetTasks)
-	routes.GET("/:id", h.GetTask)
-	routes.PUT("/:id", h.UpdateTask)
+	routes := r.Group("/projetos", middlewares.Auth())
+	routes.POST("/", h.AddProjeto)
+	routes.GET("/", h.GetProjetos)
+	routes.GET("/:id", h.GetProjeto)
+	routes.PUT("/:id", h.UpdateProjeto)
 	routes.PUT("/:id/status", h.UpdateStatus)
-	routes.DELETE("/:id", h.DeleteTask)
+	routes.DELETE("/:id", h.DeleteProjeto)
 }
