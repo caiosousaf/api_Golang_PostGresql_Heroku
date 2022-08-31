@@ -1,7 +1,7 @@
 package main
 
 import (
-	"os"
+	//"os"
 
 	"github.com/caiosousaf/api_Golang_PostGresql_Heroku/docs"
 	user "github.com/caiosousaf/api_Golang_PostGresql_Heroku/pkg/User"
@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/gin-contrib/cors"
-
+	"github.com/spf13/viper"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
 )
@@ -25,21 +25,18 @@ import (
 
 // @license.name  Mozilla Public License 2.0
 // @license.url   https://www.mozilla.org/en-US/MPL/2.0/
-// @securityDefinitions.apikey bearerAuth
-// @in header
-// @name Authorization
 func main() {
-	
-
+	viper.SetConfigFile("./pkg/common/envs/.env")
+	viper.ReadInConfig()
 	docs.SwaggerInfo.Title = "Gerenciador de Projetos"
 	docs.SwaggerInfo.Description = "REST API Desafio"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "golang-posgre-brisanet.herokuapp.com"
+	docs.SwaggerInfo.Host = "localhost:3000"
 	docs.SwaggerInfo.BasePath = "/"
-	docs.SwaggerInfo.Schemes = []string{"https"}
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
-	port := os.Getenv("PORT")
-	dbUrl := os.Getenv("DATABASE_URL")
+	//port := os.Getenv("PORT")
+	dbUrl := viper.Get("DB_URL").(string)
 
 	r := gin.Default()
 	h := db.Init(dbUrl)
@@ -54,8 +51,8 @@ func main() {
 	user.RegisterRoutes(r, h)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.Run(":" + port)
-	//r.Run("localhost:3000")
+	//r.Run(":" + port)
+	r.Run("localhost:3000")
 	//export PATH=$(go env GOPATH)/bin:$PATH
 	
 }
