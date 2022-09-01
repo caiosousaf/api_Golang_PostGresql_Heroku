@@ -89,3 +89,23 @@ func deletarEquipe(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"Message": "Equipe deletada com sucesso"})
 	}
 }
+
+func atualizarEquipe(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando atualizar equipe")
+
+	req := modelApresentacao.ReqEquipe{}
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message":"Could not update. Parameters were not passed correctly.", "err":err.Error(),
+		})
+		return
+	}
+
+	if res, err := equipe.AtualizarEquipe(id, &req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
+		return
+	} else {
+		c.JSON(http.StatusOK, res)
+	}
+}

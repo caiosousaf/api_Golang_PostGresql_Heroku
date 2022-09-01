@@ -37,3 +37,6 @@ func (r *repositorio) BuscarProjetosDeEquipe(id string) ([]modelApresentacao.Req
 func (r *repositorio) DeletarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
 	return r.Data.DeletarEquipe(id)
 }
+func (r *repositorio) AtualizarEquipe(id string, req *modelApresentacao.ReqEquipe) (*modelApresentacao.ReqEquipe, error) {
+	return r.Data.AtualizarEquipe(id, &modelData.UpdateEquipe{Nome_Equipe: req.Nome_Equipe})
+}

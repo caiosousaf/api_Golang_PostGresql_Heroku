@@ -124,3 +124,16 @@ func (postgres *DBEquipes) DeletarEquipe(id string) (*modelApresentacao.ReqEquip
 	return equipe, nil
 }
 
+func (postgres *DBEquipes) AtualizarEquipe(id string, req *modelData.UpdateEquipe) (*modelApresentacao.ReqEquipe, error ){
+	sqlStatement := `UPDATE equipes SET nome_equipe = $1 
+	WHERE id_equipe = $2 RETURNING *`
+	var equipe = &modelApresentacao.ReqEquipe{} 
+
+	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Equipe, id)
+
+	if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
+		return nil, err
+	}
+	
+	return equipe, nil
+}
