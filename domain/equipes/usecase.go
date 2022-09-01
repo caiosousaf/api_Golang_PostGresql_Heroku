@@ -50,3 +50,11 @@ func BuscarProjetosDeEquipe(id string) ([]modelApresentacao.ReqEquipeProjetos, e
 	equipesRepo := equipes.NovoRepo(db)
 	return equipesRepo.BuscarProjetosDeEquipe(id)
 }
+
+func DeletarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
+	db := database.Conectar()
+	defer db.Close()
+
+	equipesRepo := equipes.NovoRepo(db)
+	return equipesRepo.DeletarEquipe(id)
+}

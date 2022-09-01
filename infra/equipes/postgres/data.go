@@ -111,3 +111,16 @@ func (postgres *DBEquipes) BuscarProjetosDeEquipe(id string) ([]modelApresentaca
 	fmt.Println("Busca dos projetos de uma equipe deu certo!")
 	return res, nil
 }
+
+func (postgres *DBEquipes) DeletarEquipe(id string) (*modelApresentacao.ReqEquipe, error){
+	sqlStatement := `DELETE FROM equipes WHERE id_equipe = $1`
+	var equipe = &modelApresentacao.ReqEquipe{}
+
+	rows := postgres.DB.QueryRow(sqlStatement, id)
+	if err := rows.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
+		return nil, nil
+	}
+	fmt.Println("Delete deu certo!")
+	return equipe, nil
+}
+

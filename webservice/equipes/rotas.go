@@ -8,4 +8,5 @@ func Router(r *gin.RouterGroup) {
 	r.GET("/:id", buscarEquipe)
 	r.GET("/:id/membros", buscarMembrosDeEquipe)
 	r.GET("/:id/projetos", buscarProjetosDeEquipe)
+	r.DELETE("/:id", deletarEquipe)
 }

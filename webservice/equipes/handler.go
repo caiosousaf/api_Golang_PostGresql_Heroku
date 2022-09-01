@@ -79,3 +79,13 @@ func buscarProjetosDeEquipe(c *gin.Context) {
 		c.JSON(http.StatusOK, equipe)
 	}
 }
+
+func deletarEquipe(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando deletar uma equipe")
+	if _, err := equipe.DeletarEquipe(id); err != nil {
+		
+	} else {
+		c.JSON(http.StatusOK, gin.H{"Message": "Equipe deletada com sucesso"})
+	}
+}
