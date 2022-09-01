@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Brun0Nasc/sys-projetos/domain/equipes"
-	modelApresentacao "github.com/Brun0Nasc/sys-projetos/domain/equipes/model"
+	"gerenciadorDeProjetos/domain/equipes"
+	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 
 	"github.com/gin-gonic/gin"
 )

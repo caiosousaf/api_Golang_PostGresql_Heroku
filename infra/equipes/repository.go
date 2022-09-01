@@ -3,9 +3,9 @@ package equipes
 import (
 	"database/sql"
 
-	modelApresentacao "github.com/Brun0Nasc/sys-projetos/domain/equipes/model"
-	modelData "github.com/Brun0Nasc/sys-projetos/infra/equipes/model"
-	"github.com/Brun0Nasc/sys-projetos/infra/equipes/postgres"
+	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
+	modelData "gerenciadorDeProjetos/infra/equipes/model"
+	"gerenciadorDeProjetos/infra/equipes/postgres"
 	"github.com/gin-gonic/gin"
 )
 

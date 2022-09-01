@@ -1,7 +1,7 @@
 package equipes
 
 import (
-	modelApresentacao "github.com/Brun0Nasc/sys-projetos/domain/equipes/model"
+	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	"github.com/gin-gonic/gin"
 )
 

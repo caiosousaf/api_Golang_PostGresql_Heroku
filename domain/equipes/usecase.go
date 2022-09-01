@@ -1,9 +1,9 @@
 package equipe
 
 import (
-	"github.com/Brun0Nasc/sys-projetos/config/database"
-	modelApresentacao "github.com/Brun0Nasc/sys-projetos/domain/equipes/model"
-	"github.com/Brun0Nasc/sys-projetos/infra/equipes"
+	"gerenciadorDeProjetos/config/database"
+	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
+	"gerenciadorDeProjetos/infra/equipes"
 	"github.com/gin-gonic/gin"
 )
 
