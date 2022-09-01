@@ -28,3 +28,6 @@ func (r *repositorio) ListarEquipes() ([]modelApresentacao.ReqEquipe, error) {
 func (r *repositorio) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
 	return r.Data.BuscarEquipe(id)
 }
+func (r *repositorio) BuscarMembrosDeEquipe(id string) ([]modelApresentacao.ReqEquipeMembros, error) {
+	return r.Data.BuscarMembrosDeEquipe(id)
+}

@@ -51,3 +51,17 @@ func buscarEquipe(c *gin.Context) {
 		c.JSON(http.StatusOK, equipe)
 	}
 }
+
+func buscarMembrosDeEquipe(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando encontrar os membros de uma equipe")
+	if equipe, err := equipe.BuscarMembrosDeEquipe(id); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusOK, gin.H{"message":"Nenhum equipe encontrada", "err":err.Error()})
+		} else {
+			c.JSON(http.StatusNotFound, gin.H{"error":"" + err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, equipe)
+	}
+}

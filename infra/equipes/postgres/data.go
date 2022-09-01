@@ -59,3 +59,28 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 	fmt.Println("Busca deu certo!")
 	return equipe, nil
 }
+
+func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelApresentacao.ReqEquipeMembros, error){
+	sqlStatement := `select id_equipe, eq.nome_equipe ,pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa from equipes as eq inner join
+	pessoas as pe on eq.id_equipe = pe.equipe_id WHERE id_equipe = $1`
+	var res = []modelApresentacao.ReqEquipeMembros{}
+	var equipe = modelApresentacao.ReqEquipeMembros{}
+
+	rows, err := postgres.DB.Query(sqlStatement, id)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+
+		if err := rows.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.ID_Pessoa, &equipe.Nome_Pessoa, &equipe.Funcao_Pessoa); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+		}
+		res = append(res, equipe)
+	}
+	fmt.Println("Busca deu certo!")
+	return res, nil
+}
