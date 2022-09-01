@@ -26,7 +26,7 @@ func (postgres *DBEquipes) NovaEquipe(req *modelData.Equipe, c *gin.Context) {
 }
 
 func (postgres *DBEquipes) ListarEquipes() ([]modelApresentacao.ReqEquipe, error) {
-	sqlStatement := `SELECT * FROM equipes ORDER BY id_equipe` // comando sql
+	sqlStatement := `SELECT id_equipe, nome_equipe FROM equipes ORDER BY id_equipe` // comando sql
 	var res = []modelApresentacao.ReqEquipe{} // lista que vai receber resultados da consulta
 	var equipe = modelApresentacao.ReqEquipe{} // estrutura individual que vai ser usada para preencher a lista
 
@@ -45,7 +45,7 @@ func (postgres *DBEquipes) ListarEquipes() ([]modelApresentacao.ReqEquipe, error
 }
 
 func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error){
-	sqlStatement := `SELECT * FROM equipes WHERE id_equipe = $1`
+	sqlStatement := `SELECT id_equipe, nome_equipe FROM equipes WHERE id_equipe = $1`
 	var equipe = &modelApresentacao.ReqEquipe{}
 
 	row := postgres.DB.QueryRow(sqlStatement, id)

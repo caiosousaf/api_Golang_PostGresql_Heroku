@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Sep  1 07:41:08 2022
+# Make data base, printed on Thu Sep  1 08:03:43 2022
 
 # Variables
 
@@ -151,7 +153,7 @@ MAKE_VERSION := 4.2.1
 # environment
 USER = brisa
 # makefile
-.DEFAULT_GOAL := run
+.DEFAULT_GOAL := server
 # environment
 XDG_CURRENT_DESKTOP = Unity
 # automatic
@@ -217,9 +219,9 @@ VSCODE_PID = 2753
 
 # Directories
 
-# . (device 66307, inode 10229096): 15 files, no impossibilities.
+# . (device 66307, inode 10229096): 14 files, no impossibilities.
 
-# 15 files, no impossibilities in 1 directories.
+# 14 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -237,9 +239,16 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-04 08:37:23.591387266
+#  Last modified 2022-09-01 07:43:08.413582603
 #  File has been updated.
 #  Successfully updated.
+
+server:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 2):
+	go run cmd/main.go
 
 # Not a target:
 .DEFAULT:
@@ -247,36 +256,20 @@ Makefile:
 #  Modification time never checked.
 #  File has not been updated.
 
-run:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 2):
-	go run main.go
-
-swag:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 5):
-	swag init
-
 # files hash-table stats:
-# Load=6/1024=1%, Rehash=0, Collisions=0/16=0%
+# Load=5/1024=0%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 22 / storage = 166 B / avg = 7 B
-# current buf: size = 8162 B / used = 166 B / count = 22 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 20 / storage = 170 B / avg = 8 B
+# current buf: size = 8162 B / used = 170 B / count = 20 / avg = 8 B
 
-# strcache performance: lookups = 28 / hit rate = 21%
+# strcache performance: lookups = 25 / hit rate = 20%
 # hash-table stats:
-# Load=22/8192=0%, Rehash=0, Collisions=1/28=4%
-# Finished Make data base on Thu Sep  1 07:41:08 2022
+# Load=20/8192=0%, Rehash=0, Collisions=1/25=4%
+# Finished Make data base on Thu Sep  1 08:03:43 2022
 
  
-make: *** No rule to make target 'all'.  Stop.
-

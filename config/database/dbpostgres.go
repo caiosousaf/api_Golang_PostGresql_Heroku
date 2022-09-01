@@ -15,7 +15,7 @@ const (
 	dbname   = "dcqvoffgfp6u50"
 )
 
-// cria e retorna uma conexão com o bando de dados postgres
+
 func Conectar() *sql.DB {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=require",

@@ -12,5 +12,5 @@ func main() {
 
 	equipes.Router(eq)
 
-	r.Run("localhost:3030")
+	r.Run()
 }
