@@ -12,10 +12,10 @@ type handler struct {
 }
 
 func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
+	r.Use(cors.Default())
 	h := &handler{
 		DB: db,
 	}
-	r.Use(cors.Default())
 
 	//middlewares.Auth()
 	routes := r.Group("/user")
