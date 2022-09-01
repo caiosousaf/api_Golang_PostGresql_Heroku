@@ -5,6 +5,7 @@ import "time"
 type ReqEquipe struct {
 	ID_Equipe	*uint	`json:"id_equipe"`
 	Nome_Equipe *string `json:"nome_equipe,omitempty"`
+	Data_Criacao *time.Time `json:"data_criacao"`
 }
 
 type ReqEquipeMembros struct {
