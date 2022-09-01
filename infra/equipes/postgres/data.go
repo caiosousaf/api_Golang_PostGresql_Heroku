@@ -81,6 +81,33 @@ func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelApresentacao
 		}
 		res = append(res, equipe)
 	}
-	fmt.Println("Busca deu certo!")
+	fmt.Println("Busca de membros de uma equipe deu certo!")
+	return res, nil
+}
+
+func (postgres *DBEquipes) BuscarProjetosDeEquipe(id string) ([]modelApresentacao.ReqEquipeProjetos, error){
+	sqlStatement := `select eq.nome_equipe, pr.id_projeto, pr.nome_projeto, pr.status, pr.descricao_projeto, pr.data_criacao, pr.data_conclusao, pr.prazo_entrega 
+	from equipes as eq 
+	inner join projetos as pr on eq.id_equipe = pr.equipe_id where eq.id_equipe = $1`
+	var res = []modelApresentacao.ReqEquipeProjetos{}
+	var equipe = modelApresentacao.ReqEquipeProjetos{}
+
+	rows, err := postgres.DB.Query(sqlStatement, id)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+
+		if err := rows.Scan(&equipe.Nome_Equipe, &equipe.ID_Projeto, &equipe.Nome_Projeto, &equipe.Status, &equipe.Descricao_Projeto,
+			&equipe.Data_Criacao, &equipe.Data_Conclusao, &equipe.Prazo_Entrega); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+		}
+		res = append(res, equipe)
+	}
+	fmt.Println("Busca dos projetos de uma equipe deu certo!")
 	return res, nil
 }

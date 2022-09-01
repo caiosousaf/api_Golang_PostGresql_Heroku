@@ -10,4 +10,5 @@ type IEquipe interface {
 	ListarEquipes() ([]modelApresentacao.ReqEquipe, error)
 	BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error)
 	BuscarMembrosDeEquipe(id string) ([]modelApresentacao.ReqEquipeMembros, error)
+	BuscarProjetosDeEquipe(id string) ([]modelApresentacao.ReqEquipeProjetos, error)
 }
