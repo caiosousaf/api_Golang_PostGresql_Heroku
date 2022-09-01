@@ -61,8 +61,7 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 }
 
 func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelApresentacao.ReqEquipeMembros, error){
-	sqlStatement := `select id_equipe, eq.nome_equipe ,pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa from equipes as eq inner join
-	pessoas as pe on eq.id_equipe = pe.equipe_id WHERE id_equipe = $1`
+	sqlStatement := `select id_pessoa, nome_pessoa, funcao_pessoa, equipe_id, data_contratacao from pessoas WHERE equipe_id = $1`
 	var res = []modelApresentacao.ReqEquipeMembros{}
 	var equipe = modelApresentacao.ReqEquipeMembros{}
 
@@ -72,7 +71,7 @@ func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelApresentacao
 	}
 	for rows.Next() {
 
-		if err := rows.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.ID_Pessoa, &equipe.Nome_Pessoa, &equipe.Funcao_Pessoa); err != nil {
+		if err := rows.Scan(&equipe.ID_Pessoa, &equipe.Nome_Pessoa, &equipe.Funcao_Pessoa, &equipe.Equipe_ID, &equipe.Data_Contratacao); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, err
 			} else {
