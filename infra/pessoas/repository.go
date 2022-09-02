@@ -15,10 +15,11 @@ type repositorio struct {
 
 func novoRepo(novoDB *sql.DB) *repositorio {
 	return &repositorio{
-		Data: &postgres.DBEquipes{DB: novoDB},
+		Data: &postgres.DBPessoas{DB: novoDB},
 	}
 }
 
 func (r *repositorio) NovaPessoa(req *modelApresentacao.ReqPessoa, c *gin.Context) {
-	r.Data
+	r.Data.NovaPessoa(&modelData.ReqPessoa{Nome_Pessoa: req.Nome_Pessoa, 
+		Funcao_Pessoa: req.Funcao_Pessoa, Equipe_ID: req.Equipe_ID}, c)
 }

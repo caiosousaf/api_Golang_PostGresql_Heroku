@@ -1,2 +1,2 @@
-server:
-	go run cmd/main.go
+run:
+	go run webservice/main.go
