@@ -1,19 +1,16 @@
 package equipes
 
-import "time"
+import (
+	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
+	"time"
+)
+
 
 type ReqEquipe struct {
 	ID_Equipe	*uint	`json:"id_equipe"`
 	Nome_Equipe *string `json:"nome_equipe,omitempty"`
 	Data_Criacao *time.Time `json:"data_criacao"`
-}
-
-type ReqEquipeMembros struct {
-	ID_Pessoa     *int    `json:"id_pessoa"`
-	Nome_Pessoa   *string `json:"nome_pessoa"`
-	Funcao_Pessoa *string `json:"funcao_pessoa"`
-	Equipe_ID	  *int	  `json:"equipe_id"`
-	Data_Contratacao	*time.Time `json:"data_contratacao"`
+	Pessoas     *[]modelPessoa.ReqMembros `json:"pessoas,omitempty"`
 }
 
 type ReqEquipeProjetos struct {

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
+	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/equipes/model"
 	"github.com/gin-gonic/gin"
 )
@@ -48,6 +49,18 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 	sqlStatement := `SELECT * FROM equipes WHERE id_equipe = $1`
 	var equipe = &modelApresentacao.ReqEquipe{}
 
+	pessoas, err := postgres.BuscarMembrosDeEquipe(id)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			pessoas = nil
+		} else {
+			return nil, err
+		}
+	}
+
+	equipe.Pessoas = &pessoas
+
 	row := postgres.DB.QueryRow(sqlStatement, id)
 	if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
 		if err == sql.ErrNoRows {
@@ -60,10 +73,10 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 	return equipe, nil
 }
 
-func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelApresentacao.ReqEquipeMembros, error){
+func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelPessoa.ReqMembros, error){
 	sqlStatement := `select id_pessoa, nome_pessoa, funcao_pessoa, equipe_id, data_contratacao from pessoas WHERE equipe_id = $1`
-	var res = []modelApresentacao.ReqEquipeMembros{}
-	var equipe = modelApresentacao.ReqEquipeMembros{}
+	var res = []modelPessoa.ReqMembros{}
+	var equipe = modelPessoa.ReqMembros{}
 
 	rows, err := postgres.DB.Query(sqlStatement, id)
 	if err != nil {

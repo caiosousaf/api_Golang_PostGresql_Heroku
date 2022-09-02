@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
+	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/equipes/model"
 	"gerenciadorDeProjetos/infra/equipes/postgres"
 	"github.com/gin-gonic/gin"
@@ -28,7 +29,7 @@ func (r *repositorio) ListarEquipes() ([]modelApresentacao.ReqEquipe, error) {
 func (r *repositorio) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
 	return r.Data.BuscarEquipe(id)
 }
-func (r *repositorio) BuscarMembrosDeEquipe(id string) ([]modelApresentacao.ReqEquipeMembros, error) {
+func (r *repositorio) BuscarMembrosDeEquipe(id string) ([]modelPessoa.ReqMembros, error) {
 	return r.Data.BuscarMembrosDeEquipe(id)
 }
 func (r *repositorio) BuscarProjetosDeEquipe(id string) ([]modelApresentacao.ReqEquipeProjetos, error) {

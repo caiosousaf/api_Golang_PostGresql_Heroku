@@ -3,6 +3,7 @@ package equipe
 import (
 	"gerenciadorDeProjetos/config/database"
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
+	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
 	"gerenciadorDeProjetos/infra/equipes"
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +36,7 @@ func BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
 	return equipesRepo.BuscarEquipe(id)
 }
 
-func BuscarMembrosDeEquipe(id string) ([]modelApresentacao.ReqEquipeMembros, error) {
+func BuscarMembrosDeEquipe(id string) ([]modelPessoa.ReqMembros, error) {
 	db := database.Conectar()
 	defer db.Close()
 
