@@ -8,8 +8,7 @@ CREATE TABLE "pessoas" (
   "nome_pessoa" varchar NOT NULL,
   "funcao_pessoa" varchar NOT NULL,
   "equipe_id" bigint,
-  "data_contratacao" timestamp NOT NULL DEFAULT (now()),
-  "favoritar" int NOT NULL DEFAULT 0
+  "data_contratacao" date NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE "projetos" (
@@ -17,9 +16,10 @@ CREATE TABLE "projetos" (
   "nome_projeto" varchar NOT NULL,
   "descricao_projeto" text NOT NULL,
   "equipe_id" bigint NOT NULL,
-  "status" varchar NOT NULL DEFAULT 'Em planejamento',
-  "data_inicio" timestamp NOT NULL DEFAULT (now()),
-  "data_conclusao" timestamp
+  "status" varchar NOT NULL DEFAULT 'A Fazer',
+  "data_criacao" date NOT NULL DEFAULT CURRENT_DATE,
+  "data_conclusao" date, 
+  "prazo_entrega" date 
 );
 
 CREATE TABLE "tasks" (
@@ -28,34 +28,21 @@ CREATE TABLE "tasks" (
   "pessoa_id" bigint NOT NULL,
   "projeto_id" bigint NOT NULL,
   "status" varchar NOT NULL DEFAULT 'Em planejamento',
-  "nivel" varchar NOT NULL
+  "prioridade" int NOT NULL, 
+  "data_criacao" date NOT NULL DEFAULT CURRENT_DATE,
+  "data_conclusao" date, 
+  "prazo_entrega" date 
 );
 
-CREATE INDEX ON "equipes" ("id_equipe");
+CREATE TABLE "users" (
+    "id_usuario" bigserial PRIMARY KEY,
+    "nome" varchar NOT NULL,
+    "email" varchar NOT NULL,
+    "password" varchar NOT NULL,
+    "data_criacao" DATE NOT NULL DEFAULT CURRENT_DATE
+);
 
-CREATE INDEX ON "pessoas" ("id_pessoa");
 
-CREATE INDEX ON "pessoas" ("nome_pessoa");
-
-CREATE INDEX ON "pessoas" ("equipe_id");
-
-CREATE INDEX ON "projetos" ("id_projeto");
-
-CREATE INDEX ON "projetos" ("nome_projeto");
-
-CREATE INDEX ON "projetos" ("equipe_id");
-
-CREATE INDEX ON "tasks" ("id_task");
-
-CREATE INDEX ON "tasks" ("pessoa_id");
-
-CREATE INDEX ON "tasks" ("projeto_id");
-
-COMMENT ON COLUMN "pessoas"."equipe_id" IS 'pode ser nulo';
-
-COMMENT ON COLUMN "projetos"."equipe_id" IS 'um projeto tem que estar obrigatoriamente relacionado a uma equipe';
-
-COMMENT ON COLUMN "projetos"."data_conclusao" IS 'será preenchido automaticamente quando um projeto for marcado como concluído';
 
 ALTER TABLE "pessoas" ADD FOREIGN KEY ("equipe_id") REFERENCES "equipes" ("id_equipe");
 
