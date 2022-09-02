@@ -16,3 +16,12 @@ type ReqMembros struct {
 	Equipe_ID	  *int	  `json:"equipe_id"`
 	Data_Contratacao	*time.Time `json:"data_contratacao"`
 }
+
+type ReqGetPessoa struct {
+	ID_Pessoa        *uint   `json:"id_pessoa"`
+	Nome_Pessoa      *string `json:"nome_pessoa"`
+	Funcao_Pessoa    *string `json:"funcao_pessoa"`
+	EquipeID         *int    `json:"equipe_id"`
+	Nome_Equipe      *string `json:"nome_equipe"`
+	Data_Contratacao *string `json:"data_contratacao"`
+}

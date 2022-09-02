@@ -6,4 +6,5 @@ import (
 )
 type IPessoa interface {
 	NovaPessoa(req *modelApresentacao.ReqPessoa, c *gin.Context)
+	ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error)
 }

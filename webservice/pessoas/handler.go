@@ -1,6 +1,7 @@
 package pessoas
 
 import (
+	"database/sql"
 	"fmt"
 	"gerenciadorDeProjetos/domain/pessoas"
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
@@ -21,4 +22,17 @@ func NovaPessoa(c *gin.Context) {
 
 	pessoas.NovaPessoa(&req, c)
 	c.JSON(http.StatusCreated, gin.H{"OK": "Pessoa Cadastrada com sucesso"})
+}
+
+func ListarPessoas(c *gin.Context) {
+	fmt.Println("Tentando Listar todas as pessoas")
+	if pessoas, err := pessoas.ListarPessoas(); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusOK, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
+		} else {
+			c.JSON(http.StatusNotFound, gin.H{"error":err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, pessoas)
+	}
 }

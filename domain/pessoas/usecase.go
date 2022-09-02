@@ -19,3 +19,11 @@ func NovaPessoa(req *modelApresentacao.ReqPessoa, c *gin.Context) {
 
 	pessoasRepo.NovaPessoa(req, c)
 }
+
+func ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {
+	db := database.Conectar()
+	defer db.Close()
+
+	pessoasRepo := pessoas.NovoRepo(db)
+	return pessoasRepo.ListarPessoas()
+}
