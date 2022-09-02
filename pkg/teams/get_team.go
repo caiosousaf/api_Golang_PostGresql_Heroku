@@ -7,11 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 type GetProjectsMembersTasks struct {
-	ID_Equipe   uint             			`json:"id_equipe"`
-	Nome_Equipe string           			`json:"nome_equipe"`
-	Pessoas     []models.Pessoa  			`json:"pessoas"`
-	Projetos    []models.Projeto 			`json:"projetos"`
-	Tasks		[]models.TasksbyTeam		`json:"tasks"`		
+	ID_Equipe   uint             				`json:"id_equipe"`
+	Nome_Equipe string           				`json:"nome_equipe"`
+	Pessoas     []models.Pessoa  				`json:"pessoas"`
+	Projetos    []models.TeamProjects 			`json:"projetos"`
+	Tasks		[]models.TasksbyTeam			`json:"tasks"`		
 }
 
 // @Security bearerAuth
@@ -36,18 +36,18 @@ func (h handler) GetTeam(c *gin.Context) {
 	}
 
 	var pessoas []models.Pessoa
-	var projetos []models.Projeto
+	var projetos []models.TeamProjects
 	var tasks	[]models.TasksbyTeam
 	if result := h.DB.Where("equipe_id = ?", equipe.ID_Equipe).Find(&pessoas); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 
-	if result := h.DB.Where("equipe_id = ?", equipe.ID_Equipe).Find(&projetos); result.Error != nil {
+	if result := h.DB.Raw("SELECT * FROM projetos where equipe_id = ?", equipe.ID_Equipe).Scan(&projetos); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-
+	
 	if result := h.DB.Raw(`select tk.id_task, pe.nome_pessoa, tk.pessoa_id, tk.descricao_task, tk.projeto_id, tk.status,
 	tk.data_criacao, tk.prazo_entrega, tk.data_conclusao
 	from tasks tk 
