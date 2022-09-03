@@ -27,7 +27,7 @@ CREATE TABLE "tasks" (
   "descricao_task" text NOT NULL,
   "pessoa_id" bigint NOT NULL,
   "projeto_id" bigint NOT NULL,
-  "status" varchar NOT NULL DEFAULT 'Em planejamento',
+  "status" varchar NOT NULL DEFAULT 'A Fazer',
   "prioridade" int NOT NULL, 
   "data_criacao" date NOT NULL DEFAULT CURRENT_DATE,
   "data_conclusao" date, 
