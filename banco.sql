@@ -1,6 +1,7 @@
 CREATE TABLE "equipes" (
   "id_equipe" bigserial PRIMARY KEY,
-  "nome_equipe" varchar NOT NULL
+  "nome_equipe" varchar NOT NULL,
+  "data_criacao" date NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE "pessoas" (
