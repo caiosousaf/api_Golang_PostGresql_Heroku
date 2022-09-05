@@ -87,3 +87,16 @@ func AtualizarPessoa(c *gin.Context) {
 		c.JSON(http.StatusOK, res)
 	}
 }
+
+func DeletarPessoa(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando deletar uma pessoa")
+	if _, err := pessoas.DeletarPessoa(id); err != nil {
+		c.JSON(400, gin.H{
+			"message":"Could not delete. Parameters were not passed correctly.", "err":err.Error(),
+		})
+		return
+	} else {
+		c.JSON(http.StatusOK, gin.H{"Message": "Pessoa deletada com sucesso"})
+	}
+}

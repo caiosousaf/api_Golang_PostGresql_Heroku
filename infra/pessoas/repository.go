@@ -35,3 +35,6 @@ func (r *repositorio) ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTar
 func (r *repositorio) AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (*modelApresentacao.ReqAtualizarPessoa, error) {
 	return r.Data.AtualizarPessoa(id, &modelData.ReqPessoa{Nome_Pessoa: req.Nome_Pessoa, Funcao_Pessoa: req.Funcao_Pessoa, Equipe_ID: req.Equipe_ID})
 }
+func (r *repositorio) DeletarPessoa(id string) (*modelApresentacao.ReqPessoa, error) {
+	return r.Data.DeletarPessoa(id)
+}

@@ -113,3 +113,15 @@ func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) 
 	fmt.Println("Atualizar pessoa deu certo")
 	return pessoa, nil
 }
+
+func (postgres *DBPessoas) DeletarPessoa(id string) (*modelApresentacao.ReqPessoa, error){
+	sqlStatement := `DELETE FROM pessoas WHERE id_pessoa = $1`
+	var pessoa = &modelApresentacao.ReqPessoa{}
+
+	rows := postgres.DB.QueryRow(sqlStatement, id)
+	if err := rows.Scan(&pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID, &pessoa.Data_Contratacao); err != nil {
+		return nil, nil
+	}
+	fmt.Println("Delete de pessoa deu certo!")
+	return pessoa, nil
+}
