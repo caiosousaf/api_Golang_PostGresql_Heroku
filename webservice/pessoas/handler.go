@@ -64,3 +64,26 @@ func ListarTarefasPessoa(c *gin.Context) {
 		c.JSON(http.StatusOK, pessoas)
 	}
 }
+
+func AtualizarPessoa(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando atualizar os dados de uma pessoa")
+	
+	req := modelApresentacao.ReqAtualizarPessoa{}
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message":"Could not update. Parameters were not passed correctly.", "err":err.Error(),
+		})
+		return
+	}
+
+	if res, err := pessoas.AtualizarPessoa(id, &req); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusOK, gin.H{"message": "Nenhum registro encontrado", "err": err.Error()})
+		} else {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, res)
+	}
+}

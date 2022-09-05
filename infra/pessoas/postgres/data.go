@@ -27,7 +27,7 @@ func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa, c *gin.Context) 
 
 func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {
 	sqlStatement := `SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, pe.equipe_id, eq.nome_equipe, pe.data_contratacao
-	FROM pessoas as pe INNER JOIN equipes as eq on pe.equipe_id = eq.id_equipe where id_pessoa = $1 ORDER BY pe.id_pessoa`
+	FROM pessoas as pe INNER JOIN equipes as eq on pe.equipe_id = eq.id_equipe ORDER BY pe.id_pessoa`
 	var pessoa = modelApresentacao.ReqGetPessoa{}
 	var res = []modelApresentacao.ReqGetPessoa{}
 
@@ -97,4 +97,19 @@ func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.R
 	}
 	fmt.Println("Busca de tarefas de uma pessoa deu certo!!")
 	return res, nil
+}
+
+func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) (*modelApresentacao.ReqAtualizarPessoa, error ){
+	sqlStatement := `UPDATE pessoas 
+					 SET nome_pessoa = $1, funcao_pessoa = $2, equipe_id = $3 
+					 WHERE id_pessoa = $4 RETURNING nome_pessoa, funcao_pessoa, equipe_id`
+	var pessoa = &modelApresentacao.ReqAtualizarPessoa{}
+
+	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Pessoa, req.Funcao_Pessoa, req.Equipe_ID, id)
+
+	if err := row.Scan(&pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID); err != nil {
+		return nil, err
+	}
+	fmt.Println("Atualizar pessoa deu certo")
+	return pessoa, nil
 }

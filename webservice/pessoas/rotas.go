@@ -7,4 +7,5 @@ func Router(r *gin.RouterGroup) {
 	r.GET("/", ListarPessoas)
 	r.GET("/:id", ListarPessoa)
 	r.GET("/:id/tasks", ListarTarefasPessoa)
+	r.PUT("/:id", AtualizarPessoa)
 }

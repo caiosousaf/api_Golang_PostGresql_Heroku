@@ -9,4 +9,5 @@ type IPessoa interface {
 	ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error)
 	ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error)
 	ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error)
+	AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (*modelApresentacao.ReqAtualizarPessoa, error)
 }

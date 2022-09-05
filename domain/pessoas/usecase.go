@@ -43,3 +43,16 @@ func ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error)
 	pessoasRepo := pessoas.NovoRepo(db)
 	return pessoasRepo.ListarTarefasPessoa(id)
 }
+
+func AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (*modelApresentacao.ReqAtualizarPessoa, error) {
+	db := database.Conectar()
+	defer db.Close()
+
+	pessoasRepo := pessoas.NovoRepo(db)
+
+	str := *req.Nome_Pessoa
+
+	req.Nome_Pessoa = &str
+
+	return pessoasRepo.AtualizarPessoa(id, req)
+}
