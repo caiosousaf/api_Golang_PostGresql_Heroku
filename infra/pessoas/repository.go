@@ -26,4 +26,6 @@ func (r *repositorio) NovaPessoa(req *modelApresentacao.ReqPessoa, c *gin.Contex
 func (r *repositorio) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {
 	return r.Data.ListarPessoas()
 }
-
+func (r *repositorio) ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
+	return r.Data.ListarPessoa(id)
+}

@@ -27,3 +27,11 @@ func ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {
 	pessoasRepo := pessoas.NovoRepo(db)
 	return pessoasRepo.ListarPessoas()
 }
+
+func ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
+	db := database.Conectar()
+	defer db.Close()
+
+	pessoasRepo := pessoas.NovoRepo(db)
+	return pessoasRepo.ListarPessoa(id)
+}

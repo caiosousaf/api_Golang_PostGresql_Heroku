@@ -36,3 +36,17 @@ func ListarPessoas(c *gin.Context) {
 		c.JSON(http.StatusOK, pessoas)
 	}
 }
+
+func ListarPessoa(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando listar uma pessoa com id especifico")
+	if pessoas, err := pessoas.ListarPessoa(id); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusOK, gin.H{"message": "Nenhum registro encontrado", "err": err.Error()})
+		} else {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, pessoas)
+	}
+}

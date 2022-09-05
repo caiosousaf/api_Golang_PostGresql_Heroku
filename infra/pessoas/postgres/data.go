@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	modelData "gerenciadorDeProjetos/infra/pessoas/model"
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
+	modelData "gerenciadorDeProjetos/infra/pessoas/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -45,4 +45,24 @@ func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, er
 	}
 	fmt.Println("Listagem de todas as pessoas deu certo!!")
 	return res, nil
+}
+
+func (postgres *DBPessoas) ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
+	sqlStatement := `select pe.*, eq.nome_equipe
+					 from pessoas as pe 
+					 inner join equipes as eq on pe.equipe_id = eq.id_equipe 
+					 where id_pessoa = $1`
+	var pessoa = &modelApresentacao.ReqGetPessoa{}
+
+	row := postgres.DB.QueryRow(sqlStatement, id)
+	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa,
+		 &pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, err
+		} else {
+			return nil, err
+		}
+	}
+	fmt.Println("Buscar de uma pessoa deu certo!!")
+	return pessoa, nil
 }
