@@ -12,7 +12,8 @@ import (
 type GetMembers struct {
 	ID_Equipe   uint             			`json:"id_equipe"`
 	Nome_Equipe string           			`json:"nome_equipe"`
-	Pessoas     []models.Pessoa  			`json:"pessoas"`		
+	Pessoas     []models.Pessoa  			`json:"pessoas"`
+	Projetos_Ativos	string						`json:"projetos_ativos"`		
 }
 
 // Get Teams
@@ -41,10 +42,18 @@ func (h handler) GetTeams(c *gin.Context) {
 			return
 		}
 
+		var check string
+		if result := h.DB.Raw(`select count(*) as Projetos_Ativos 
+		from projetos where status = 'Em Andamento' and equipe_id = ?`, equipes[i].ID_Equipe).Scan(&check); result.Error != nil {
+			c.AbortWithError(http.StatusNotFound, result.Error)
+			return
+		}
+
 		e := &GetMembers{
 			ID_Equipe:   equipes[i].ID_Equipe,
 			Nome_Equipe: equipes[i].Nome_Equipe,
 			Pessoas:     pessoas,
+			Projetos_Ativos: check,
 		}
 		eq = append(eq, *e)
 	}

@@ -32,6 +32,8 @@ definitions:
         items:
           $ref: '#/definitions/models.Pessoa'
         type: array
+      projetos_ativos:
+        type: string
     type: object
   equipes.GetProjectsMembersTasks:
     properties:
@@ -45,7 +47,7 @@ definitions:
         type: array
       projetos:
         items:
-          $ref: '#/definitions/models.Projeto'
+          $ref: '#/definitions/models.TeamProjects'
         type: array
       tasks:
         items:
@@ -198,6 +200,23 @@ definitions:
         enum:
         - Em Andamento
         - ' Concluido'
+        type: string
+    type: object
+  models.TeamProjects:
+    properties:
+      data_conclusao:
+        type: string
+      descricao_projeto:
+        type: string
+      equipe_id:
+        type: integer
+      id_projeto:
+        type: integer
+      nome_projeto:
+        type: string
+      prazo_entrega:
+        type: string
+      status:
         type: string
     type: object
   pessoas.AddPessoaRequestBody:
@@ -1086,6 +1105,8 @@ paths:
           description: error
           schema:
             type: string
+      security:
+      - bearerAuth: []
       summary: PUT Status of a Project
       tags:
       - Projects

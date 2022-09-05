@@ -1030,6 +1030,11 @@ const docTemplate = `{
         },
         "/projetos/{id}/status": {
             "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "description": "PUT Status of a specific project. For the request to be met, the \"status\" are required",
                 "consumes": [
                     "application/json"
@@ -1701,6 +1706,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.Pessoa"
                     }
+                },
+                "projetos_ativos": {
+                    "type": "string"
                 }
             }
         },
@@ -1722,7 +1730,7 @@ const docTemplate = `{
                 "projetos": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Projeto"
+                        "$ref": "#/definitions/models.TeamProjects"
                     }
                 },
                 "tasks": {
@@ -1954,6 +1962,32 @@ const docTemplate = `{
                         "Em Andamento",
                         " Concluido"
                     ]
+                }
+            }
+        },
+        "models.TeamProjects": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "descricao_projeto": {
+                    "type": "string"
+                },
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "id_projeto": {
+                    "type": "integer"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         },
