@@ -29,3 +29,6 @@ func (r *repositorio) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) 
 func (r *repositorio) ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
 	return r.Data.ListarPessoa(id)
 }
+func (r *repositorio) ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error) {
+	return r.Data.ListarTarefasPessoa(id)
+}

@@ -6,4 +6,5 @@ func Router(r *gin.RouterGroup) {
 	r.POST("/", NovaPessoa)
 	r.GET("/", ListarPessoas)
 	r.GET("/:id", ListarPessoa)
+	r.GET("/:id/tasks", ListarTarefasPessoa)
 }
