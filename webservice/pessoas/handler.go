@@ -21,7 +21,7 @@ func NovaPessoa(c *gin.Context) {
 	}
 
 	pessoas.NovaPessoa(&req, c)
-	c.JSON(http.StatusCreated, gin.H{"OK": "Pessoa Cadastrada com sucesso"})
+	c.JSON(http.StatusCreated, req)
 }
 
 func ListarPessoas(c *gin.Context) {
@@ -93,8 +93,8 @@ func DeletarPessoa(c *gin.Context) {
 	fmt.Println("Tentando deletar uma pessoa")
 	if _, err := pessoas.ListarPessoa(id); err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(400, gin.H{
-				"message": "Nenhum registro encontrado", "err": err.Error(),
+			c.JSON(200, gin.H{
+				"message": "Nenhum pessoa encontrada", "err": err.Error(),
 			})
 			return
 		} else {

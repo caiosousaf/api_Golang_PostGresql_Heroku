@@ -22,7 +22,7 @@ func novaEquipe(c *gin.Context) {
 	}
 
 	equipe.NovaEquipe(&req, c)
-	c.JSON(http.StatusCreated, gin.H{"OK":"Registro adicionado com Sucesso!"})
+	c.JSON(http.StatusCreated, gin.H{"OK":"Equipe adicionada com Sucesso!", "": req})
 }
 
 func listarEquipes(c *gin.Context) {
@@ -85,7 +85,7 @@ func deletarEquipe(c *gin.Context) {
 	fmt.Println("Tentando deletar uma equipe")
 	if _, err := equipe.BuscarEquipe(id); err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
+			c.JSON(200, gin.H{"message":"Nenhuma equipe encontrado", "err":err.Error()})
 		} else {
 			c.JSON(404, gin.H{"error":err.Error()})
 		}
