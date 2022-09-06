@@ -19,7 +19,7 @@ func (postgres *DBProjetos) NovoProjeto(req *modelData.ReqProjeto, c *gin.Contex
 	var t = req.Prazo
 	var data_atual = time.Now()
 	data_limite := data_atual.AddDate(0, 0, t)
-	sqlStatement := `INSERT INTO projetos(nome_projeto, descricao_projeto, equipe_id, prazo_entrega) VALUES($1, $2 , $3, $4);`
+	sqlStatement := `INSERT INTO projetos(nome_projeto, descricao_projeto, equipe_id, prazo_entrega) VALUES($1, $2 , $3, $4) RETURNING *;`
 	_, err := postgres.DB.Exec(sqlStatement, req.Nome_Projeto, req.Descricao_Projeto, req.Equipe_ID, data_limite)
 	if err != nil {
 		c.AbortWithError(http.StatusNotFound, err)
@@ -31,7 +31,7 @@ func (postgres *DBProjetos) ListarProjetos() ([]modelApresentacao.ReqProjetos, e
 	sqlStatement := `SELECT pr.id_projeto, pr.nome_projeto,pr.descricao_projeto, pr.equipe_id, eq.nome_equipe, pr.status, 
 					 pr.data_criacao, pr.data_conclusao, pr.prazo_entrega
 					 FROM projetos AS pr 
-					 INNER JOIN equipes AS eq ON pr.equipe_id = eq.id_equipe`
+					 INNER JOIN equipes AS eq ON pr.equipe_id = eq.id_equipe ORDER BY id_projeto`
 
 	var projeto = modelApresentacao.ReqProjetos{}
 	var res = []modelApresentacao.ReqProjetos{}
@@ -43,7 +43,7 @@ func (postgres *DBProjetos) ListarProjetos() ([]modelApresentacao.ReqProjetos, e
 
 	for rows.Next() {
 		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto,
-			&projeto.EquipeID, &projeto.Nome_Equipe,&projeto.Status, &projeto.Data_Criacao, 
+			&projeto.EquipeID, &projeto.Nome_Equipe, &projeto.Status, &projeto.Data_Criacao,
 			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
 			return nil, err
 		}
@@ -62,19 +62,18 @@ func (postgres *DBProjetos) ListarProjeto(id string) (*modelApresentacao.ReqProj
 
 	var projeto = &modelApresentacao.ReqProjetos{}
 
-
 	rows := postgres.DB.QueryRow(sqlStatement, id)
-	
-		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto,
-			&projeto.EquipeID, &projeto.Nome_Equipe,&projeto.Status, &projeto.Data_Criacao, 
-			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
-				if err == sql.ErrNoRows {
-					return nil, err
-				} else {
-					return nil, err
-				}
+
+	if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto,
+		&projeto.EquipeID, &projeto.Nome_Equipe, &projeto.Status, &projeto.Data_Criacao,
+		&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, err
+		} else {
+			return nil, err
 		}
-	
+	}
+
 	fmt.Println("Listagem de um projeto deu certo!!")
 	return projeto, nil
 }
@@ -92,7 +91,7 @@ func (postgres *DBProjetos) ListarProjetosComStatus(status string) ([]modelApres
 
 	for rows.Next() {
 		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID,
-			&projeto.Status,&projeto.Descricao_Projeto, &projeto.Data_Criacao, 
+			&projeto.Status, &projeto.Descricao_Projeto, &projeto.Data_Criacao,
 			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
 			return nil, err
 		}
@@ -100,4 +99,15 @@ func (postgres *DBProjetos) ListarProjetosComStatus(status string) ([]modelApres
 	}
 	fmt.Println("Listagem de todos os projetos com status especifico deu certo!!")
 	return res, nil
+}
+
+func (postgres *DBProjetos) DeletarProjeto(id string) error {
+		sqlStatement := `DELETE FROM projetos where id_projeto = $1`
+		
+		_, err := postgres.DB.Exec(sqlStatement, id)
+		if err != nil {
+			return err
+		}
+		fmt.Println("Tudo certo em deletar um projeto!!")
+		return nil
 }

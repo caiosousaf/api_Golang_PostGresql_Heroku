@@ -83,9 +83,14 @@ func buscarProjetosDeEquipe(c *gin.Context) {
 func deletarEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar uma equipe")
-	if _, err := equipe.DeletarEquipe(id); err != nil {
-		
+	if _, err := equipe.BuscarEquipe(id); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
+		} else {
+			c.JSON(404, gin.H{"error":err.Error()})
+		}
 	} else {
+		equipe.DeletarEquipe(id)
 		c.JSON(http.StatusOK, gin.H{"Message": "Equipe deletada com sucesso"})
 	}
 }

@@ -18,10 +18,10 @@ func NovoProjeto(c *gin.Context) {
 			"message": "Could not create. Parameters were not passed correctly " , "error": err.Error(),
 		})
 		return
-	}
+	} 
 
 	projetos.NovoProjeto(&req, c)
-	c.JSON(201, gin.H{"OK": "Projeto cadastrado com sucesso"})
+	c.JSON(201, req)
 }
 
 func ListarProjetos(c *gin.Context) {
@@ -62,5 +62,20 @@ func ListarProjetosComStatus(c *gin.Context) {
 		}
 	} else {
 		c.JSON(200, projetos)
+	}
+}
+
+func DeletarProjeto(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando deletar um projeto")
+	if _, err := projetos.ListarProjeto(id); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
+		} else {
+			c.JSON(404, gin.H{"error":err.Error()})
+		}
+	} else {
+		projetos.DeletarProjeto(id)
+		c.JSON(200, gin.H{"OK": "Projeto deletado com sucesso"})
 	}
 }

@@ -28,8 +28,8 @@ func (postgres *DBEquipes) NovaEquipe(req *modelData.Equipe, c *gin.Context) {
 
 func (postgres *DBEquipes) ListarEquipes() ([]modelApresentacao.ReqEquipe, error) {
 	sqlStatement := `SELECT * FROM equipes ORDER BY id_equipe` // comando sql
-	var res = []modelApresentacao.ReqEquipe{} // lista que vai receber resultados da consulta
-	var equipe = modelApresentacao.ReqEquipe{} // estrutura individual que vai ser usada para preencher a lista
+	var res = []modelApresentacao.ReqEquipe{}                  // lista que vai receber resultados da consulta
+	var equipe = modelApresentacao.ReqEquipe{}                 // estrutura individual que vai ser usada para preencher a lista
 
 	rows, err := postgres.DB.Query(sqlStatement) // executando query e retornando as linhas e possíveis erros
 	if err != nil {
@@ -42,10 +42,10 @@ func (postgres *DBEquipes) ListarEquipes() ([]modelApresentacao.ReqEquipe, error
 		res = append(res, equipe) // preenchendo lista a cada iteração
 	}
 	fmt.Println("Listagem de todas as equipes deu certo!") // log que informa que essa parte geral deu certo
-	return res, nil // retornando resposta do tipo []modelApresentacao.ReqEquipe
+	return res, nil                                        // retornando resposta do tipo []modelApresentacao.ReqEquipe
 }
 
-func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error){
+func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
 	sqlStatement := `SELECT * FROM equipes WHERE id_equipe = $1`
 	var equipe = &modelApresentacao.ReqEquipe{}
 
@@ -82,7 +82,7 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 	return equipe, nil
 }
 
-func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelPessoa.ReqMembros, error){
+func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelPessoa.ReqMembros, error) {
 	sqlStatement := `select id_pessoa, nome_pessoa, funcao_pessoa, equipe_id, data_contratacao from pessoas WHERE equipe_id = $1`
 	var res = []modelPessoa.ReqMembros{}
 	var equipe = modelPessoa.ReqMembros{}
@@ -106,7 +106,7 @@ func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelPessoa.ReqMe
 	return res, nil
 }
 
-func (postgres *DBEquipes) BuscarProjetosDeEquipe(id string) ([]modelApresentacao.ReqEquipeProjetos, error){
+func (postgres *DBEquipes) BuscarProjetosDeEquipe(id string) ([]modelApresentacao.ReqEquipeProjetos, error) {
 	sqlStatement := `select eq.nome_equipe, pr.id_projeto, pr.nome_projeto, pr.status, pr.descricao_projeto, pr.data_criacao, pr.data_conclusao, pr.prazo_entrega 
 	from equipes as eq 
 	inner join projetos as pr on eq.id_equipe = pr.equipe_id where eq.id_equipe = $1`
@@ -133,28 +133,27 @@ func (postgres *DBEquipes) BuscarProjetosDeEquipe(id string) ([]modelApresentaca
 	return res, nil
 }
 
-func (postgres *DBEquipes) DeletarEquipe(id string) (*modelApresentacao.ReqEquipe, error){
+func (postgres *DBEquipes) DeletarEquipe(id string) error {
 	sqlStatement := `DELETE FROM equipes WHERE id_equipe = $1`
-	var equipe = &modelApresentacao.ReqEquipe{}
 
-	rows := postgres.DB.QueryRow(sqlStatement, id)
-	if err := rows.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
-		return nil, nil
+	_, err := postgres.DB.Exec(sqlStatement, id)
+	if err != nil {
+		return err
 	}
-	fmt.Println("Delete deu certo!")
-	return equipe, nil
+	fmt.Println("Tudo certo em deletar um projeto!!")
+	return nil
 }
 
-func (postgres *DBEquipes) AtualizarEquipe(id string, req *modelData.UpdateEquipe) (*modelApresentacao.ReqEquipe, error ){
+func (postgres *DBEquipes) AtualizarEquipe(id string, req *modelData.UpdateEquipe) (*modelApresentacao.ReqEquipe, error) {
 	sqlStatement := `UPDATE equipes SET nome_equipe = $1 
 	WHERE id_equipe = $2 RETURNING *`
-	var equipe = &modelApresentacao.ReqEquipe{} 
+	var equipe = &modelApresentacao.ReqEquipe{}
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Equipe, id)
 
 	if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
 		return nil, err
 	}
-	
+
 	return equipe, nil
 }

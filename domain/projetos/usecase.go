@@ -38,3 +38,11 @@ func ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjet
 	
 	return projetosRepo.ListarProjetosComStatus(status)
 }
+
+func DeletarProjeto(id string) error {
+	db := database.Conectar()
+	defer db.Close()
+	projetosRepo := projetos.NovoRepo(db)
+
+	return projetosRepo.DeletarProjeto(id)
+}

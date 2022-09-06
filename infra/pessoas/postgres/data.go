@@ -114,14 +114,13 @@ func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) 
 	return pessoa, nil
 }
 
-func (postgres *DBPessoas) DeletarPessoa(id string) (*modelApresentacao.ReqPessoa, error){
+func (postgres *DBPessoas) DeletarPessoa(id string) error{
 	sqlStatement := `DELETE FROM pessoas WHERE id_pessoa = $1`
-	var pessoa = &modelApresentacao.ReqPessoa{}
-
-	rows := postgres.DB.QueryRow(sqlStatement, id)
-	if err := rows.Scan(&pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID, &pessoa.Data_Contratacao); err != nil {
-		return nil, nil
-	}
-	fmt.Println("Delete de pessoa deu certo!")
-	return pessoa, nil
+	
+	_, err := postgres.DB.Exec(sqlStatement, id)
+		if err != nil {
+			return err
+		}
+		fmt.Println("Tudo certo em deletar um projeto!!")
+		return nil
 }

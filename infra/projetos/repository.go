@@ -31,3 +31,6 @@ func (r *repositorio) ListarProjeto(id string) (*modelApresentacao.ReqProjetos, 
 func (r *repositorio) ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjeto, error) {
 	return r.Data.ListarProjetosComStatus(status)
 }
+func (r *repositorio) DeletarProjeto(id string) error {
+	return r.Data.DeletarProjeto(id)
+}

@@ -52,7 +52,7 @@ func BuscarProjetosDeEquipe(id string) ([]modelApresentacao.ReqEquipeProjetos, e
 	return equipesRepo.BuscarProjetosDeEquipe(id)
 }
 
-func DeletarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
+func DeletarEquipe(id string) error{
 	db := database.Conectar()
 	defer db.Close()
 

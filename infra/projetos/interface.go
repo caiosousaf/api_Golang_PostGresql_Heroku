@@ -10,4 +10,5 @@ type IProjeto interface {
 	ListarProjetos() ([]modelApresentacao.ReqProjetos, error)
 	ListarProjeto(id string) (*modelApresentacao.ReqProjetos, error)
 	ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjeto, error)
+	DeletarProjeto(id string) error
 }
