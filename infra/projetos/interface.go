@@ -7,4 +7,5 @@ import (
 
 type IProjeto interface {
 	NovoProjeto(req *modelApresentacao.ReqProjeto, c *gin.Context)
+	ListarProjetos() ([]modelApresentacao.ReqProjetos, error)
 }

@@ -22,3 +22,6 @@ func novoRepo(novoDB *sql.DB) *repositorio {
 func (r *repositorio) NovoProjeto(req *modelApresentacao.ReqProjeto, c *gin.Context) {
 	r.Data.NovoProjeto(&modelData.ReqProjeto{Nome_Projeto: req.Nome_Projeto, Descricao_Projeto: req.Descricao_Projeto, Equipe_ID: req.Equipe_ID, Prazo: req.Prazo}, c)
 }
+func (r *repositorio) ListarProjetos() ([]modelApresentacao.ReqProjetos, error) {
+	return r.Data.ListarProjetos()
+}

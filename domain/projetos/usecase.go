@@ -14,3 +14,11 @@ func NovoProjeto(req *modelApresentacao.ReqProjeto, c *gin.Context) {
 
 	projetosRepo.NovoProjeto(req, c)
 }
+
+func ListarProjetos() ([]modelApresentacao.ReqProjetos, error) {
+	db := database.Conectar()
+	defer db.Close()
+	projetosRepo := projetos.NovoRepo(db)
+
+	return projetosRepo.ListarProjetos()
+}
