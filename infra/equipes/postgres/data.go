@@ -50,7 +50,6 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 	var equipe = &modelApresentacao.ReqEquipe{}
 
 	pessoas, err := postgres.BuscarMembrosDeEquipe(id)
-
 	if err != nil {
 		if err == sql.ErrNoRows {
 			pessoas = nil
@@ -58,8 +57,18 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 			return nil, err
 		}
 	}
+	projetos, err := postgres.BuscarProjetosDeEquipe(id)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			projetos = nil
+		} else {
+			return nil, err
+		}
+	}
 
 	equipe.Pessoas = &pessoas
+	equipe.Projetos = &projetos
 
 	row := postgres.DB.QueryRow(sqlStatement, id)
 	if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
