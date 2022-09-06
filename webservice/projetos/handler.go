@@ -36,3 +36,17 @@ func ListarProjetos(c *gin.Context) {
 		c.JSON(200, projetos)
 	}
 }
+
+func ListarProjeto(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando listar um projeto")
+	if projetos, err := projetos.ListarProjeto(id); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
+		} else {
+			c.JSON(404, gin.H{"error":err.Error()})
+		}
+	} else {
+		c.JSON(200, projetos)
+	}
+}

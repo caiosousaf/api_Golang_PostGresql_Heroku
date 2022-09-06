@@ -52,3 +52,29 @@ func (postgres *DBProjetos) ListarProjetos() ([]modelApresentacao.ReqProjetos, e
 	fmt.Println("Listagem de todas os projetos deu certo!!")
 	return res, nil
 }
+
+func (postgres *DBProjetos) ListarProjeto(id string) (*modelApresentacao.ReqProjetos, error) {
+	sqlStatement := `SELECT pr.id_projeto, pr.nome_projeto,pr.descricao_projeto, pr.equipe_id, eq.nome_equipe, pr.status, 
+					 pr.data_criacao, pr.data_conclusao, pr.prazo_entrega
+					 FROM projetos AS pr 
+					 INNER JOIN equipes AS eq ON pr.equipe_id = eq.id_equipe
+					 WHERE pr.id_projeto = $1`
+
+	var projeto = &modelApresentacao.ReqProjetos{}
+
+
+	rows := postgres.DB.QueryRow(sqlStatement, id)
+	
+		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto,
+			&projeto.EquipeID, &projeto.Nome_Equipe,&projeto.Status, &projeto.Data_Criacao, 
+			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
+				if err == sql.ErrNoRows {
+					return nil, err
+				} else {
+					return nil, err
+				}
+		}
+	
+	fmt.Println("Listagem de um projeto deu certo!!")
+	return projeto, nil
+}

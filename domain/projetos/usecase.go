@@ -22,3 +22,11 @@ func ListarProjetos() ([]modelApresentacao.ReqProjetos, error) {
 
 	return projetosRepo.ListarProjetos()
 }
+
+func ListarProjeto(id string) (*modelApresentacao.ReqProjetos, error) {
+	db := database.Conectar()
+	defer db.Close()
+	projetosRepo := projetos.NovoRepo(db)
+
+	return projetosRepo.ListarProjeto(id)
+}

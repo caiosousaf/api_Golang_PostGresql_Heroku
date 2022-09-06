@@ -25,3 +25,6 @@ func (r *repositorio) NovoProjeto(req *modelApresentacao.ReqProjeto, c *gin.Cont
 func (r *repositorio) ListarProjetos() ([]modelApresentacao.ReqProjetos, error) {
 	return r.Data.ListarProjetos()
 }
+func (r *repositorio) ListarProjeto(id string) (*modelApresentacao.ReqProjetos, error) {
+	return r.Data.ListarProjeto(id)
+}
