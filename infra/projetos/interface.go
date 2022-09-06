@@ -9,4 +9,5 @@ type IProjeto interface {
 	NovoProjeto(req *modelApresentacao.ReqProjeto, c *gin.Context)
 	ListarProjetos() ([]modelApresentacao.ReqProjetos, error)
 	ListarProjeto(id string) (*modelApresentacao.ReqProjetos, error)
+	ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjeto, error)
 }

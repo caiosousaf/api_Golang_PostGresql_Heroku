@@ -28,3 +28,6 @@ func (r *repositorio) ListarProjetos() ([]modelApresentacao.ReqProjetos, error) 
 func (r *repositorio) ListarProjeto(id string) (*modelApresentacao.ReqProjetos, error) {
 	return r.Data.ListarProjeto(id)
 }
+func (r *repositorio) ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjeto, error) {
+	return r.Data.ListarProjetosComStatus(status)
+}

@@ -50,3 +50,17 @@ func ListarProjeto(c *gin.Context) {
 		c.JSON(200, projetos)
 	}
 }
+
+func ListarProjetosComStatus(c *gin.Context) {
+	status := c.Param("status")
+	fmt.Println("Tentando listar todos os projetos com um status especifico")
+	if projetos, err := projetos.ListarProjetosComStatus(status); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
+		} else {
+			c.JSON(404, gin.H{"error":err.Error()})
+		}
+	} else {
+		c.JSON(200, projetos)
+	}
+}

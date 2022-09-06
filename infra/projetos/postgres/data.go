@@ -78,3 +78,26 @@ func (postgres *DBProjetos) ListarProjeto(id string) (*modelApresentacao.ReqProj
 	fmt.Println("Listagem de um projeto deu certo!!")
 	return projeto, nil
 }
+
+func (postgres *DBProjetos) ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjeto, error) {
+	sqlStatement := `SELECT * FROM projetos WHERE status = $1`
+
+	var projeto = modelApresentacao.ReqStatusProjeto{}
+	var res = []modelApresentacao.ReqStatusProjeto{}
+
+	rows, err := postgres.DB.Query(sqlStatement, status)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID,
+			&projeto.Status,&projeto.Descricao_Projeto, &projeto.Data_Criacao, 
+			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
+			return nil, err
+		}
+		res = append(res, projeto)
+	}
+	fmt.Println("Listagem de todos os projetos com status especifico deu certo!!")
+	return res, nil
+}

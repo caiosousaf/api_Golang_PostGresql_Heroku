@@ -30,3 +30,11 @@ func ListarProjeto(id string) (*modelApresentacao.ReqProjetos, error) {
 
 	return projetosRepo.ListarProjeto(id)
 }
+
+func ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjeto, error) {
+	db := database.Conectar()
+	defer db.Close()
+	projetosRepo := projetos.NovoRepo(db)
+	
+	return projetosRepo.ListarProjetosComStatus(status)
+}
