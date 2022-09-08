@@ -29,3 +29,7 @@ func (r *repositorio) ListarTasks() ([]modelApresentacao.ReqTasks, error) {
 func (r *repositorio) ListarTask(id string) (*modelApresentacao.ReqTasks, error) {
 	return r.Data.ListarTask(id)
 }
+
+func (r *repositorio) ListarStatusTasks(status string) ([]modelApresentacao.ReqTasks, error) {
+	return r.Data.ListarStatusTasks(status)
+}

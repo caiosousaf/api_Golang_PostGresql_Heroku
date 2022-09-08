@@ -21,7 +21,7 @@ func (postgres *DBTasks) NovaTask(req *modelData.ReqTaskData) (*modelApresentaca
 	var task = &modelApresentacao.ReqTask{}
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Descricao_Task, req.PessoaID, req.ProjetoID,
-	req.Prioridade, data_limite)
+		req.Prioridade, data_limite)
 	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Data_Criacao,
 		&task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func (postgres *DBTasks) NovaTask(req *modelData.ReqTaskData) (*modelApresentaca
 
 func (postgres *DBTasks) ListarTasks() ([]modelApresentacao.ReqTasks, error) {
 
-		sqlStatement := `select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao, tk.data_conclusao,tk.prazo_entrega ,tk.prioridade 
+	sqlStatement := `select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao, tk.data_conclusao,tk.prazo_entrega ,tk.prioridade 
 						from tasks as tk 
 						inner join pessoas as pe on tk.pessoa_id = pe.id_pessoa 
 						inner join projetos as pr on tk.projeto_id = pr.id_projeto 
@@ -45,7 +45,6 @@ func (postgres *DBTasks) ListarTasks() ([]modelApresentacao.ReqTasks, error) {
 	if err != nil {
 		return nil, err
 	}
-	
 
 	for rows.Next() {
 		if err := rows.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.Nome_Pessoa, &task.ProjetoID, &task.Nome_Projeto, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
@@ -76,4 +75,32 @@ func (postgres *DBTasks) ListarTask(id string) (*modelApresentacao.ReqTasks, err
 	}
 	fmt.Println("Buscar uma task deu certo!!")
 	return task, nil
+}
+
+func (postgres *DBTasks) ListarStatusTasks(status string) ([]modelApresentacao.ReqTasks, error) {
+	sqlStatement := `select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao, tk.data_conclusao,tk.prazo_entrega ,tk.prioridade 
+						from tasks as tk 
+						inner join pessoas as pe on tk.pessoa_id = pe.id_pessoa 
+						inner join projetos as pr on tk.projeto_id = pr.id_projeto 
+						WHERE tk.status = $1
+						order by id_task`
+	var task = &modelApresentacao.ReqTasks{}
+	var res = []modelApresentacao.ReqTasks{}
+
+	row, err := postgres.DB.Query(sqlStatement, status)
+	if err != nil {
+		return nil, err
+	}
+	for row.Next() {
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.Nome_Pessoa, &task.ProjetoID, &task.Nome_Projeto, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, err
+		} else {
+			return nil, err
+		}
+	}
+	res = append(res, *task)
+}
+	fmt.Println("Busca dos status das tasks deu certo!!")
+	return res, nil
 }

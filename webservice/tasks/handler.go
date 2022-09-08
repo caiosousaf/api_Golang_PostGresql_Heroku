@@ -51,3 +51,13 @@ func ListarTask(c *gin.Context) {
 		c.JSON(http.StatusOK, tasks)
 	}
 }
+
+func ListarStatusTasks(c *gin.Context) {
+	fmt.Println("Tentando listar todas as tarefas com um status especifico")
+	status := c.Param("status")
+	if tasks, err := tasks.ListarStatusTasks(status); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"Message": "Tasks com o status passado não foi encontrada"})
+	} else {
+		c.JSON(http.StatusOK, tasks)
+	}
+}
