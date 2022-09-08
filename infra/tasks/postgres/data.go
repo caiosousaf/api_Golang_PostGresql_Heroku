@@ -29,3 +29,30 @@ func (postgres *DBTasks) NovaTask(req *modelData.ReqTaskData) (*modelApresentaca
 	fmt.Println("Cadastro de nova task deu certo")
 	return task, nil
 }
+
+func (postgres *DBTasks) ListarTasks() ([]modelApresentacao.ReqTasks, error) {
+
+		sqlStatement := `select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao, tk.data_conclusao,tk.prazo_entrega ,tk.prioridade 
+						from tasks as tk 
+						inner join pessoas as pe on tk.pessoa_id = pe.id_pessoa 
+						inner join projetos as pr on tk.projeto_id = pr.id_projeto 
+						order by id_task`
+
+	var task = modelApresentacao.ReqTasks{}
+	var res = []modelApresentacao.ReqTasks{}
+
+	rows, err := postgres.DB.Query(sqlStatement)
+	if err != nil {
+		return nil, err
+	}
+	
+
+	for rows.Next() {
+		if err := rows.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.Nome_Pessoa, &task.ProjetoID, &task.Nome_Projeto, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
+			return nil, err
+		}
+		res = append(res, task)
+	}
+	fmt.Println("Listagem de todas as tasks deu certo!!")
+	return res, nil
+}

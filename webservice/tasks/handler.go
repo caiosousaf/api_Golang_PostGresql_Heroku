@@ -1,6 +1,7 @@
 package tasks
 
 import (
+	"database/sql"
 	"fmt"
 	"gerenciadorDeProjetos/domain/tasks"
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
@@ -25,5 +26,18 @@ func NovaTask(c *gin.Context) {
 		return
 	} else {
 		c.JSON(http.StatusCreated, res)
+	}
+}
+
+func ListarTasks(c *gin.Context) {
+	fmt.Println("Tentando listar todos as tasks")
+	if tasks, err := tasks.ListarTasks(); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
+		} else {
+			c.JSON(404, gin.H{"error":err.Error()})
+		}
+	} else {
+		c.JSON(200, tasks)
 	}
 }

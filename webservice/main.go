@@ -22,5 +22,5 @@ func main() {
 	projetos.Router(pr)
 	tasks.Router(tk)
 
-	r.Run()
+	r.Run("localhost:3030")
 }
