@@ -3,6 +3,7 @@ package projetos
 import (
 	"database/sql"
 	"fmt"
+	"net/http"
 
 	"gerenciadorDeProjetos/domain/projetos"
 	modelApresentacao "gerenciadorDeProjetos/domain/projetos/model"
@@ -20,8 +21,12 @@ func NovoProjeto(c *gin.Context) {
 		return
 	} 
 
-	projetos.NovoProjeto(&req, c)
-	c.JSON(201, req)
+	if res, err := projetos.NovoProjeto(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} else {
+		c.JSON(http.StatusCreated, res)
+	}
 }
 
 func ListarProjetos(c *gin.Context) {
