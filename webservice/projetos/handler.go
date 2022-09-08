@@ -75,7 +75,7 @@ func DeletarProjeto(c *gin.Context) {
 	fmt.Println("Tentando deletar um projeto")
 	if _, err := projetos.ListarProjeto(id); err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(200, gin.H{"message":"Nenhum projeto encontrado encontrado", "err":err.Error()})
+			c.JSON(200, gin.H{"message":"Nenhum projeto encontrado para ser deletado encontrado", "err":err.Error()})
 		} else {
 			c.JSON(404, gin.H{"error":err.Error()})
 		}

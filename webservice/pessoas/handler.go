@@ -98,7 +98,7 @@ func DeletarPessoa(c *gin.Context) {
 	fmt.Println("Tentando deletar uma pessoa")
 	if _, err := pessoas.ListarPessoa(id); err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(200, gin.H{
+			c.JSON(400, gin.H{
 				"message": "Nenhum pessoa encontrada", "err": err.Error(),
 			})
 			return
