@@ -5,10 +5,10 @@ import (
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	"gerenciadorDeProjetos/infra/pessoas"
 
-	"github.com/gin-gonic/gin"
+	
 )
 
-func NovaPessoa(req *modelApresentacao.ReqPessoa, c *gin.Context) {
+func NovaPessoa(req *modelApresentacao.ReqPessoa) (*modelApresentacao.ReqPessoa, error) {
 	db := database.Conectar()
 	defer db.Close()
 	pessoasRepo := pessoas.NovoRepo(db)
@@ -17,7 +17,7 @@ func NovaPessoa(req *modelApresentacao.ReqPessoa, c *gin.Context) {
 
 	req.Nome_Pessoa = &str
 
-	pessoasRepo.NovaPessoa(req, c)
+	return pessoasRepo.NovaPessoa(req)
 }
 
 func ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {

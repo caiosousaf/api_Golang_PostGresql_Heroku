@@ -3,26 +3,29 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"net/http"
 
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/pessoas/model"
 
-	"github.com/gin-gonic/gin"
 )
 
 type DBPessoas struct {
 	DB *sql.DB
 }
 
-func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa, c *gin.Context) {
+func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa) (*modelApresentacao.ReqPessoa, error) {
 	sqlStatement := `INSERT INTO pessoas (nome_pessoa, funcao_pessoa, equipe_id)
-					 VALUES ($1, $2, $3)`
-	_, err := postgres.DB.Exec(sqlStatement, req.Nome_Pessoa, req.Funcao_Pessoa, req.Equipe_ID)
-	if err != nil {
-		c.AbortWithError(http.StatusNotFound, err)
+					 VALUES ($1, $2, $3) RETURNING *`
+
+	var pessoa = &modelApresentacao.ReqPessoa{}
+
+	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Pessoa, req.Funcao_Pessoa, req.Equipe_ID)
+	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID, 
+		&pessoa.Data_Contratacao); err != nil {
+		return nil, err
 	}
 	fmt.Println("Cadastro de nova pessoa deu certo")
+	return pessoa, nil
 }
 
 func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {

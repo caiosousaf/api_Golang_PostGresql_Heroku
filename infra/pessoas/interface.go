@@ -2,10 +2,9 @@ package pessoas
 
 import (
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
-	"github.com/gin-gonic/gin"
 )
 type IPessoa interface {
-	NovaPessoa(req *modelApresentacao.ReqPessoa, c *gin.Context)
+	NovaPessoa(req *modelApresentacao.ReqPessoa) (*modelApresentacao.ReqPessoa, error)
 	ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error)
 	ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error)
 	ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error)

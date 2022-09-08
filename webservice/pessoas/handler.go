@@ -20,8 +20,13 @@ func NovaPessoa(c *gin.Context) {
 		return
 	}
 
-	pessoas.NovaPessoa(&req, c)
-	c.JSON(http.StatusCreated, req)
+	if res, err := pessoas.NovaPessoa(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} else {
+		c.JSON(http.StatusCreated, res)
+	}
+	
 }
 
 func ListarPessoas(c *gin.Context) {
