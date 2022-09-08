@@ -14,3 +14,7 @@ type ReqUpdateTaskData struct {
 	ProjetoID      *int    `json:"projeto_id" example:"24"`
 	Prioridade     *int    `json:"prioridade" example:"1"`
 }
+
+type ReqUpdateStatusTask struct {
+	Status		*string		`json:"status"`
+}

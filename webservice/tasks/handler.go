@@ -87,6 +87,27 @@ func AtualizarTask(c *gin.Context) {
 	}
 }
 
+func AtualizarStatusTask(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando atualizar status de uma task")
+
+	req := modelApresentacao.ReqTask{}
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Could not update. Parameters were not passed correctly.", "err": err.Error(),
+		})
+		return
+	}
+
+	if res, err := tasks.AtualizarStatusTask(id, &req); err != nil {
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, res)
+	}
+}
+
 func DeletarTask(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar uma task")

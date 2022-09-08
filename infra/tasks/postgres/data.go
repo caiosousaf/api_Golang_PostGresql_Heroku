@@ -125,6 +125,23 @@ func (postgres *DBTasks) AtualizarTask(id string, req *modelData.ReqUpdateTaskDa
 	return task, nil
 }
 
+func (postgres *DBTasks) AtualizarStatusTask(id string, req *modelData.ReqUpdateStatusTask) (*modelApresentacao.ReqTask, error) { 
+	sqlStatement := `UPDATE tasks SET status = $1 WHERE id_task = $2 RETURNING *`
+	
+	var task = &modelApresentacao.ReqTask{}
+
+	row := postgres.DB.QueryRow(sqlStatement, req.Status, id)
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Prioridade, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, err
+		} else {
+			return nil, err
+		}
+	}
+	fmt.Println("Atualizar o status de uma uma task deu certo")
+	return task, nil
+}
+
 func (postgres *DBTasks) DeletarTask(id string) error {
 	sqlStatement := `DELETE FROM tasks WHERE id_task = $1`
 

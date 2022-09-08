@@ -47,6 +47,14 @@ func AtualizarTask(id string, req *modelApresentacao.ReqTask) (*modelApresentaca
 	return tasksRepo.AtualizarTask(id, req)
 }
 
+func AtualizarStatusTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error) {
+	db := database.Conectar()
+	defer db.Close()
+	tasksRepo := tasks.NovoRepo(db)
+
+	return tasksRepo.AtualizarStatusTask(id, req)
+}
+
 func DeletarTask(id string) (err error) {
 	db := database.Conectar()
 	defer db.Close()
@@ -54,7 +62,7 @@ func DeletarTask(id string) (err error) {
 	tasksRepo := tasks.NovoRepo(db)
 	dados, err := tasksRepo.ListarTask(id)
 	if err != nil {
-		return fmt.Errorf("Task não encontrada")
+		return fmt.Errorf("task não encontrada")
 	}
 
 	if dados == nil {

@@ -38,6 +38,10 @@ func (r *repositorio) AtualizarTask(id string, req *modelApresentacao.ReqTask) (
 	return r.Data.AtualizarTask(id, &modelData.ReqUpdateTaskData{Descricao_Task: req.Descricao_Task, PessoaID: req.PessoaID, ProjetoID: req.ProjetoID, Prioridade: req.Prioridade})
 } 
 
+func (r *repositorio) AtualizarStatusTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error){
+	return r.Data.AtualizarStatusTask(id, &modelData.ReqUpdateStatusTask{Status: req.Status})
+} 
+
 func (r *repositorio) DeletarTask(id string) error {
 	return r.Data.DeletarTask(id)
 }
