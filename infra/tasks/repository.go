@@ -37,3 +37,7 @@ func (r *repositorio) ListarStatusTasks(status string) ([]modelApresentacao.ReqT
 func (r *repositorio) AtualizarTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error){
 	return r.Data.AtualizarTask(id, &modelData.ReqUpdateTaskData{Descricao_Task: req.Descricao_Task, PessoaID: req.PessoaID, ProjetoID: req.ProjetoID, Prioridade: req.Prioridade})
 } 
+
+func (r *repositorio) DeletarTask(id string) error {
+	return r.Data.DeletarTask(id)
+}

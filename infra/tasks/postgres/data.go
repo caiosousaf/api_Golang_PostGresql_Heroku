@@ -124,3 +124,14 @@ func (postgres *DBTasks) AtualizarTask(id string, req *modelData.ReqUpdateTaskDa
 	fmt.Println("Atualizar uma task deu certo")
 	return task, nil
 }
+
+func (postgres *DBTasks) DeletarTask(id string) error {
+	sqlStatement := `DELETE FROM tasks WHERE id_task = $1`
+
+	_, err := postgres.DB.Exec(sqlStatement, id)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Tudo certo em deletar uma task!!")
+	return nil
+}

@@ -1,6 +1,7 @@
 package tasks
 
 import (
+	"fmt"
 	"gerenciadorDeProjetos/config/database"
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
 	"gerenciadorDeProjetos/infra/tasks"
@@ -44,4 +45,21 @@ func AtualizarTask(id string, req *modelApresentacao.ReqTask) (*modelApresentaca
 	tasksRepo := tasks.NovoRepo(db)
 
 	return tasksRepo.AtualizarTask(id, req)
+}
+
+func DeletarTask(id string) (err error) {
+	db := database.Conectar()
+	defer db.Close()
+
+	tasksRepo := tasks.NovoRepo(db)
+	dados, err := tasksRepo.ListarTask(id)
+	if err != nil {
+		return fmt.Errorf("Task não encontrada")
+	}
+
+	if dados == nil {
+		return fmt.Errorf("impossivel deletar")
+	}
+	err = tasksRepo.DeletarTask(id)
+	return
 }

@@ -86,3 +86,15 @@ func AtualizarTask(c *gin.Context) {
 		c.JSON(http.StatusOK, res)
 	}
 }
+
+func DeletarTask(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando deletar uma task")
+
+	err := tasks.DeletarTask(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"Message": "Task deletada com sucesso"})
+	}
+}
