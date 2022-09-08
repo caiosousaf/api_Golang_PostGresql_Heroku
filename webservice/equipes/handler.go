@@ -21,8 +21,12 @@ func novaEquipe(c *gin.Context) {
 		return
 	}
 
-	equipe.NovaEquipe(&req, c)
-	c.JSON(http.StatusCreated, gin.H{"OK":"Equipe adicionada com Sucesso!", "": req})
+	if res, err := equipe.NovaEquipe(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
+		return
+	} else{
+		c.JSON(http.StatusCreated, res)
+	}
 }
 
 func listarEquipes(c *gin.Context) {

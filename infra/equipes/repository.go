@@ -7,7 +7,6 @@ import (
 	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/equipes/model"
 	"gerenciadorDeProjetos/infra/equipes/postgres"
-	"github.com/gin-gonic/gin"
 )
 
 type repositorio struct {
@@ -20,8 +19,8 @@ func novoRepo(novoDB *sql.DB) *repositorio {
 	}
 }
 
-func (r *repositorio) NovaEquipe(req *modelApresentacao.ReqEquipe, c *gin.Context) {
-	r.Data.NovaEquipe(&modelData.Equipe{Nome_Equipe: req.Nome_Equipe}, c)
+func (r *repositorio) NovaEquipe(req *modelApresentacao.ReqEquipe) (*modelApresentacao.ReqEquipe, error) {
+	return r.Data.NovaEquipe(&modelData.Equipe{Nome_Equipe: req.Nome_Equipe})
 }
 func (r *repositorio) ListarEquipes() ([]modelApresentacao.ReqEquipe, error) {
 	return r.Data.ListarEquipes()
