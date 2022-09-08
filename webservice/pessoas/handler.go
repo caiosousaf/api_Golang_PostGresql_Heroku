@@ -14,7 +14,7 @@ func NovaPessoa(c *gin.Context) {
 	fmt.Println("Tentando cadastrar uma nova pessoa")
 	req := modelApresentacao.ReqPessoa{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Could not create. Parameters were not passed correctly ", "error": err.Error(),
 		})
 		return
@@ -26,7 +26,7 @@ func NovaPessoa(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusCreated, res)
 	}
-	
+
 }
 
 func ListarPessoas(c *gin.Context) {
@@ -76,7 +76,7 @@ func AtualizarPessoa(c *gin.Context) {
 
 	req := modelApresentacao.ReqAtualizarPessoa{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Could not update. Parameters were not passed correctly.", "err": err.Error(),
 		})
 		return
@@ -96,18 +96,11 @@ func AtualizarPessoa(c *gin.Context) {
 func DeletarPessoa(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar uma pessoa")
-	if _, err := pessoas.ListarPessoa(id); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(400, gin.H{
-				"message": "Nenhum pessoa encontrada", "err": err.Error(),
-			})
-			return
-		} else {
-			c.JSON(404, gin.H{"error": err.Error()})
-			return
-		}
+
+	err := pessoas.DeletarPessoa(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
-		pessoas.DeletarPessoa(id)
 		c.JSON(http.StatusOK, gin.H{"Message": "Pessoa deletada com sucesso"})
 	}
 }

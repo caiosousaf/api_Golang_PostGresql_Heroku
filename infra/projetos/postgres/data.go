@@ -115,7 +115,7 @@ func (postgres *DBProjetos) DeletarProjeto(id string) error {
 		return nil
 }
 
-func (postgres *DBProjetos) AtualizarProjeto(id string, req *modelData.ReqaAtualizarProjetoData) (*modelApresentacao.ReqAtualizarProjeto, error) {
+func (postgres *DBProjetos) AtualizarProjeto(id string, req *modelData.ReqAtualizarProjetoData) (*modelApresentacao.ReqAtualizarProjeto, error) {
 	sqlStatement := `UPDATE projetos
 					 SET nome_projeto = $1, equipe_id = $2, descricao_projeto = $3
 					 WHERE id_projeto = $4 RETURNING *`

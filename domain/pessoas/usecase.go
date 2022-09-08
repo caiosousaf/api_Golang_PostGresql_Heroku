@@ -1,11 +1,10 @@
 package pessoas
 
 import (
+	"fmt"
 	"gerenciadorDeProjetos/config/database"
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	"gerenciadorDeProjetos/infra/pessoas"
-
-	
 )
 
 func NovaPessoa(req *modelApresentacao.ReqPessoa) (*modelApresentacao.ReqPessoa, error) {
@@ -57,10 +56,21 @@ func AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (*mod
 	return pessoasRepo.AtualizarPessoa(id, req)
 }
 
-func DeletarPessoa(id string) error {
+func DeletarPessoa(id string)(err error) {
 	db := database.Conectar()
 	defer db.Close()
-
+	
 	pessoasRepo := pessoas.NovoRepo(db)
-	return pessoasRepo.DeletarPessoa(id)
+	
+	dados,err := pessoasRepo.ListarPessoa(id)
+	//if len(dados) == 0 {
+	if err != nil {
+		return fmt.Errorf("pessoa não Encontrada")
+	}
+
+	if dados == nil {
+		return fmt.Errorf("em Aberto")
+	}
+	err = pessoasRepo.DeletarPessoa(id)
+	return 
 }

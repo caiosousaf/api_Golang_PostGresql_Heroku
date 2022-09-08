@@ -22,6 +22,9 @@ func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa) (*modelApresenta
 	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Pessoa, req.Funcao_Pessoa, req.Equipe_ID)
 	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID, 
 		&pessoa.Data_Contratacao); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			}
 		return nil, err
 	}
 	fmt.Println("Cadastro de nova pessoa deu certo")
