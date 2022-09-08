@@ -34,7 +34,7 @@ func ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjet
 	db := database.Conectar()
 	defer db.Close()
 	projetosRepo := projetos.NovoRepo(db)
-	
+
 	return projetosRepo.ListarProjetosComStatus(status)
 }
 
@@ -44,4 +44,12 @@ func DeletarProjeto(id string) error {
 	projetosRepo := projetos.NovoRepo(db)
 
 	return projetosRepo.DeletarProjeto(id)
+}
+
+func AtualizarProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (*modelApresentacao.ReqAtualizarProjeto, error) {
+	db := database.Conectar()
+	defer db.Close()
+	projetosRepo := projetos.NovoRepo(db)
+
+	return projetosRepo.AtualizarProjeto(id, req)
 }

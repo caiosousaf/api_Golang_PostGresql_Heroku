@@ -31,3 +31,14 @@ type ReqStatusProjeto struct {
 	Data_Conclusao    *time.Time `json:"data_conclusao" example:""`
 	Prazo_Entrega     *time.Time `json:"prazo_entrega" example:"2022-07-25"`
 }
+
+type ReqAtualizarProjeto struct {
+	ID_Projeto        *uint      `json:"id_projeto" example:"58"`
+	Nome_Projeto      *string    `json:"nome_projeto" example:"Nome"`
+	Descricao_Projeto *string    `json:"descricao_projeto" example:"Descricao"`
+	EquipeID          *int       `json:"equipe_id" example:"2"`
+	Status            *string    `json:"status" example:"Concluido"`
+	Data_Criacao      *string    `json:"data_criacao" example:"2022-07-25"`
+	Data_Conclusao    *string    `json:"data_conclusao" example:""`
+	Prazo_Entrega     *time.Time `json:"prazo_entrega" example:"2022-07-25"`
+}

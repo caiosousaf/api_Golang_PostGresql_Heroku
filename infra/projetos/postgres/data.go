@@ -7,7 +7,6 @@ import (
 	modelData "gerenciadorDeProjetos/infra/projetos/model"
 
 	"time"
-
 )
 
 type DBProjetos struct {
@@ -114,4 +113,21 @@ func (postgres *DBProjetos) DeletarProjeto(id string) error {
 		}
 		fmt.Println("Tudo certo em deletar um projeto!!")
 		return nil
+}
+
+func (postgres *DBProjetos) AtualizarProjeto(id string, req *modelData.ReqaAtualizarProjetoData) (*modelApresentacao.ReqAtualizarProjeto, error) {
+	sqlStatement := `UPDATE projetos
+					 SET nome_projeto = $1, equipe_id = $2, descricao_projeto = $3
+					 WHERE id_projeto = $4 RETURNING *`
+
+	var projeto = &modelApresentacao.ReqAtualizarProjeto{}
+
+	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Projeto, req.Equipe_ID, req.Descricao_Projeto, id)
+	
+	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID, &projeto.Status, &projeto.Descricao_Projeto,
+		&projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
+		return projeto, nil
+	}
+	fmt.Println("Atualizar projeto deu certo")
+	return projeto, nil
 }

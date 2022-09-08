@@ -84,3 +84,24 @@ func DeletarProjeto(c *gin.Context) {
 		c.JSON(200, gin.H{"OK": "Projeto deletado com sucesso"})
 	}
 }
+
+func AtualizarProjeto(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando atualizar um projeto")
+
+	req := modelApresentacao.ReqAtualizarProjeto{}
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(400, gin.H{
+			"message": "Could not update. Parameters were not passed correctly.", "err": err.Error(),
+		})
+		return
+	}
+
+	if res, err := projetos.AtualizarProjeto(id, &req); err != nil {
+		if err != nil {
+			c.JSON(404, gin.H{"error": err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, res)
+	}
+}
