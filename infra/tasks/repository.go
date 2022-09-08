@@ -25,3 +25,7 @@ func (r *repositorio) NovaTask(req *modelApresentacao.ReqTaskApresent) (*modelAp
 func (r *repositorio) ListarTasks() ([]modelApresentacao.ReqTasks, error) {
 	return r.Data.ListarTasks()
 }
+
+func (r *repositorio) ListarTask(id string) (*modelApresentacao.ReqTasks, error) {
+	return r.Data.ListarTask(id)
+}

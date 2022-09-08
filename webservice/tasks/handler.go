@@ -41,3 +41,13 @@ func ListarTasks(c *gin.Context) {
 		c.JSON(200, tasks)
 	}
 }
+
+func ListarTask(c *gin.Context) {
+	fmt.Println("Tentando listar uma task")
+	id := c.Param("id")
+	if tasks, err := tasks.ListarTask(id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Task não encontrada", "error": err.Error()})
+	} else {
+		c.JSON(http.StatusOK, tasks)
+	}
+}

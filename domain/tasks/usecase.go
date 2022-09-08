@@ -21,3 +21,11 @@ func ListarTasks() ([]modelApresentacao.ReqTasks, error) {
 
 	return tasksRepo.ListarTasks()
 }
+
+func ListarTask(id string) (*modelApresentacao.ReqTasks, error) {
+	db := database.Conectar()
+	defer db.Close()
+	tasksRepo := tasks.NovoRepo(db)
+
+	return tasksRepo.ListarTask(id)
+}

@@ -56,3 +56,24 @@ func (postgres *DBTasks) ListarTasks() ([]modelApresentacao.ReqTasks, error) {
 	fmt.Println("Listagem de todas as tasks deu certo!!")
 	return res, nil
 }
+
+func (postgres *DBTasks) ListarTask(id string) (*modelApresentacao.ReqTasks, error) {
+	sqlStatement := `select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao, tk.data_conclusao,tk.prazo_entrega ,tk.prioridade 
+						from tasks as tk 
+						inner join pessoas as pe on tk.pessoa_id = pe.id_pessoa 
+						inner join projetos as pr on tk.projeto_id = pr.id_projeto 
+						WHERE id_task = $1
+						order by id_task`
+	var task = &modelApresentacao.ReqTasks{}
+
+	row := postgres.DB.QueryRow(sqlStatement, id)
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.Nome_Pessoa, &task.ProjetoID, &task.Nome_Projeto, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, err
+		} else {
+			return nil, err
+		}
+	}
+	fmt.Println("Buscar uma task deu certo!!")
+	return task, nil
+}
