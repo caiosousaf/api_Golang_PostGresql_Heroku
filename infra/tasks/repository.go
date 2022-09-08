@@ -33,3 +33,7 @@ func (r *repositorio) ListarTask(id string) (*modelApresentacao.ReqTasks, error)
 func (r *repositorio) ListarStatusTasks(status string) ([]modelApresentacao.ReqTasks, error) {
 	return r.Data.ListarStatusTasks(status)
 }
+
+func (r *repositorio) AtualizarTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error){
+	return r.Data.AtualizarTask(id, &modelData.ReqUpdateTaskData{Descricao_Task: req.Descricao_Task, PessoaID: req.PessoaID, ProjetoID: req.ProjetoID, Prioridade: req.Prioridade})
+} 

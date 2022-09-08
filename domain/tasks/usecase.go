@@ -37,3 +37,11 @@ func ListarStatusTasks(status string) ([]modelApresentacao.ReqTasks, error) {
 
 	return tasksRepo.ListarStatusTasks(status)
 }
+
+func AtualizarTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error) {
+	db := database.Conectar()
+	defer db.Close()
+	tasksRepo := tasks.NovoRepo(db)
+
+	return tasksRepo.AtualizarTask(id, req)
+}

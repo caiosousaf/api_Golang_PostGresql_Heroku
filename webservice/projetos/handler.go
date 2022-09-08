@@ -91,7 +91,7 @@ func AtualizarProjeto(c *gin.Context) {
 
 	req := modelApresentacao.ReqAtualizarProjeto{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Could not update. Parameters were not passed correctly.", "err": err.Error(),
 		})
 		return

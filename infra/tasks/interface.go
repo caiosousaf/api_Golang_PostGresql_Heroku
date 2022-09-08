@@ -8,4 +8,5 @@ type ITask interface {
 	ListarTasks() ([]modelApresentacao.ReqTasks, error)
 	ListarTask(id string) (*modelApresentacao.ReqTasks, error)
 	ListarStatusTasks(status string) ([]modelApresentacao.ReqTasks, error)
+	AtualizarTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error)
 }

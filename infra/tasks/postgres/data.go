@@ -104,3 +104,23 @@ func (postgres *DBTasks) ListarStatusTasks(status string) ([]modelApresentacao.R
 	fmt.Println("Busca dos status das tasks deu certo!!")
 	return res, nil
 }
+
+func (postgres *DBTasks) AtualizarTask(id string, req *modelData.ReqUpdateTaskData) (*modelApresentacao.ReqTask, error) {
+	sqlStatement := `UPDATE tasks
+					SET descricao_task = $1, pessoa_id = $2,
+					projeto_id = $3, prioridade = $4 
+					WHERE id_task = $5 RETURNING *`
+	var task = &modelApresentacao.ReqTask{}
+
+	row := postgres.DB.QueryRow(sqlStatement, req.Descricao_Task, req.PessoaID, req.ProjetoID, req.Prioridade, id)
+
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Prioridade, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, err
+		} else {
+			return nil, err
+		}
+	}
+	fmt.Println("Atualizar uma task deu certo")
+	return task, nil
+}

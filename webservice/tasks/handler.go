@@ -34,6 +34,7 @@ func ListarTasks(c *gin.Context) {
 	if tasks, err := tasks.ListarTasks(); err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
+			return
 		} else {
 			c.JSON(404, gin.H{"error":err.Error()})
 		}
@@ -47,6 +48,7 @@ func ListarTask(c *gin.Context) {
 	id := c.Param("id")
 	if tasks, err := tasks.ListarTask(id); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Task não encontrada", "error": err.Error()})
+		return
 	} else {
 		c.JSON(http.StatusOK, tasks)
 	}
@@ -57,7 +59,30 @@ func ListarStatusTasks(c *gin.Context) {
 	status := c.Param("status")
 	if tasks, err := tasks.ListarStatusTasks(status); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Message": "Tasks com o status passado não foi encontrada"})
+		return
 	} else {
 		c.JSON(http.StatusOK, tasks)
+		return
+	}
+}
+
+func AtualizarTask(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando atualizar uma task")
+
+	req := modelApresentacao.ReqTask{}
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Could not update. Parameters were not passed correctly.", "err": err.Error(),
+		})
+		return
+	}
+
+	if res, err := tasks.AtualizarTask(id, &req); err != nil {
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, res)
 	}
 }
