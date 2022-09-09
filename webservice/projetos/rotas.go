@@ -9,4 +9,5 @@ func Router(r *gin.RouterGroup) {
 	r.GET("/status/:status", ListarProjetosComStatus)
 	r.DELETE("/:id", DeletarProjeto)
 	r.PUT("/:id", AtualizarProjeto)
+	r.PUT("/:id/status", AtualizarStatusProjeto)
 }

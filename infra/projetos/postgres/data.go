@@ -145,3 +145,24 @@ func (postgres *DBProjetos) AtualizarProjeto(id string, req *modelData.ReqAtuali
 	fmt.Println("Atualizar projeto deu certo")
 	return projeto, nil
 }
+
+func (postgres *DBProjetos) AtualizarStatusProjeto(id string, req *modelData.ReqUpdateStatusProjeto) (*modelApresentacao.ReqAtualizarProjeto, error) {
+	sqlStatement := `UPDATE projetos
+					 SET status = $1 
+					 WHERE id_projeto = $2 RETURNING *`
+
+	var projeto = &modelApresentacao.ReqAtualizarProjeto{}
+
+	row := postgres.DB.QueryRow(sqlStatement, req.Status, id)
+	
+	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID, &projeto.Status, &projeto.Descricao_Projeto,
+		&projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+	}
+	fmt.Println("Atualizar status de um projeto deu certo")
+	return projeto, nil
+}

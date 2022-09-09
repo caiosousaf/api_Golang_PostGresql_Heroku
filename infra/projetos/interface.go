@@ -11,4 +11,5 @@ type IProjeto interface {
 	ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjeto, error)
 	DeletarProjeto(id string) error
 	AtualizarProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (*modelApresentacao.ReqAtualizarProjeto, error)
+	AtualizarStatusProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (*modelApresentacao.ReqAtualizarProjeto, error)
 }

@@ -36,3 +36,6 @@ func (r *repositorio) DeletarProjeto(id string) error {
 func (r *repositorio) AtualizarProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (*modelApresentacao.ReqAtualizarProjeto, error) {
 	return r.Data.AtualizarProjeto(id, &modelData.ReqAtualizarProjetoData{Nome_Projeto: req.Nome_Projeto, Equipe_ID: req.EquipeID, Descricao_Projeto: req.Descricao_Projeto})
 }
+func (r *repositorio) AtualizarStatusProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (*modelApresentacao.ReqAtualizarProjeto, error){
+	return r.Data.AtualizarStatusProjeto(id, &modelData.ReqUpdateStatusProjeto{Status: req.Status})
+} 

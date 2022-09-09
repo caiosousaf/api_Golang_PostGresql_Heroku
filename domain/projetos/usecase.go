@@ -77,3 +77,24 @@ func AtualizarProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (re
 	}
 	return
 }
+
+func AtualizarStatusProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (res *modelApresentacao.ReqAtualizarProjeto,err error) {
+	db := database.Conectar()
+	defer db.Close()
+	projetosRepo := projetos.NovoRepo(db)
+	dados,err := projetosRepo.ListarProjeto(id)
+	
+	if err != nil {
+		return res, fmt.Errorf("projeto não Encontrado")
+	}
+
+	if dados == nil {
+		return res, fmt.Errorf("em Aberto")
+	}
+
+	res,err = projetosRepo.AtualizarStatusProjeto(id, req)
+	if err != nil {
+		return nil, fmt.Errorf("não foi possivel atualizar status: Projeto Não existe")		
+	}
+	return
+}

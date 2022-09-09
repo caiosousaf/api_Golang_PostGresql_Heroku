@@ -13,3 +13,7 @@ type ReqAtualizarProjetoData struct {
 	Equipe_ID         *int    `json:"equipe_id"`
 	Descricao_Projeto *string `json:"descricao_projeto"`
 }
+
+type ReqUpdateStatusProjeto struct {
+	Status		*string		`json:"status"`
+}
