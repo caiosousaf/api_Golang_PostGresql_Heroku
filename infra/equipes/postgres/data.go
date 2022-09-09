@@ -20,30 +20,34 @@ func (postgres *DBEquipes) NovaEquipe(req *modelData.Equipe) (*modelApresentacao
 
 	var equipe = &modelApresentacao.ReqEquipe{}
 
-	 row := postgres.DB.QueryRow(sqlStatement, req.Nome_Equipe)
-	 if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
+	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Equipe)
+	if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
 		return nil, err
 	}
 	return equipe, nil
 }
 
 func (postgres *DBEquipes) ListarEquipes() ([]modelApresentacao.ReqEquipe, error) {
-	sqlStatement := `SELECT * FROM equipes ORDER BY id_equipe` // comando sql
-	var res = []modelApresentacao.ReqEquipe{}                  // lista que vai receber resultados da consulta
-	var equipe = modelApresentacao.ReqEquipe{}                 // estrutura individual que vai ser usada para preencher a lista
+	sqlStatement := `SELECT * FROM equipes ORDER BY id_equipe`
+	var res = []modelApresentacao.ReqEquipe{}
+	var equipe = modelApresentacao.ReqEquipe{}
 
-	rows, err := postgres.DB.Query(sqlStatement) // executando query e retornando as linhas e possíveis erros
+	rows, err := postgres.DB.Query(sqlStatement)
 	if err != nil {
-		return nil, err // em caso de erro na consulta, a requisição será avortada e retornar um status 404 e o erro
+		return nil, err
 	}
-	for rows.Next() { // percorrendo linhas retornadas no sql
-		if err := rows.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil { // escaneando linha por linha e gravando na estrutura de equipe
-			return nil, err // se houver algum erro, a função retorna ele
+	for rows.Next() {
+		if err := rows.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
 		}
-		res = append(res, equipe) // preenchendo lista a cada iteração
+		res = append(res, equipe)
 	}
-	fmt.Println("Listagem de todas as equipes deu certo!") // log que informa que essa parte geral deu certo
-	return res, nil                                        // retornando resposta do tipo []modelApresentacao.ReqEquipe
+	fmt.Println("Listagem de todas as equipes deu certo!")
+	return res, nil
 }
 
 func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
@@ -141,7 +145,7 @@ func (postgres *DBEquipes) DeletarEquipe(id string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Tudo certo em deletar um projeto!!")
+	fmt.Println("Tudo certo em deletar uma equipe!!")
 	return nil
 }
 
@@ -153,7 +157,11 @@ func (postgres *DBEquipes) AtualizarEquipe(id string, req *modelData.UpdateEquip
 	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Equipe, id)
 
 	if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
-		return nil, err
+		if err == sql.ErrNoRows {
+			return nil, err
+		} else {
+			return nil, err
+		}
 	}
 
 	return equipe, nil
