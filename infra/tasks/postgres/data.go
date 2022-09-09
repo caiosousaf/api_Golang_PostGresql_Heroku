@@ -48,7 +48,11 @@ func (postgres *DBTasks) ListarTasks() ([]modelApresentacao.ReqTasks, error) {
 
 	for rows.Next() {
 		if err := rows.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.Nome_Pessoa, &task.ProjetoID, &task.Nome_Projeto, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
-			return nil, err
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
 		}
 		res = append(res, task)
 	}
@@ -92,15 +96,15 @@ func (postgres *DBTasks) ListarStatusTasks(status string) ([]modelApresentacao.R
 		return nil, err
 	}
 	for row.Next() {
-	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.Nome_Pessoa, &task.ProjetoID, &task.Nome_Projeto, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, err
-		} else {
-			return nil, err
+		if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.Nome_Pessoa, &task.ProjetoID, &task.Nome_Projeto, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
 		}
+		res = append(res, *task)
 	}
-	res = append(res, *task)
-}
 	fmt.Println("Busca dos status das tasks deu certo!!")
 	return res, nil
 }
@@ -125,9 +129,9 @@ func (postgres *DBTasks) AtualizarTask(id string, req *modelData.ReqUpdateTaskDa
 	return task, nil
 }
 
-func (postgres *DBTasks) AtualizarStatusTask(id string, req *modelData.ReqUpdateStatusTask) (*modelApresentacao.ReqTask, error) { 
+func (postgres *DBTasks) AtualizarStatusTask(id string, req *modelData.ReqUpdateStatusTask) (*modelApresentacao.ReqTask, error) {
 	sqlStatement := `UPDATE tasks SET status = $1 WHERE id_task = $2 RETURNING *`
-	
+
 	var task = &modelApresentacao.ReqTask{}
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Status, id)

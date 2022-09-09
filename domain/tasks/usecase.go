@@ -39,20 +39,48 @@ func ListarStatusTasks(status string) ([]modelApresentacao.ReqTasks, error) {
 	return tasksRepo.ListarStatusTasks(status)
 }
 
-func AtualizarTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error) {
+func AtualizarTask(id string, req *modelApresentacao.ReqTask) (res *modelApresentacao.ReqTask, err error) {
 	db := database.Conectar()
 	defer db.Close()
 	tasksRepo := tasks.NovoRepo(db)
 
-	return tasksRepo.AtualizarTask(id, req)
+	dados, err := tasksRepo.ListarTask(id)
+	//if len(dados) == 0 {
+	if err != nil {
+		return res, fmt.Errorf("tarefa não Encontrada")
+	}
+
+	if dados == nil {
+		return res, fmt.Errorf("em Aberto")
+	}
+
+	res, err = tasksRepo.AtualizarTask(id, req)
+	if err != nil {
+		return nil, fmt.Errorf("não foi possivel atualizar: Task Não existe")
+	}
+	return
+
 }
 
-func AtualizarStatusTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error) {
+func AtualizarStatusTask(id string, req *modelApresentacao.ReqTask) (res *modelApresentacao.ReqTask, err error) {
 	db := database.Conectar()
 	defer db.Close()
 	tasksRepo := tasks.NovoRepo(db)
 
-	return tasksRepo.AtualizarStatusTask(id, req)
+	dados, err := tasksRepo.ListarTask(id)
+	//if len(dados) == 0 {
+	if err != nil {
+		return res, fmt.Errorf("tarefa não Encontrada")
+	}
+
+	if dados == nil {
+		return res, fmt.Errorf("em Aberto")
+	}
+	res, err = tasksRepo.AtualizarStatusTask(id, req)
+	if err != nil {
+		return nil, fmt.Errorf("não foi possivel atualizar status: Task Não existe")
+	}
+	return
 }
 
 func DeletarTask(id string) (err error) {

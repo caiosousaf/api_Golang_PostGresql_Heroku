@@ -1,7 +1,6 @@
 package tasks
 
 import (
-	"database/sql"
 	"fmt"
 	"gerenciadorDeProjetos/domain/tasks"
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
@@ -32,14 +31,9 @@ func NovaTask(c *gin.Context) {
 func ListarTasks(c *gin.Context) {
 	fmt.Println("Tentando listar todos as tasks")
 	if tasks, err := tasks.ListarTasks(); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
-			return
-		} else {
-			c.JSON(404, gin.H{"error":err.Error()})
-		}
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "Message": "Nenhuma Tarefa encontrada"})
 	} else {
-		c.JSON(200, tasks)
+		c.JSON(http.StatusOK, tasks)
 	}
 }
 
@@ -47,8 +41,7 @@ func ListarTask(c *gin.Context) {
 	fmt.Println("Tentando listar uma task")
 	id := c.Param("id")
 	if tasks, err := tasks.ListarTask(id); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Task não encontrada", "error": err.Error()})
-		return
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Tarefa não encontrada", "error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, tasks)
 	}
