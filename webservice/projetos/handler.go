@@ -1,7 +1,6 @@
 package projetos
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 
@@ -16,10 +15,10 @@ func NovoProjeto(c *gin.Context) {
 	req := modelApresentacao.ReqProjeto{}
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(400, gin.H{
-			"message": "Could not create. Parameters were not passed correctly " , "error": err.Error(),
+			"message": "Could not create. Parameters were not passed correctly ", "error": err.Error(),
 		})
 		return
-	} 
+	}
 
 	if res, err := projetos.NovoProjeto(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -31,57 +30,44 @@ func NovoProjeto(c *gin.Context) {
 
 func ListarProjetos(c *gin.Context) {
 	fmt.Println("Tentando listar todos os projetos")
-	if projetos, err := projetos.ListarProjetos(); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
-		} else {
-			c.JSON(404, gin.H{"error":err.Error()})
-		}
+	projetos, err := projetos.ListarProjetos()
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(200, projetos)
+		c.JSON(http.StatusOK, projetos)
 	}
 }
 
 func ListarProjeto(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando listar um projeto")
-	if projetos, err := projetos.ListarProjeto(id); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
-		} else {
-			c.JSON(404, gin.H{"error":err.Error()})
-		}
+	projetos, err := projetos.ListarProjeto(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "Message": "Projeto não existe"})
 	} else {
-		c.JSON(200, projetos)
+		c.JSON(http.StatusOK, projetos)
 	}
 }
 
 func ListarProjetosComStatus(c *gin.Context) {
 	status := c.Param("status")
 	fmt.Println("Tentando listar todos os projetos com um status especifico")
-	if projetos, err := projetos.ListarProjetosComStatus(status); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(200, gin.H{"message":"Nenhum registro encontrado", "err":err.Error()})
-		} else {
-			c.JSON(404, gin.H{"error":err.Error()})
-		}
+	projetos, err := projetos.ListarProjetosComStatus(status)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "Message": "Status não existe"})
 	} else {
-		c.JSON(200, projetos)
+		c.JSON(http.StatusOK, projetos)
 	}
 }
 
 func DeletarProjeto(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar um projeto")
-	if _, err := projetos.ListarProjeto(id); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(200, gin.H{"message":"Nenhum projeto encontrado para ser deletado encontrado", "err":err.Error()})
-		} else {
-			c.JSON(404, gin.H{"error":err.Error()})
-		}
+	err := projetos.DeletarProjeto(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
-		projetos.DeletarProjeto(id)
-		c.JSON(200, gin.H{"OK": "Projeto deletado com sucesso"})
+		c.JSON(http.StatusOK, gin.H{"Message": "Projeto deletado com sucesso"})
 	}
 }
 
@@ -97,10 +83,9 @@ func AtualizarProjeto(c *gin.Context) {
 		return
 	}
 
-	if res, err := projetos.AtualizarProjeto(id, &req); err != nil {
-		if err != nil {
-			c.JSON(404, gin.H{"error": err.Error()})
-		}
+	res, err := projetos.AtualizarProjeto(id, &req)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, res)
 	}

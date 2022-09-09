@@ -79,7 +79,7 @@ func AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (res 
 
 	res,err = pessoasRepo.AtualizarPessoa(id, req)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel atualizar: Equipe Não existe")		
+		return nil, fmt.Errorf("não foi possivel atualizar: Pessoa Não existe")		
 	}
 	return
 }

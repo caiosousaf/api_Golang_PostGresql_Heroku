@@ -24,7 +24,9 @@ func (postgres *DBProjetos) NovoProjeto(req *modelData.ReqProjeto) (*modelAprese
 	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Projeto, req.Descricao_Projeto, req.Equipe_ID, data_limite)
 	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID, &projeto.Status, &projeto.Descricao_Projeto,
 		&projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega);err != nil {
-		return nil, err
+			if err == sql.ErrNoRows {
+				return nil, err
+			}
 	}
 	fmt.Println("Cadastro de novo projeto deu certo")
 	return projeto, nil
@@ -48,7 +50,11 @@ func (postgres *DBProjetos) ListarProjetos() ([]modelApresentacao.ReqProjetos, e
 		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto,
 			&projeto.EquipeID, &projeto.Nome_Equipe, &projeto.Status, &projeto.Data_Criacao,
 			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
-			return nil, err
+				if err == sql.ErrNoRows {
+					return nil, err
+				} else {
+					return nil, err
+				}
 		}
 		res = append(res, projeto)
 	}
@@ -96,7 +102,11 @@ func (postgres *DBProjetos) ListarProjetosComStatus(status string) ([]modelApres
 		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID,
 			&projeto.Status, &projeto.Descricao_Projeto, &projeto.Data_Criacao,
 			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
-			return nil, err
+				if err == sql.ErrNoRows {
+					return nil, err
+				} else {
+					return nil, err
+				}
 		}
 		res = append(res, projeto)
 	}
@@ -126,7 +136,11 @@ func (postgres *DBProjetos) AtualizarProjeto(id string, req *modelData.ReqAtuali
 	
 	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID, &projeto.Status, &projeto.Descricao_Projeto,
 		&projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
-		return projeto, nil
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
 	}
 	fmt.Println("Atualizar projeto deu certo")
 	return projeto, nil
