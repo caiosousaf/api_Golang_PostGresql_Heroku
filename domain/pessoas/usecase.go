@@ -35,15 +35,30 @@ func ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
 	return pessoasRepo.ListarPessoa(id)
 }
 
-func ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error) {
+func ListarTarefasPessoa(id string) (res []modelApresentacao.ReqTarefaPessoa,err error) {
 	db := database.Conectar()
 	defer db.Close()
 
 	pessoasRepo := pessoas.NovoRepo(db)
-	return pessoasRepo.ListarTarefasPessoa(id)
+
+	dados,err := pessoasRepo.ListarPessoa(id)
+	//if len(dados) == 0 {
+	if err != nil {
+		return res, fmt.Errorf("pessoa não Encontrada")
+	}
+
+	if dados == nil {
+		return res, fmt.Errorf("em Aberto")
+	}
+
+	res,err = pessoasRepo.ListarTarefasPessoa(id)
+	if err != nil {
+		return nil, fmt.Errorf("não foi possivel buscar tarefas de uma pessoa")		
+	}
+	return 
 }
 
-func AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (*modelApresentacao.ReqAtualizarPessoa, error) {
+func AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (res *modelApresentacao.ReqAtualizarPessoa,err error) {
 	db := database.Conectar()
 	defer db.Close()
 
@@ -52,8 +67,21 @@ func AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (*mod
 	str := *req.Nome_Pessoa
 
 	req.Nome_Pessoa = &str
+	dados,err := pessoasRepo.ListarPessoa(id)
+	//if len(dados) == 0 {
+	if err != nil {
+		return res, fmt.Errorf("pessoa não Encontrada")
+	}
 
-	return pessoasRepo.AtualizarPessoa(id, req)
+	if dados == nil {
+		return res, fmt.Errorf("em Aberto")
+	}
+
+	res,err = pessoasRepo.AtualizarPessoa(id, req)
+	if err != nil {
+		return nil, fmt.Errorf("não foi possivel atualizar: Equipe Não existe")		
+	}
+	return
 }
 
 func DeletarPessoa(id string)(err error) {

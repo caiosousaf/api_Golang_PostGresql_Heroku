@@ -1,7 +1,6 @@
 package pessoas
 
 import (
-	"database/sql"
 	"fmt"
 	"gerenciadorDeProjetos/domain/pessoas"
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
@@ -19,10 +18,9 @@ func NovaPessoa(c *gin.Context) {
 		})
 		return
 	}
-
 	if res, err := pessoas.NovaPessoa(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "message": "Equipe inexistente"})
+
 	} else {
 		c.JSON(http.StatusCreated, res)
 	}
@@ -31,12 +29,9 @@ func NovaPessoa(c *gin.Context) {
 
 func ListarPessoas(c *gin.Context) {
 	fmt.Println("Tentando Listar todas as pessoas")
-	if pessoas, err := pessoas.ListarPessoas(); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusOK, gin.H{"message": "Nenhum registro encontrado", "err": err.Error()})
-		} else {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		}
+	pessoas, err := pessoas.ListarPessoas()
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, pessoas)
 	}
@@ -45,12 +40,9 @@ func ListarPessoas(c *gin.Context) {
 func ListarPessoa(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando listar uma pessoa com id especifico")
-	if pessoas, err := pessoas.ListarPessoa(id); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusOK, gin.H{"message": "Nenhum registro encontrado", "err": err.Error()})
-		} else {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		}
+	pessoas, err := pessoas.ListarPessoa(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, pessoas)
 	}
@@ -59,12 +51,9 @@ func ListarPessoa(c *gin.Context) {
 func ListarTarefasPessoa(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando listar tarefas de uma pessoa com id especifico")
-	if pessoas, err := pessoas.ListarTarefasPessoa(id); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusOK, gin.H{"message": "Nenhum registro encontrado", "err": err.Error()})
-		} else {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		}
+	pessoas, err := pessoas.ListarTarefasPessoa(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, pessoas)
 	}
@@ -82,12 +71,9 @@ func AtualizarPessoa(c *gin.Context) {
 		return
 	}
 
-	if res, err := pessoas.AtualizarPessoa(id, &req); err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusOK, gin.H{"message": "Nenhum registro encontrado", "err": err.Error()})
-		} else {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		}
+	res, err := pessoas.AtualizarPessoa(id, &req)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, res)
 	}

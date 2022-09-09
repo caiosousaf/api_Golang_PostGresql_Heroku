@@ -6,7 +6,6 @@ import (
 
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/pessoas/model"
-
 )
 
 type DBPessoas struct {
@@ -20,11 +19,11 @@ func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa) (*modelApresenta
 	var pessoa = &modelApresentacao.ReqPessoa{}
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Pessoa, req.Funcao_Pessoa, req.Equipe_ID)
-	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID, 
+	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID,
 		&pessoa.Data_Contratacao); err != nil {
-			if err == sql.ErrNoRows {
-				return nil, err
-			}
+		if err == sql.ErrNoRows {
+			return nil, err
+		}
 		return nil, err
 	}
 	fmt.Println("Cadastro de nova pessoa deu certo")
@@ -45,7 +44,11 @@ func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, er
 	for rows.Next() {
 		if err := rows.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa,
 			&pessoa.EquipeID, &pessoa.Nome_Equipe, &pessoa.Data_Contratacao); err != nil {
-			return nil, err
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
 		}
 		res = append(res, pessoa)
 	}
@@ -62,7 +65,7 @@ func (postgres *DBPessoas) ListarPessoa(id string) (*modelApresentacao.ReqGetPes
 
 	row := postgres.DB.QueryRow(sqlStatement, id)
 	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa,
-		 &pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
+		&pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
 		} else {
@@ -81,7 +84,7 @@ func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.R
 						INNER JOIN projetos AS pr ON pr.equipe_id = eq.id_equipe 
 						INNER JOIN tasks as tk ON tk.projeto_id = pr.id_projeto AND tk.pessoa_id = pe.id_pessoa 
 						WHERE pe.id_pessoa = $1`
-	
+
 	var pessoa = modelApresentacao.ReqTarefaPessoa{}
 	var res = []modelApresentacao.ReqTarefaPessoa{}
 
@@ -90,22 +93,22 @@ func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.R
 		return nil, err
 	}
 	for row.Next() {
-	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.ID_Equipe, &pessoa.Nome_Equipe, 
-					   &pessoa.Nome_Projeto, &pessoa.ID_Task, &pessoa.Descricao_Task, &pessoa.Projeto_ID, &pessoa.Status,
-					   &pessoa.Data_Criacao, &pessoa.Data_Conclusao, &pessoa.Prazo_Entrega, &pessoa.Prioridade); err != nil {
-						if err == sql.ErrNoRows {
-							return nil, err
-						} else {
-							return nil, err
-						}
-	}
-			res = append(res, pessoa)
+		if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.ID_Equipe, &pessoa.Nome_Equipe,
+			&pessoa.Nome_Projeto, &pessoa.ID_Task, &pessoa.Descricao_Task, &pessoa.Projeto_ID, &pessoa.Status,
+			&pessoa.Data_Criacao, &pessoa.Data_Conclusao, &pessoa.Prazo_Entrega, &pessoa.Prioridade); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+		}
+		res = append(res, pessoa)
 	}
 	fmt.Println("Busca de tarefas de uma pessoa deu certo!!")
 	return res, nil
 }
 
-func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) (*modelApresentacao.ReqAtualizarPessoa, error ){
+func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) (*modelApresentacao.ReqAtualizarPessoa, error) {
 	sqlStatement := `UPDATE pessoas 
 					 SET nome_pessoa = $1, funcao_pessoa = $2, equipe_id = $3 
 					 WHERE id_pessoa = $4 RETURNING nome_pessoa, funcao_pessoa, equipe_id`
@@ -114,19 +117,23 @@ func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) 
 	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Pessoa, req.Funcao_Pessoa, req.Equipe_ID, id)
 
 	if err := row.Scan(&pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID); err != nil {
-		return nil, err
+		if err == sql.ErrNoRows {
+			return nil, err
+		} else {
+			return nil, err
+		}
 	}
 	fmt.Println("Atualizar pessoa deu certo")
 	return pessoa, nil
 }
 
-func (postgres *DBPessoas) DeletarPessoa(id string) error{
+func (postgres *DBPessoas) DeletarPessoa(id string) error {
 	sqlStatement := `DELETE FROM pessoas WHERE id_pessoa = $1`
-	
+
 	_, err := postgres.DB.Exec(sqlStatement, id)
-		if err != nil {
-			return err
-		}
-		fmt.Println("Tudo certo em deletar um projeto!!")
-		return nil
+	if err != nil {
+		return err
+	}
+	fmt.Println("Tudo certo em deletar um projeto!!")
+	return nil
 }
