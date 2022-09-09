@@ -67,6 +67,16 @@ func buscarProjetosDeEquipe(c *gin.Context) {
 	}
 }
 
+func buscarTasksDeEquipe(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando encontrar as Tarefas de uma equipe")
+	if equipe, err := equipe.BuscarTasksDeEquipe(id); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+	} else {
+		c.JSON(http.StatusOK, equipe)
+	}
+}
+
 func deletarEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar uma equipe")

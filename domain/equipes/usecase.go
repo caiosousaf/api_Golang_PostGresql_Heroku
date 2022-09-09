@@ -80,6 +80,28 @@ func BuscarProjetosDeEquipe(id string) (res []modelApresentacao.ReqEquipeProjeto
 	return
 }
 
+func BuscarTasksDeEquipe(id string) (res []modelApresentacao.ReqTasksbyTeam, err error) {
+	db := database.Conectar()
+	defer db.Close()
+
+	equipesRepo := equipes.NovoRepo(db)
+
+	dados,err := equipesRepo.BuscarEquipe(id)
+	//if len(dados) == 0 {
+	if err != nil {
+		return res, fmt.Errorf("equipe não Encontrada")
+	}
+
+	if dados == nil {
+		return res, fmt.Errorf("em Aberto")
+	}
+	res, err = equipesRepo.BuscarTasksDeEquipe(id)
+	if err != nil {
+		return nil, fmt.Errorf("não foi possivel buscar tasks de uma equipe")
+	}
+	return
+}
+
 func DeletarEquipe(id string) (err error){
 	db := database.Conectar()
 	defer db.Close()

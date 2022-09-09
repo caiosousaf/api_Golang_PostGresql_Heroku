@@ -72,8 +72,19 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 		}
 	}
 
+	tasks, err := postgres.BuscarTasksDeEquipe(id)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			projetos = nil
+		} else {
+			return nil, err
+		}
+	}
+
 	equipe.Pessoas = &pessoas
 	equipe.Projetos = &projetos
+	equipe.Tarefas = &tasks
 
 	row := postgres.DB.QueryRow(sqlStatement, id)
 	if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
@@ -135,6 +146,35 @@ func (postgres *DBEquipes) BuscarProjetosDeEquipe(id string) ([]modelApresentaca
 		res = append(res, equipe)
 	}
 	fmt.Println("Busca dos projetos de uma equipe deu certo!")
+	return res, nil
+}
+
+func (postgres *DBEquipes) BuscarTasksDeEquipe(id string) ([]modelApresentacao.ReqTasksbyTeam, error) {
+	sqlStatement := `select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, tk.status,
+	tk.data_criacao, tk.prazo_entrega, tk.data_conclusao
+					 from tasks tk 
+					 inner join pessoas pe on pe.id_pessoa = tk.pessoa_id 
+					 inner join equipes eq on eq.id_equipe = pe.equipe_id	
+					 where eq.id_equipe = $1`
+	var res = []modelApresentacao.ReqTasksbyTeam{}
+	var equipe = modelApresentacao.ReqTasksbyTeam{}
+
+	rows, err := postgres.DB.Query(sqlStatement, id)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		if err := rows.Scan(&equipe.ID_Task, &equipe.Descricao_Task, &equipe.Pessoa_ID, &equipe.Nome_Pessoa, &equipe.Projeto_ID,
+			&equipe.Status, &equipe.Data_Criacao, &equipe.Prazo_Entrega, &equipe.Data_Conclusao); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+		}
+		res = append(res, equipe)
+	}
+	fmt.Println("Busca das tarefas de uma equipe deu certo!")
 	return res, nil
 }
 
