@@ -24,7 +24,11 @@ func (postgres *DBTasks) NovaTask(req *modelData.ReqTaskData) (*modelApresentaca
 		req.Prioridade, data_limite)
 	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Data_Criacao,
 		&task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
-		return nil, err
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
 	}
 	fmt.Println("Cadastro de nova task deu certo")
 	return task, nil

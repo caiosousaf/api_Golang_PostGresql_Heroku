@@ -49,6 +49,17 @@ func ListarProjeto(c *gin.Context) {
 	}
 }
 
+func ListarTasksProjeto(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println("Tentando listar tarefas de um projeto")
+	projetos, err := projetos.ListarTasksProjeto(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "Message": "Projeto não existe"})
+	} else {
+		c.JSON(http.StatusOK, projetos)
+	}
+}
+
 func ListarProjetosComStatus(c *gin.Context) {
 	status := c.Param("status")
 	fmt.Println("Tentando listar todos os projetos com um status especifico")

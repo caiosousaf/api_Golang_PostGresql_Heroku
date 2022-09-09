@@ -87,6 +87,35 @@ func (postgres *DBProjetos) ListarProjeto(id string) (*modelApresentacao.ReqProj
 	return projeto, nil
 }
 
+func (postgres *DBProjetos) ListarTasksProjeto(id string) ([]modelApresentacao.ReqTasksProjeto, error) {
+	sqlStatement := `select tk.*, pr.id_projeto, pr.nome_projeto, eq.nome_equipe,
+					 pe.nome_pessoa from 
+					 projetos as pr inner join tasks as tk on pr.id_projeto = tk.projeto_id inner join
+					 equipes as eq on pr.equipe_id = eq.id_equipe inner join
+					 pessoas as pe on pe.id_pessoa = tk.pessoa_id where id_projeto = $1`
+
+	var projeto = modelApresentacao.ReqTasksProjeto{}
+	var res = []modelApresentacao.ReqTasksProjeto{}
+
+	rows, err := postgres.DB.Query(sqlStatement, id)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		if err := rows.Scan(&projeto.ID_Task, &projeto.Descricao_Task, &projeto.Pessoa_ID, &projeto.Projeto_ID, &projeto.Status, &projeto.Prioridade, &projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega, &projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Nome_Equipe, &projeto.Nome_Pessoa); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+		}
+		res = append(res, projeto)
+	}
+	fmt.Println("Listagem de todas as tarefas de um projeto deu certo!!")
+	return res, nil
+}
+
 func (postgres *DBProjetos) ListarProjetosComStatus(status string) ([]modelApresentacao.ReqStatusProjeto, error) {
 	sqlStatement := `SELECT * FROM projetos WHERE status = $1`
 
