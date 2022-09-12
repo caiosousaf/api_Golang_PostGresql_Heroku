@@ -3,6 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
@@ -36,6 +37,12 @@ func (postgres *DBEquipes) ListarEquipes() ([]modelApresentacao.ReqEquipe, error
 	if err != nil {
 		return nil, err
 	}
+	var name uint
+	err = postgres.DB.QueryRow("select id_equipe from equipes").Scan(&name)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for rows.Next() {
 		if err := rows.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
 			if err == sql.ErrNoRows {
@@ -44,6 +51,16 @@ func (postgres *DBEquipes) ListarEquipes() ([]modelApresentacao.ReqEquipe, error
 				return nil, err
 			}
 		}
+		id := fmt.Sprint(*equipe.ID_Equipe)
+		pessoas, err := postgres.BuscarMembrosDeEquipe(id)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				pessoas = nil
+			} else {
+				return nil, err
+			}
+		}
+		equipe.Pessoas = &pessoas
 		res = append(res, equipe)
 	}
 	fmt.Println("Listagem de todas as equipes deu certo!")
