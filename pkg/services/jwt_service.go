@@ -15,7 +15,7 @@ type jwtService struct {
 func NewJWTService() *jwtService {
 	return &jwtService{
 		secretKey: "secret-key",
-		issure:    "book-api",
+		issure:    "Gerenciador-Projetos",
 	}
 
 }
