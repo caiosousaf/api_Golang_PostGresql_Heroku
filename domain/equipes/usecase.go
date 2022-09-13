@@ -8,7 +8,7 @@ import (
 	"gerenciadorDeProjetos/infra/equipes"
 )
 
-func NovaEquipe(req *modelApresentacao.ReqEquipe)(*modelApresentacao.ReqEquipe, error) {
+func NovaEquipe(req *modelApresentacao.ReqEquipe) (*modelApresentacao.ReqEquipe, error) {
 	db := database.Conectar()
 	defer db.Close()
 	equipesRepo := equipes.NovoRepo(db)
@@ -20,29 +20,59 @@ func NovaEquipe(req *modelApresentacao.ReqEquipe)(*modelApresentacao.ReqEquipe, 
 	return equipesRepo.NovaEquipe(req)
 }
 
-func ListarEquipes() ([]modelApresentacao.ReqEquipe, error){
-	db := database.Conectar()
+func ListarEquipes() (res []modelApresentacao.ReqEquipe, err error) {
+	db := database.Conectar() //error conection
 	defer db.Close()
 
 	equipesRepo := equipes.NovoRepo(db)
-	return equipesRepo.ListarEquipes()
+
+	res, err = equipesRepo.ListarEquipes()
+
+	for i := range res {
+
+		id := fmt.Sprint(*res[i].ID_Equipe)
+		pessoa, err := equipesRepo.BuscarMembrosDeEquipe(id)
+		if err != nil {
+			return nil, err
+		}
+		res[i].Pessoas = &pessoa
+	}
+	return
 }
 
-func BuscarEquipe(id string) (*modelApresentacao.ReqEquipe, error) {
+func BuscarEquipe(id string) (res *modelApresentacao.ReqEquipe, err error) {
 	db := database.Conectar()
 	defer db.Close()
 
 	equipesRepo := equipes.NovoRepo(db)
-	return equipesRepo.BuscarEquipe(id)
+
+	res, err = equipesRepo.BuscarEquipe(id)
+
+	pessoas, err := equipesRepo.BuscarMembrosDeEquipe(id)
+	if err != nil {
+		return nil, err
+	}
+	projetos, err := equipesRepo.BuscarProjetosDeEquipe(id)
+
+	tasks, err := equipesRepo.BuscarTasksDeEquipe(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	res.Pessoas = &pessoas
+	res.Projetos = &projetos
+	res.Tarefas = &tasks
+	return
 }
 
-func BuscarMembrosDeEquipe(id string) (res []modelPessoa.ReqMembros,err error) {
+func BuscarMembrosDeEquipe(id string) (res []modelPessoa.ReqMembros, err error) {
 	db := database.Conectar()
 	defer db.Close()
 
 	equipesRepo := equipes.NovoRepo(db)
 
-	dados,err := equipesRepo.BuscarEquipe(id)
+	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
 		return res, fmt.Errorf("equipe não Encontrada")
@@ -55,7 +85,7 @@ func BuscarMembrosDeEquipe(id string) (res []modelPessoa.ReqMembros,err error) {
 	if err != nil {
 		return nil, fmt.Errorf("não foi possivel buscar os membros")
 	}
-	return 
+	return
 }
 
 func BuscarProjetosDeEquipe(id string) (res []modelApresentacao.ReqEquipeProjetos, err error) {
@@ -64,7 +94,7 @@ func BuscarProjetosDeEquipe(id string) (res []modelApresentacao.ReqEquipeProjeto
 
 	equipesRepo := equipes.NovoRepo(db)
 
-	dados,err := equipesRepo.BuscarEquipe(id)
+	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
 		return res, fmt.Errorf("equipe não Encontrada")
@@ -86,7 +116,7 @@ func BuscarTasksDeEquipe(id string) (res []modelApresentacao.ReqTasksbyTeam, err
 
 	equipesRepo := equipes.NovoRepo(db)
 
-	dados,err := equipesRepo.BuscarEquipe(id)
+	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
 		return res, fmt.Errorf("equipe não Encontrada")
@@ -102,13 +132,13 @@ func BuscarTasksDeEquipe(id string) (res []modelApresentacao.ReqTasksbyTeam, err
 	return
 }
 
-func DeletarEquipe(id string) (err error){
+func DeletarEquipe(id string) (err error) {
 	db := database.Conectar()
 	defer db.Close()
 
 	equipesRepo := equipes.NovoRepo(db)
 
-	dados,err := equipesRepo.BuscarEquipe(id)
+	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
 		return fmt.Errorf("equipe não Encontrada")
@@ -121,12 +151,12 @@ func DeletarEquipe(id string) (err error){
 	return
 }
 
-func AtualizarEquipe(id string, req *modelApresentacao.ReqEquipe) (res *modelApresentacao.ReqEquipe, err error){
+func AtualizarEquipe(id string, req *modelApresentacao.ReqEquipe) (res *modelApresentacao.ReqEquipe, err error) {
 	db := database.Conectar()
 	defer db.Close()
 	equipesRepo := equipes.NovoRepo(db)
 
-	dados,err := equipesRepo.BuscarEquipe(id)
+	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
 		return nil, fmt.Errorf("equipe não Encontrada")
@@ -141,4 +171,3 @@ func AtualizarEquipe(id string, req *modelApresentacao.ReqEquipe) (res *modelApr
 	}
 	return
 }
-
