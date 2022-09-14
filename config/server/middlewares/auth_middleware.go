@@ -2,6 +2,8 @@ package middlewares
 
 import (
 	"gerenciadorDeProjetos/config/services"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,13 +28,13 @@ func Auth() gin.HandlerFunc {
 		const Bearer_schema = "Bearer "
 		header := c.GetHeader("Authorization")
 		if header == "" {
-			c.AbortWithStatus(401)
+			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 
 		token := header[len(Bearer_schema):]
 
 		if !services.NewJWTService().ValidateToken(token) {
-			c.AbortWithStatus(401)
+			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 	}
 }
