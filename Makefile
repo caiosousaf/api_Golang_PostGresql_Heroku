@@ -1,2 +1,5 @@
 run:
-	go run webservice/main.go
+	go run main.go
+
+swag:
+	swag init
