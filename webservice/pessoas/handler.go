@@ -5,6 +5,7 @@ import (
 	"gerenciadorDeProjetos/domain/pessoas"
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	"net/http"
+	utils "gerenciadorDeProjetos/utils/errors-tratment"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,14 +14,12 @@ func NovaPessoa(c *gin.Context) {
 	fmt.Println("Tentando cadastrar uma nova pessoa")
 	req := modelApresentacao.ReqPessoa{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Could not create. Parameters were not passed correctly ", "error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(),
+		"Could not create. Parameters were not passed correctly", 400))
 		return
 	}
 	if res, err := pessoas.NovaPessoa(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "message": "Equipe inexistente"})
-
+		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(), "Team does not exist", 400))
 	} else {
 		c.JSON(http.StatusCreated, res)
 	}
@@ -29,8 +28,7 @@ func NovaPessoa(c *gin.Context) {
 
 func ListarPessoas(c *gin.Context) {
 	fmt.Println("Tentando Listar todas as pessoas")
-	pessoas, err := pessoas.ListarPessoas()
-	if err != nil {
+	if pessoas, err := pessoas.ListarPessoas(); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, pessoas)
@@ -40,9 +38,8 @@ func ListarPessoas(c *gin.Context) {
 func ListarPessoa(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando listar uma pessoa com id especifico")
-	pessoas, err := pessoas.ListarPessoa(id)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+	if pessoas, err := pessoas.ListarPessoa(id); err != nil {
+		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Person does not exist", 404))
 	} else {
 		c.JSON(http.StatusOK, pessoas)
 	}
@@ -51,9 +48,10 @@ func ListarPessoa(c *gin.Context) {
 func ListarTarefasPessoa(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando listar tarefas de uma pessoa com id especifico")
-	pessoas, err := pessoas.ListarTarefasPessoa(id)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+	if pessoas, err := pessoas.ListarTarefasPessoa(id); err != nil {
+		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Person does not exist", 404))
+	} else if len(pessoas) == 0 {
+		c.JSON(http.StatusNoContent, pessoas)
 	} else {
 		c.JSON(http.StatusOK, pessoas)
 	}
@@ -71,8 +69,7 @@ func AtualizarPessoa(c *gin.Context) {
 		return
 	}
 
-	res, err := pessoas.AtualizarPessoa(id, &req)
-	if err != nil {
+	if res, err := pessoas.AtualizarPessoa(id, &req); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, res)
@@ -83,10 +80,9 @@ func DeletarPessoa(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar uma pessoa")
 
-	err := pessoas.DeletarPessoa(id)
-	if err != nil {
+	if err := pessoas.DeletarPessoa(id); err != nil{
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"Message": "Pessoa deletada com sucesso"})
+		c.JSON(http.StatusOK, utils.KeyOk("Person deleted successfully", 200))
 	}
 }

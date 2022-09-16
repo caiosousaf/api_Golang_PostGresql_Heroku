@@ -27,6 +27,7 @@ func (postgres *DBProjetos) NovoProjeto(req *modelData.ReqProjeto) (*modelAprese
 		if err == sql.ErrNoRows {
 			return nil, err
 		}
+		return nil, err
 	}
 	fmt.Println("Cadastro de novo projeto deu certo")
 	return projeto, nil

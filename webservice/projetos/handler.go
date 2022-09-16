@@ -15,15 +15,13 @@ func NovoProjeto(c *gin.Context) {
 	fmt.Println("Tentando cadastrar um novo projeto")
 	req := modelApresentacao.ReqProjeto{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
-			"message": "Could not create. Parameters were not passed correctly ", "error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(),
+			"Could not create. Parameters were not passed correctly", 400))
 		return
 	}
 
 	if res, err := projetos.NovoProjeto(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		c.JSON(http.StatusBadRequest, utils.KeyError("", "Team does not exist", 400))
 	} else {
 		c.JSON(http.StatusCreated, res)
 	}
@@ -41,8 +39,7 @@ func NovoProjeto(c *gin.Context) {
 // @Router /projetos [get]
 func ListarProjetos(c *gin.Context) {
 	fmt.Println("Tentando listar todos os projetos")
-	projetos, err := projetos.ListarProjetos()
-	if err != nil {
+	if projetos, err := projetos.ListarProjetos(); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, projetos)
@@ -64,11 +61,8 @@ func ListarProjetos(c *gin.Context) {
 func ListarProjeto(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando listar um projeto")
-	projetos, err := projetos.ListarProjeto(id)
-	if err != nil {
-		//c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "Message": "Project does not exist"})
-		c.JSON(http.StatusNotFound, 
-			utils.KeyError(err.Error(), "Casa", 404))
+	if projetos, err := projetos.ListarProjeto(id); err != nil {
+		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Project does not exist", 404))
 	} else {
 		c.JSON(http.StatusOK, projetos)
 	}
@@ -89,21 +83,18 @@ func ListarProjeto(c *gin.Context) {
 func ListarTasksProjeto(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando listar tarefas de um projeto")
-	projetos, err := projetos.ListarTasksProjeto(id)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "Message": "Project does not exist"})
+	if projetos, err := projetos.ListarTasksProjeto(id); err != nil {
+		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Project does not exist", 404))
 	} else {
 		c.JSON(http.StatusOK, projetos)
 	}
 }
 
-
 func ListarProjetosComStatus(c *gin.Context) {
 	status := c.Param("status")
 	fmt.Println("Tentando listar todos os projetos com um status especifico")
-	projetos, err := projetos.ListarProjetosComStatus(status)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "Message": "Status não existe"})
+	if projetos, err := projetos.ListarProjetosComStatus(status); err != nil {
+		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Status does not exist", 404))
 	} else {
 		c.JSON(http.StatusOK, projetos)
 	}
@@ -112,11 +103,10 @@ func ListarProjetosComStatus(c *gin.Context) {
 func DeletarProjeto(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar um projeto")
-	err := projetos.DeletarProjeto(id)
-	if err != nil {
+	if err := projetos.DeletarProjeto(id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"Message": "Projeto deletado com sucesso"})
+		c.JSON(http.StatusOK, utils.KeyOk("Project deleted successfully", 200))
 	}
 }
 
@@ -126,14 +116,12 @@ func AtualizarProjeto(c *gin.Context) {
 
 	req := modelApresentacao.ReqAtualizarProjeto{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Could not update. Parameters were not passed correctly.", "err": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(),
+			"Could not update project. Parameters were not passed correctly", 400))
 		return
 	}
 
-	res, err := projetos.AtualizarProjeto(id, &req)
-	if err != nil {
+	if res, err := projetos.AtualizarProjeto(id, &req); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, res)
@@ -146,9 +134,8 @@ func AtualizarStatusProjeto(c *gin.Context) {
 
 	req := modelApresentacao.ReqAtualizarProjeto{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Could not update. Parameters were not passed correctly.", "err": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(),
+			"Could not update. Parameters were not passed correctly", 400))
 		return
 	}
 

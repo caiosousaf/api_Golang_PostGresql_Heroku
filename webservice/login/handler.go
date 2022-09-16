@@ -5,6 +5,7 @@ import (
 	"gerenciadorDeProjetos/domain/login"
 	modelApresentacao "gerenciadorDeProjetos/domain/login/model"
 	"net/http"
+	utils "gerenciadorDeProjetos/utils/errors-tratment"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,10 +13,8 @@ import (
 func Login(c *gin.Context) {
 	req := modelApresentacao.Login{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(400, gin.H{
-			"message": "Could not create. Parameters were not passed correctly",
-			"err":     err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(), 
+		"Could not login. Parameters were not passed correctly", 400))
 		return
 	}
 

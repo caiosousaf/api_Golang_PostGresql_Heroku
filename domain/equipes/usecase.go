@@ -75,7 +75,7 @@ func BuscarMembrosDeEquipe(id string) (res []modelPessoa.ReqMembros, err error) 
 	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
-		return res, fmt.Errorf("equipe não Encontrada")
+		return res, fmt.Errorf("team does not exist")
 	}
 
 	if dados == nil {
@@ -97,7 +97,7 @@ func BuscarProjetosDeEquipe(id string) (res []modelApresentacao.ReqEquipeProjeto
 	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
-		return res, fmt.Errorf("equipe não Encontrada")
+		return res, fmt.Errorf("team does not exist")
 	}
 
 	if dados == nil {
@@ -119,7 +119,7 @@ func BuscarTasksDeEquipe(id string) (res []modelApresentacao.ReqTasksbyTeam, err
 	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
-		return res, fmt.Errorf("equipe não Encontrada")
+		return res, fmt.Errorf("team does not exist")
 	}
 
 	if dados == nil {
@@ -141,7 +141,7 @@ func DeletarEquipe(id string) (err error) {
 	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
-		return fmt.Errorf("equipe não Encontrada")
+		return fmt.Errorf("team does not exist")
 	}
 
 	if dados == nil {
@@ -159,7 +159,7 @@ func AtualizarEquipe(id string, req *modelApresentacao.ReqEquipe) (res *modelApr
 	dados, err := equipesRepo.BuscarEquipe(id)
 	//if len(dados) == 0 {
 	if err != nil {
-		return nil, fmt.Errorf("equipe não Encontrada")
+		return nil, fmt.Errorf("team does not exist")
 	}
 
 	if dados == nil {
