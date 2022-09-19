@@ -79,11 +79,11 @@ func BuscarMembrosDeEquipe(id string) (res []modelPessoa.ReqMembros, err error) 
 	}
 
 	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
+		return res, fmt.Errorf("unrecognized error")
 	}
 	res, err = equipesRepo.BuscarMembrosDeEquipe(id)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel buscar os membros")
+		return nil, fmt.Errorf("could not find members")
 	}
 	return
 }
@@ -101,11 +101,11 @@ func BuscarProjetosDeEquipe(id string) (res []modelApresentacao.ReqEquipeProjeto
 	}
 
 	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
+		return res, fmt.Errorf("unrecognized error")
 	}
 	res, err = equipesRepo.BuscarProjetosDeEquipe(id)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel buscar projetos de uma equipe")
+		return nil, fmt.Errorf("could not find projects of team")
 	}
 	return
 }
@@ -123,11 +123,11 @@ func BuscarTasksDeEquipe(id string) (res []modelApresentacao.ReqTasksbyTeam, err
 	}
 
 	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
+		return res, fmt.Errorf("unrecognized error")
 	}
 	res, err = equipesRepo.BuscarTasksDeEquipe(id)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel buscar tasks de uma equipe")
+		return nil, fmt.Errorf("could not find tasks of team")
 	}
 	return
 }
@@ -145,7 +145,7 @@ func DeletarEquipe(id string) (err error) {
 	}
 
 	if dados == nil {
-		return fmt.Errorf("em Aberto")
+		return fmt.Errorf("unrecognized error")
 	}
 	err = equipesRepo.DeletarEquipe(id)
 	return
@@ -163,11 +163,11 @@ func AtualizarEquipe(id string, req *modelApresentacao.ReqEquipe) (res *modelApr
 	}
 
 	if dados == nil {
-		return nil, fmt.Errorf("em Aberto")
+		return nil, fmt.Errorf("unrecognized error")
 	}
 	res, err = equipesRepo.AtualizarEquipe(id, req)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel atualizar equipe")
+		return nil, fmt.Errorf("unable to update team")
 	}
 	return
 }

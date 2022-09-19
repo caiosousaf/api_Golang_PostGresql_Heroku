@@ -69,8 +69,7 @@ func (postgres *DBTasks) ListarTask(id string) (*modelApresentacao.ReqTasks, err
 						from tasks as tk 
 						inner join pessoas as pe on tk.pessoa_id = pe.id_pessoa 
 						inner join projetos as pr on tk.projeto_id = pr.id_projeto 
-						WHERE id_task = $1
-						order by id_task`
+						WHERE id_task = $1`
 	var task = &modelApresentacao.ReqTasks{}
 
 	row := postgres.DB.QueryRow(sqlStatement, id)
@@ -122,7 +121,7 @@ func (postgres *DBTasks) AtualizarTask(id string, req *modelData.ReqUpdateTaskDa
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Descricao_Task, req.PessoaID, req.ProjetoID, req.Prioridade, id)
 
-	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Prioridade, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega); err != nil {
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
 		} else {
@@ -139,12 +138,12 @@ func (postgres *DBTasks) AtualizarStatusTask(id string, req *modelData.ReqUpdate
 	var task = &modelApresentacao.ReqTask{}
 	
 	sqlStatementStatus := `update tasks set data_conclusao = current_date where status = 'Concluido' and id_task = $1`
-	err := postgres.DB.QueryRow(sqlStatementStatus, id)
+	_, err := postgres.DB.Query(sqlStatementStatus, id)
 	if err != nil {
-		return task, nil
+		return  nil, err
 	}
 	row := postgres.DB.QueryRow(sqlStatement, req.Status, id)
-	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Prioridade, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega); err != nil {
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
 		} else {

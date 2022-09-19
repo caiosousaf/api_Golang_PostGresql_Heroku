@@ -48,20 +48,18 @@ func AtualizarTask(id string, req *modelApresentacao.ReqTask) (res *modelApresen
 	db := database.Conectar()
 	defer db.Close()
 	tasksRepo := tasks.NovoRepo(db)
-
 	dados, err := tasksRepo.ListarTask(id)
-	//if len(dados) == 0 {
+
 	if err != nil {
-		return res, fmt.Errorf("tarefa não Encontrada")
+		return res, fmt.Errorf("unable to update: Task not found in database")
 	}
 
 	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
+		return res, fmt.Errorf("unrecognized error")
 	}
-
 	res, err = tasksRepo.AtualizarTask(id, req)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel atualizar: Task Não existe")
+		return nil, fmt.Errorf("could not update: Team or Project does not exist")
 	}
 	return
 
@@ -72,18 +70,9 @@ func AtualizarStatusTask(id string, req *modelApresentacao.ReqTask) (res *modelA
 	defer db.Close()
 	tasksRepo := tasks.NovoRepo(db)
 
-	dados, err := tasksRepo.ListarTask(id)
-	//if len(dados) == 0 {
-	if err != nil {
-		return res, fmt.Errorf("tarefa não Encontrada")
-	}
-
-	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
-	}
 	res, err = tasksRepo.AtualizarStatusTask(id, req)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel atualizar status: Task Não existe")
+		return nil, fmt.Errorf("could not update: Task does not exist")
 	}
 	return
 }
@@ -95,11 +84,11 @@ func DeletarTask(id string) (err error) {
 	tasksRepo := tasks.NovoRepo(db)
 	dados, err := tasksRepo.ListarTask(id)
 	if err != nil {
-		return fmt.Errorf("task não encontrada")
+		return fmt.Errorf("task does not exist")
 	}
 
 	if dados == nil {
-		return fmt.Errorf("impossivel deletar")
+		return fmt.Errorf("unrecognized error")
 	}
 	err = tasksRepo.DeletarTask(id)
 	return

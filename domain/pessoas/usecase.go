@@ -40,16 +40,16 @@ func ListarTarefasPessoa(id string) (res []modelApresentacao.ReqTarefaPessoa, er
 	dados, err := pessoasRepo.ListarPessoa(id)
 	//if len(dados) == 0 {
 	if err != nil {
-		return res, fmt.Errorf("pessoa não Encontrada")
+		return res, fmt.Errorf("person does not exist")
 	}
 
 	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
+		return res, fmt.Errorf("unrecognized error")
 	}
 
 	res, err = pessoasRepo.ListarTarefasPessoa(id)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel buscar tarefas de uma pessoa")
+		return nil, fmt.Errorf("unable to fetch tasks from a person")
 	}
 	return
 }
@@ -63,16 +63,16 @@ func AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (res 
 	dados, err := pessoasRepo.ListarPessoa(id)
 	//if len(dados) == 0 {
 	if err != nil {
-		return res, fmt.Errorf("person does not exist")
+		return res, fmt.Errorf("unable to update: Person does not exist")
 	}
 
 	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
+		return res, fmt.Errorf("unrecognized error")
 	}
 
 	res, err = pessoasRepo.AtualizarPessoa(id, req)
 	if err != nil {
-		return nil, fmt.Errorf("team does not exist")
+		return nil, fmt.Errorf("unable to update: Team does not exist")
 	}
 	return
 }
@@ -86,11 +86,11 @@ func DeletarPessoa(id string) (err error) {
 	dados, err := pessoasRepo.ListarPessoa(id)
 	//if len(dados) == 0 {
 	if err != nil {
-		return fmt.Errorf("pessoa não Encontrada")
+		return fmt.Errorf("person does not exist")
 	}
 
 	if dados == nil {
-		return fmt.Errorf("em Aberto")
+		return fmt.Errorf("unrecognized error")
 	}
 	err = pessoasRepo.DeletarPessoa(id)
 	return

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"gerenciadorDeProjetos/domain/tasks"
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
-	"net/http"
 	utils "gerenciadorDeProjetos/utils/errors-tratment"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func NovaTask(c *gin.Context) {
@@ -68,9 +68,7 @@ func AtualizarTask(c *gin.Context) {
 	}
 
 	if res, err := tasks.AtualizarTask(id, &req); err != nil {
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		}
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, res)
 	}

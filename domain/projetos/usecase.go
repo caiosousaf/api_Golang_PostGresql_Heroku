@@ -39,11 +39,11 @@ func ListarTasksProjeto(id string) (res []modelApresentacao.ReqTasksProjeto, err
 	dados, err := projetosRepo.ListarProjeto(id)
 
 	if err != nil {
-		return nil, fmt.Errorf("projeto não Encontrado")
+		return nil, fmt.Errorf("project not found in database")
 	}
 
 	if dados == nil {
-		return nil, fmt.Errorf("em Aberto")
+		return nil, fmt.Errorf("unrecognized error")
 	}
 	res, err = projetosRepo.ListarTasksProjeto(id)
 	if err != nil {
@@ -68,11 +68,11 @@ func DeletarProjeto(id string) (err error) {
 	dados, err := projetosRepo.ListarProjeto(id)
 
 	if err != nil {
-		return fmt.Errorf("projeto não Encontrado")
+		return fmt.Errorf("project not found in database")
 	}
 
 	if dados == nil {
-		return fmt.Errorf("em Aberto")
+		return fmt.Errorf("unrecognized error")
 	}
 	err = projetosRepo.DeletarProjeto(id)
 	return
@@ -85,16 +85,16 @@ func AtualizarProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (re
 	dados, err := projetosRepo.ListarProjeto(id)
 
 	if err != nil {
-		return res, fmt.Errorf("projeto não Encontrado")
+		return res, fmt.Errorf("project not found in database")
 	}
 
 	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
+		return res, fmt.Errorf("unrecognized error")
 	}
 
 	res, err = projetosRepo.AtualizarProjeto(id, req)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel atualizar: Projeto Não existe")
+		return nil, fmt.Errorf("unable to update: Team does not exist")
 	}
 	return
 }
@@ -103,19 +103,10 @@ func AtualizarStatusProjeto(id string, req *modelApresentacao.ReqAtualizarProjet
 	db := database.Conectar()
 	defer db.Close()
 	projetosRepo := projetos.NovoRepo(db)
-	dados, err := projetosRepo.ListarProjeto(id)
-
-	if err != nil {
-		return res, fmt.Errorf("projeto não Encontrado")
-	}
-
-	if dados == nil {
-		return res, fmt.Errorf("em Aberto")
-	}
 
 	res, err = projetosRepo.AtualizarStatusProjeto(id, req)
 	if err != nil {
-		return nil, fmt.Errorf("não foi possivel atualizar status: Projeto Não existe")
+		return nil, fmt.Errorf("unable to update status: Project Does not exist")
 	}
 	return
 }
