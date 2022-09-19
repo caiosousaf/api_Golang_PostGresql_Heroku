@@ -3,10 +3,10 @@ package projetos
 import "time"
 
 type ReqProjeto struct {
-	Nome_Projeto      *string `json:"nome_projeto"`
-	Equipe_ID         *int    `json:"equipe_id"`
-	Descricao_Projeto *string `json:"descricao_projeto"`
-	Prazo             int     `json:"prazo_entrega"`
+	Nome_Projeto      *string `json:"nome_projeto" example:"Nome"`
+	Equipe_ID         *int    `json:"equipe_id" example:"2"`
+	Descricao_Projeto *string `json:"descricao_projeto" example:"Descricao"`
+	Prazo             int     `json:"prazo_entrega" example:"2"`
 }
 
 type ReqProjetos struct {

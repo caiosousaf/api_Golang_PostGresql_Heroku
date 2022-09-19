@@ -11,6 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security bearerAuth
+// @Summary POST a new Project
+// @Description POST a new project. For the request to be met, the "nome_projeto", "equipe_id", "descricao_projeto" are required. The status already goes with a predefined value "A Fazer". the "prazo_entrega" is the number of days that the delivery time will be
+// @Param		NewProject		body	string		true	"NewProject"
+// @Accept json
+// @Produce json
+// @Success 201 {object} modelApresentacao.ReqProjeto "OK"
+// @Failure 400,401 {array} utils.ResError
+// @Tags Projects
+// @Router /projetos [post]
 func NovoProjeto(c *gin.Context) {
 	fmt.Println("Tentando cadastrar um novo projeto")
 	req := modelApresentacao.ReqProjeto{}
@@ -90,6 +100,17 @@ func ListarTasksProjeto(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// Get Projects with specific status
+// @Summary Get Status of Projects with a specific status with Param Status
+// @Description GET all registered projects that have the status passed as a parameter
+// @Param        status   path      string  true  "Status"		Enums(A Fazer,Em Andamento,Em Teste,Concluido)
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqStatusProjeto "OK"
+// @Failure 404 {string} string "error"
+// @Tags Projects
+// @Router /projetos/status/{status} [get]
 func ListarProjetosComStatus(c *gin.Context) {
 	status := c.Param("status")
 	fmt.Println("Tentando listar todos os projetos com um status especifico")
@@ -100,6 +121,17 @@ func ListarProjetosComStatus(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary Delete a specific Project
+// @Description DELETE a specific project. For the request to be met, the "id_projeto" are required
+// @Param        id   		path      	int  	true  	"Projeto ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.ResOk
+// @Failure 404 {array} utils.ResError
+// @Failure 401 {array} string "Not Authorized"
+// @Tags Projects
+// @Router /projetos/{id} [delete]
 func DeletarProjeto(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar um projeto")
@@ -110,6 +142,18 @@ func DeletarProjeto(c *gin.Context) {
 	}
 }
 
+// PUT Project
+// @Security bearerAuth
+// @Summary PUT Project with ID
+// @Description PUT a specific project. For the request to be met, the "nome_projeto" and "equipe_id" and "descricao_projeto" are required
+// @Param        id   				path      	int  	true  	"Projeto ID"
+// @Param		Project				body		string 	true 	"Project"
+// @Accept json
+// @Produce json
+// @Success 200 {object} projetos.ReqAtualizarProjetoData
+// @Failure 400,401 {array} utils.ResError
+// @Tags Projects
+// @Router /projetos/{id} [put]
 func AtualizarProjeto(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando atualizar um projeto")
@@ -128,6 +172,17 @@ func AtualizarProjeto(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary PUT Status of a Project
+// @Description PUT Status of a specific project. For the request to be met, the "status" are required
+// @Param        id   						path      	int  	true  	"id"
+// @Param		Status-Project				body		string 	true 	"Status-Project"
+// @Accept json
+// @Produce json
+// @Success 200 {object} projetos.ReqUpdateStatusProjeto "OK"
+// @Failure 400,401 {array} utils.ResError
+// @Tags Projects
+// @Router /projetos/{id}/status [put]
 func AtualizarStatusProjeto(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando atualizar status de um projeto")

@@ -1,4 +1,49 @@
 definitions:
+  errorstratment.ResError:
+    properties:
+      code:
+        type: integer
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  errorstratment.ResOk:
+    properties:
+      code:
+        example: 200
+        type: integer
+      message:
+        example: Project deleted successfully
+        type: string
+    type: object
+  projetos.ReqAtualizarProjetoData:
+    properties:
+      descricao_projeto:
+        example: Criacao de sistema e-commerce
+        type: string
+      equipe_id:
+        example: 1
+        type: integer
+      nome_projeto:
+        example: Casas Bahias
+        type: string
+    type: object
+  projetos.ReqProjeto:
+    properties:
+      descricao_projeto:
+        example: Descricao
+        type: string
+      equipe_id:
+        example: 2
+        type: integer
+      nome_projeto:
+        example: Nome
+        type: string
+      prazo_entrega:
+        example: 2
+        type: integer
+    type: object
   projetos.ReqProjetos:
     properties:
       data_conclusao:
@@ -29,6 +74,28 @@ definitions:
         example: Concluido
         type: string
     type: object
+  projetos.ReqStatusProjeto:
+    properties:
+      data_conclusao:
+        example: ""
+        type: string
+      data_criacao:
+        example: "2022-07-25"
+        type: string
+      descricao_projeto:
+        type: string
+      equipe_id:
+        type: integer
+      id_projeto:
+        type: integer
+      nome_projeto:
+        type: string
+      prazo_entrega:
+        example: "2022-07-25"
+        type: string
+      status:
+        type: string
+    type: object
   projetos.ReqTasksProjeto:
     properties:
       data_conclusao:
@@ -56,6 +123,12 @@ definitions:
       projeto_id:
         type: integer
       status:
+        type: string
+    type: object
+  projetos.ReqUpdateStatusProjeto:
+    properties:
+      status:
+        example: Em Andamento
         type: string
     type: object
 info:
@@ -90,7 +163,80 @@ paths:
       summary: Get All Projects
       tags:
       - Projects
+    post:
+      consumes:
+      - application/json
+      description: POST a new project. For the request to be met, the "nome_projeto",
+        "equipe_id", "descricao_projeto" are required. The status already goes with
+        a predefined value "A Fazer". the "prazo_entrega" is the number of days that
+        the delivery time will be
+      parameters:
+      - description: NewProject
+        in: body
+        name: NewProject
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            $ref: '#/definitions/projetos.ReqProjeto'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: POST a new Project
+      tags:
+      - Projects
   /projetos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DELETE a specific project. For the request to be met, the "id_projeto"
+        are required
+      parameters:
+      - description: Projeto ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/errorstratment.ResOk'
+        "401":
+          description: Not Authorized
+          schema:
+            items:
+              type: string
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: Delete a specific Project
+      tags:
+      - Projects
     get:
       consumes:
       - application/json
@@ -123,6 +269,89 @@ paths:
       security:
       - bearerAuth: []
       summary: Get Project with specific ID
+      tags:
+      - Projects
+    put:
+      consumes:
+      - application/json
+      description: PUT a specific project. For the request to be met, the "nome_projeto"
+        and "equipe_id" and "descricao_projeto" are required
+      parameters:
+      - description: Projeto ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Project
+        in: body
+        name: Project
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/projetos.ReqAtualizarProjetoData'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: PUT Project with ID
+      tags:
+      - Projects
+  /projetos/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: PUT Status of a specific project. For the request to be met, the
+        "status" are required
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Status-Project
+        in: body
+        name: Status-Project
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/projetos.ReqUpdateStatusProjeto'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: PUT Status of a Project
       tags:
       - Projects
   /projetos/{id}/tasks:
@@ -160,6 +389,40 @@ paths:
       security:
       - bearerAuth: []
       summary: Get Tasks of Project with Param ID
+      tags:
+      - Projects
+  /projetos/status/{status}:
+    get:
+      consumes:
+      - application/json
+      description: GET all registered projects that have the status passed as a parameter
+      parameters:
+      - description: Status
+        enum:
+        - A Fazer
+        - Em Andamento
+        - Em Teste
+        - Concluido
+        in: path
+        name: status
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/projetos.ReqStatusProjeto'
+            type: array
+        "404":
+          description: error
+          schema:
+            type: string
+      security:
+      - bearerAuth: []
+      summary: Get Status of Projects with a specific status with Param Status
       tags:
       - Projects
 securityDefinitions:
