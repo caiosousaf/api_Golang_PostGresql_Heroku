@@ -12,6 +12,344 @@
         }
     },
     "paths": {
+        "/pessoas": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Returns all registered people and the name of the team they are assigned to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "Get All People",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.ReqGetPessoa"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "POST a new Person. For the request to be met, the \"nome_pessoa\", \"funcao_pessoa\", \"equipe_id\" are required.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "POST a new Person",
+                "parameters": [
+                    {
+                        "description": "New Person",
+                        "name": "Person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pessoas.ReqPessoa"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoas/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET a specific person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "GET a specific Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.ReqGetPessoa"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "PUT a specific person. For the request to be met, the \"nome_pessoa\" and \"funcao_pessoa\" and \"equipe_id\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "PUT Person with ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Pessoa",
+                        "name": "Pessoa",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pessoas.ReqAtualizarPessoa"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "DELETE a person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "DELETE a Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResOk"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoas/{id}/tasks": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET the tasks registered and assigned to a specific person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "GET All Tasks of a specific Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.ReqTarefaPessoa"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/projetos": {
             "get": {
                 "security": [
@@ -474,6 +812,138 @@
                 "message": {
                     "type": "string",
                     "example": "Project deleted successfully"
+                }
+            }
+        },
+        "pessoas.ReqAtualizarPessoa": {
+            "type": "object",
+            "properties": {
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "funcao_pessoa": {
+                    "type": "string",
+                    "example": "Back-End"
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Caio Swagger"
+                }
+            }
+        },
+        "pessoas.ReqGetPessoa": {
+            "type": "object",
+            "properties": {
+                "data_contratacao": {
+                    "type": "string",
+                    "example": "19/09/2022"
+                },
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "funcao_pessoa": {
+                    "type": "string",
+                    "example": "Back-End"
+                },
+                "id_pessoa": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "nome_equipe": {
+                    "type": "string",
+                    "example": "Komanda"
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Caio Sousa"
+                }
+            }
+        },
+        "pessoas.ReqPessoa": {
+            "type": "object",
+            "properties": {
+                "data_contratacao": {
+                    "type": "string",
+                    "example": "19/09/2022"
+                },
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "funcao_pessoa": {
+                    "type": "string",
+                    "example": "Back-End"
+                },
+                "id_pessoa": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Caio Sousa"
+                }
+            }
+        },
+        "pessoas.ReqTarefaPessoa": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string",
+                    "example": "22/09/2022"
+                },
+                "data_criacao": {
+                    "type": "string",
+                    "example": "22/09/2022"
+                },
+                "descricao_task": {
+                    "type": "string",
+                    "example": "Exemplo"
+                },
+                "funcao_pessoa": {
+                    "type": "string",
+                    "example": "Back-End"
+                },
+                "id_equipe": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_pessoa": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "id_task": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "nome_equipe": {
+                    "type": "string",
+                    "example": "Komanda"
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Caio Sousa"
+                },
+                "nome_projeto": {
+                    "type": "string",
+                    "example": "Casas Bahias"
+                },
+                "prazo_entrega": {
+                    "type": "string",
+                    "example": "22/09/2022"
+                },
+                "prioridade": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "projeto_id": {
+                    "type": "integer",
+                    "example": 40
+                },
+                "status": {
+                    "type": "string",
+                    "example": "Em Teste"
                 }
             }
         },
