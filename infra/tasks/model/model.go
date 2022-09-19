@@ -16,5 +16,5 @@ type ReqUpdateTaskData struct {
 }
 
 type ReqUpdateStatusTask struct {
-	Status		*string		`json:"status"`
+	Status		*string		`json:"status" example:"Em Teste"`
 }

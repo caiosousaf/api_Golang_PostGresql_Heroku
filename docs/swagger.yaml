@@ -227,6 +227,81 @@ definitions:
         example: Em Andamento
         type: string
     type: object
+  tasks.ReqTaskApresent:
+    properties:
+      descricao_task:
+        example: Descrição Teste
+        type: string
+      pessoa_id:
+        example: 4
+        type: integer
+      prazo_entrega:
+        example: 17
+        type: integer
+      prioridade:
+        example: 1
+        type: integer
+      projeto_id:
+        example: 24
+        type: integer
+    type: object
+  tasks.ReqTasks:
+    properties:
+      data_conclusao:
+        example: 19/09/2022
+        type: string
+      data_criacao:
+        example: 19/09/2022
+        type: string
+      descricao_task:
+        example: Descricao
+        type: string
+      id_task:
+        example: 10
+        type: integer
+      nome_pessoa:
+        example: Fulano
+        type: string
+      nome_projeto:
+        example: Grupo BrisaNet
+        type: string
+      pessoa_id:
+        example: 4
+        type: integer
+      prazo_entrega:
+        example: 19/09/2022
+        type: string
+      prioridade:
+        example: 2
+        type: integer
+      projeto_id:
+        example: 3
+        type: integer
+      status:
+        example: Em Andamento
+        type: string
+    type: object
+  tasks.ReqUpdateStatusTask:
+    properties:
+      status:
+        example: Em Teste
+        type: string
+    type: object
+  tasks.ReqUpdateTaskData:
+    properties:
+      descricao_task:
+        example: Descrição Teste
+        type: string
+      pessoa_id:
+        example: 4
+        type: integer
+      prioridade:
+        example: 1
+        type: integer
+      projeto_id:
+        example: 24
+        type: integer
+    type: object
 info:
   contact:
     email: caiosousafernandesferreira@hotmail.com
@@ -740,6 +815,279 @@ paths:
       summary: Get Status of Projects with a specific status with Param Status
       tags:
       - Projects
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get list all task
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tasks.ReqTasks'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: Get All Tasks
+      tags:
+      - Tasks
+    post:
+      consumes:
+      - application/json
+      description: POST a new task. For the request to be met, the "descricao_task",
+        "pessoa_id", "projeto_id", "prazo_entrega(in days)", "prioridade" are required.
+        The status already goes with a predefined value "A Fazer". the "prazo_entrega"
+        is the number of days that the delivery time will be
+      parameters:
+      - description: NewTask
+        in: body
+        name: NewTask
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tasks.ReqTaskApresent'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: POST a new Task
+      tags:
+      - Tasks
+  /tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DELETE a Task with id
+      parameters:
+      - description: Task_ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResOk'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: DELETE a Task
+      tags:
+      - Tasks
+    get:
+      consumes:
+      - application/json
+      description: Get a specific task with id
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tasks.ReqTasks'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: Get a specific Task
+      tags:
+      - Tasks
+    put:
+      consumes:
+      - application/json
+      description: PUT a specific task. For the request to be met, the "descricao_task"
+        and "pessoa_id" and "projeto_id" and "prioridade" are required.
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: PUT Task
+        in: body
+        name: Task
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tasks.ReqUpdateTaskData'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: PUT Task
+      tags:
+      - Tasks
+  /tasks/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: PUT Status of a specific Task. For the request to be met, the "status"
+        are required
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Status
+        in: body
+        name: Status
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tasks.ReqUpdateStatusTask'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: PUT Status of a Task
+      tags:
+      - Tasks
+  /tasks/status/{status}:
+    get:
+      consumes:
+      - application/json
+      description: GET All tasks with a specific status. "Em Andamento" or "Concluido"
+      parameters:
+      - description: Status
+        enum:
+        - A Fazer
+        - Em Andamento
+        - Em Teste
+        - Concluido
+        in: path
+        name: status
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tasks.ReqTasks'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: GET status of tasks
+      tags:
+      - Tasks
 securityDefinitions:
   bearerAuth:
     in: header

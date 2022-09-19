@@ -9,6 +9,16 @@ import (
 	"net/http"
 )
 
+// @Security bearerAuth
+// @Summary POST a new Task
+// @Description POST a new task. For the request to be met, the "descricao_task", "pessoa_id", "projeto_id", "prazo_entrega(in days)", "prioridade" are required. The status already goes with a predefined value "A Fazer". the "prazo_entrega" is the number of days that the delivery time will be
+// @Param		NewTask		body	string		true	"NewTask"
+// @Accept json
+// @Produce json
+// @Success 200 {object} modelApresentacao.ReqTaskApresent "OK"
+// @Failure 401,400 {array} utils.ResError
+// @Tags Tasks
+// @Router /tasks [post]
 func NovaTask(c *gin.Context) {
 	fmt.Println("Tentando cadastrar uma nova task")
 	req := modelApresentacao.ReqTaskApresent{}
@@ -27,6 +37,16 @@ func NovaTask(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// Get Tasks
+// @Summary Get All Tasks
+// @Description Get list all task
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqTasks "OK"
+// @Failure 401,404 {array} utils.ResError
+// @Tags Tasks
+// @Router /tasks [get]
 func ListarTasks(c *gin.Context) {
 	fmt.Println("Tentando listar todos as tasks")
 	if tasks, err := tasks.ListarTasks(); err != nil {
@@ -36,6 +56,16 @@ func ListarTasks(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary Get a specific Task
+// @Description Get a specific task with id
+// @Param	id		path	int		true	"Task ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqTasks "OK"
+// @Failure 401,404 {array} utils.ResError
+// @Tags Tasks
+// @Router /tasks/{id} [get]
 func ListarTask(c *gin.Context) {
 	fmt.Println("Tentando listar uma task")
 	id := c.Param("id")
@@ -46,6 +76,16 @@ func ListarTask(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary GET status of tasks
+// @Description GET All tasks with a specific status. "Em Andamento" or "Concluido"
+// @Param		status		path	string		true		"Status"	Enums(A Fazer,Em Andamento,Em Teste,Concluido)
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqTasks "OK"
+// @Failure 401,404 {array} utils.ResError
+// @Tags Tasks
+// @Router /tasks/status/{status} [get]
 func ListarStatusTasks(c *gin.Context) {
 	fmt.Println("Tentando listar todas as tarefas com um status especifico")
 	status := c.Param("status")
@@ -56,6 +96,17 @@ func ListarStatusTasks(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary PUT Task 
+// @Description PUT a specific task. For the request to be met, the "descricao_task" and "pessoa_id" and "projeto_id" and "prioridade" are required.
+// @Param        id   				path      	int  	true  	"Task ID"
+// @Param		Task				body		string 	true 	"PUT Task"
+// @Accept json
+// @Produce json
+// @Success 200 {object} tasks.ReqUpdateTaskData "OK"
+// @Failure 401,400 {array} utils.ResError
+// @Tags Tasks
+// @Router /tasks/{id} [put]
 func AtualizarTask(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando atualizar uma task")
@@ -68,12 +119,23 @@ func AtualizarTask(c *gin.Context) {
 	}
 
 	if res, err := tasks.AtualizarTask(id, &req); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, res)
 	}
 }
 
+// @Security bearerAuth
+// @Summary PUT Status of a Task
+// @Description PUT Status of a specific Task. For the request to be met, the "status" are required
+// @Param        id   				path      	int  	true  	"Task ID"
+// @Param		Status				body		string 	true 	"Status"
+// @Accept json
+// @Produce json
+// @Success 200 {object} tasks.ReqUpdateStatusTask
+// @Failure 401,400,404 {array} utils.ResError
+// @Tags Tasks
+// @Router /tasks/{id}/status [put]
 func AtualizarStatusTask(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando atualizar status de uma task")
@@ -95,6 +157,16 @@ func AtualizarStatusTask(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary DELETE a Task
+// @Description DELETE a Task with id
+// @Param		id		path	int		true		"Task_ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} utils.ResOk
+// @Failure 401,404 {array} utils.ResError
+// @Tags Tasks
+// @Router /tasks/{id} [delete]
 func DeletarTask(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar uma task")

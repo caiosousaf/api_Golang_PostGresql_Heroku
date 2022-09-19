@@ -23,17 +23,17 @@ type ReqTaskApresent struct {
 }
 
 type ReqTasks struct {
-	ID_Task        *uint       `json:"id_task"`
-	Descricao_Task *string     `json:"descricao_task"`
-	PessoaID       *int        `json:"pessoa_id"`
-	Nome_Pessoa    *string     `json:"nome_pessoa"`
-	ProjetoID      *int        `json:"projeto_id"`
-	Nome_Projeto   *string     `json:"nome_projeto"`
-	Status         *string     `json:"status" enums:"Em Andamento, Concluido"`
-	Data_Criacao   *time.Time `json:"data_criacao"`
-	Data_Conclusao *time.Time `json:"data_conclusao"`
-	Prazo_Entrega  *time.Time `json:"prazo_entrega"`
-	Prioridade     *int        `json:"prioridade"`
+	ID_Task        *uint       `json:"id_task" example:"10"`
+	Descricao_Task *string     `json:"descricao_task" example:"Descricao"`
+	PessoaID       *int        `json:"pessoa_id" example:"4"`
+	Nome_Pessoa    *string     `json:"nome_pessoa" example:"Fulano"`
+	ProjetoID      *int        `json:"projeto_id" example:"3"`
+	Nome_Projeto   *string     `json:"nome_projeto" example:"Grupo BrisaNet"`
+	Status         *string     `json:"status" example:"Em Andamento"`
+	Data_Criacao   *time.Time `json:"data_criacao" example:"19/09/2022"`
+	Data_Conclusao *time.Time `json:"data_conclusao" example:"19/09/2022"`
+	Prazo_Entrega  *time.Time `json:"prazo_entrega" example:"19/09/2022"`
+	Prioridade     *int        `json:"prioridade" example:"2"`
 }
 
 
