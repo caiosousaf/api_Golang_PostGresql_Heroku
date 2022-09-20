@@ -108,7 +108,3 @@ INSERT INTO tasks(descricao_task, pessoa_id, projeto_id, prioridade, prazo_entre
 INSERT INTO tasks(descricao_task, pessoa_id, projeto_id, prioridade, prazo_entrega) VALUES('Proin ut magna et placerat aliquam magna congue, fames curabitur senectus torquent nulla nisi, aliquet eleifend mollis aptent hendrerit semper.', 8, 3, 1, current_date+11);
 INSERT INTO tasks(descricao_task, pessoa_id, projeto_id, prioridade, prazo_entrega) VALUES('Dictumst mollis porttitor ultricies dictumst dolor sapien netus, in ipsum vel lectus orci at, litora at luctus nam egestas lobortis.', 9, 2, 2, current_date+9);
 INSERT INTO tasks(descricao_task, pessoa_id, projeto_id, prioridade, prazo_entrega) VALUES('Primis eu elementum lorem iaculis metus lorem taciti, primis nunc mi lectus scelerisque egestas, sem eu dapibus torquent potenti ut.', 10, 1, 1, current_date+7);
-
-INSERT INTO users(nome, email, password) VALUES('Caio Sousa', 'caio.admin@email.com', 'root');
-INSERT INTO users(nome, email, password) VALUES('Usuario Root', 'root@root.com', 'salmo34');
-INSERT INTO users(nome, email, password) VALUES('Usuario Comum', 'comum@comum.com', 'usuario');

@@ -55,5 +55,6 @@ func main() {
 	login.Router(lo)
 
 	r.Run(":" + port)
+	//export PATH=$(go env GOPATH)/bin:$PATH
 	//r.Run()
 }
