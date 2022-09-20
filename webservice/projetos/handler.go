@@ -29,7 +29,6 @@ func NovoProjeto(c *gin.Context) {
 			"Could not create. Parameters were not passed correctly", 400))
 		return
 	}
-
 	if res, err := projetos.NovoProjeto(&req); err != nil {
 		c.JSON(http.StatusBadRequest, utils.KeyError("", "Team does not exist", 400))
 	} else {

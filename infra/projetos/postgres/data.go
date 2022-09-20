@@ -104,7 +104,9 @@ func (postgres *DBProjetos) ListarTasksProjeto(id string) ([]modelApresentacao.R
 	}
 
 	for rows.Next() {
-		if err := rows.Scan(&projeto.ID_Task, &projeto.Descricao_Task, &projeto.Pessoa_ID, &projeto.Projeto_ID, &projeto.Status, &projeto.Prioridade, &projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega, &projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Nome_Equipe, &projeto.Nome_Pessoa); err != nil {
+		if err := rows.Scan(&projeto.ID_Task, &projeto.Descricao_Task, &projeto.Pessoa_ID, &projeto.Projeto_ID, &projeto.Status,
+			  &projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega, &projeto.Prioridade, &projeto.ID_Projeto,
+			  &projeto.Nome_Projeto, &projeto.Nome_Equipe, &projeto.Nome_Pessoa); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, err
 			} else {
