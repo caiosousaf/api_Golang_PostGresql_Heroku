@@ -553,7 +553,7 @@ paths:
       summary: Get Specific Team
       tags:
       - Teams
-  /equipes/{id}/pessoas:
+  /equipes/{id}/membros:
     get:
       consumes:
       - application/json

@@ -236,7 +236,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/equipes/{id}/pessoas": {
+        "/equipes/{id}/membros": {
             "get": {
                 "security": [
                     {

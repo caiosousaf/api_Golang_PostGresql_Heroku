@@ -10,51 +10,49 @@ BEGIN
 END $$;
 
 CREATE TABLE "equipes" (
-  "id_equipe" bigserial PRIMARY KEY,
-  "nome_equipe" varchar NOT NULL UNIQUE,
-  "data_criacao" date NOT NULL DEFAULT CURRENT_DATE
+  "id_equipe" BIGSERIAL PRIMARY KEY,
+  "nome_equipe" VARCHAR NOT NULL UNIQUE,
+  "data_criacao" DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE "pessoas" (
-  "id_pessoa" bigserial PRIMARY KEY,
-  "nome_pessoa" varchar NOT NULL,
-  "funcao_pessoa" varchar NOT NULL,
-  "equipe_id" bigint,
-  "data_contratacao" date NOT NULL DEFAULT CURRENT_DATE
+  "id_pessoa" BIGSERIAL PRIMARY KEY,
+  "nome_pessoa" VARCHAR NOT NULL,
+  "funcao_pessoa" VARCHAR NOT NULL,
+  "equipe_id" BIGINT,
+  "data_contratacao" DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE "projetos" (
-  "id_projeto" bigserial PRIMARY KEY,
-  "nome_projeto" varchar NOT NULL UNIQUE,
+  "id_projeto" BIGSERIAL PRIMARY KEY,
+  "nome_projeto" VARCHAR NOT NULL UNIQUE,
   "descricao_projeto" text NOT NULL,
-  "equipe_id" bigint NOT NULL,
-  "status" varchar NOT NULL DEFAULT 'A Fazer',
-  "data_criacao" date NOT NULL DEFAULT CURRENT_DATE,
-  "data_conclusao" date, 
-  "prazo_entrega" date 
+  "equipe_id" BIGINT NOT NULL,
+  "status" VARCHAR NOT NULL DEFAULT 'A Fazer',
+  "data_criacao" DATE NOT NULL DEFAULT CURRENT_DATE,
+  "data_conclusao" DATE, 
+  "prazo_entrega" DATE 
 );
 
 CREATE TABLE "tasks" (
-  "id_task" bigserial PRIMARY KEY,
+  "id_task" BIGSERIAL PRIMARY KEY,
   "descricao_task" text NOT NULL,
-  "pessoa_id" bigint NOT NULL,
-  "projeto_id" bigint NOT NULL,
-  "status" varchar NOT NULL DEFAULT 'A Fazer',
+  "pessoa_id" BIGINT NOT NULL,
+  "projeto_id" BIGINT NOT NULL,
+  "status" VARCHAR NOT NULL DEFAULT 'A Fazer',
   "prioridade" int NOT NULL, 
-  "data_criacao" date NOT NULL DEFAULT CURRENT_DATE,
-  "data_conclusao" date, 
-  "prazo_entrega" date 
+  "data_criacao" DATE NOT NULL DEFAULT CURRENT_DATE,
+  "data_conclusao" DATE, 
+  "prazo_entrega" DATE 
 );
 
 CREATE TABLE "users" (
-    "id_usuario" bigserial PRIMARY KEY,
-    "nome" varchar NOT NULL,
-    "email" varchar NOT NULL,
-    "password" varchar NOT NULL,
+    "id_usuario" BIGSERIAL PRIMARY KEY,
+    "nome" VARCHAR NOT NULL,
+    "email" VARCHAR NOT NULL UNIQUE,
+    "password" VARCHAR NOT NULL,
     "data_criacao" DATE NOT NULL DEFAULT CURRENT_DATE
 );
-
-
 
 ALTER TABLE "pessoas" ADD FOREIGN KEY ("equipe_id") REFERENCES "equipes" ("id_equipe");
 

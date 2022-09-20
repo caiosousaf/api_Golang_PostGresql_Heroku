@@ -47,6 +47,9 @@ func BuscarEquipe(id string) (res *modelApresentacao.ReqEquipe, err error) {
 	equipesRepo := equipes.NovoRepo(db)
 
 	res, err = equipesRepo.BuscarEquipe(id)
+	if err != nil {
+		return nil, fmt.Errorf("team does not exist")
+	}
 
 	pessoas, err := equipesRepo.BuscarMembrosDeEquipe(id)
 	if err != nil {

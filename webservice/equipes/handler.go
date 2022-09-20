@@ -86,7 +86,7 @@ func buscarEquipe(c *gin.Context) {
 // @Success 200 {array} pessoas.ReqMembros "OK"
 // @Failure 401,404,204 {array} utils.ResError
 // @Tags Teams
-// @Router /equipes/{id}/pessoas [get]
+// @Router /equipes/{id}/membros [get]
 func buscarMembrosDeEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando encontrar os membros de uma equipe")
