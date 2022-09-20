@@ -1,0 +1,2383 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {
+            "name": "Caio Sousa",
+            "url": "http://www.swagger.io/support",
+            "email": "caiosousafernandesferreira@hotmail.com"
+        },
+        "license": {
+            "name": "Mozilla Public License 2.0",
+            "url": "https://www.mozilla.org/en-US/MPL/2.0/"
+        }
+    },
+    "paths": {
+        "/equipes": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Returns all registered teams and all their members they are assigned to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get All Teams",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.ReqEquipe"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "POST a new Team. For the request to be met, the \"nome_equipe\" are required.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "POST a new Team",
+                "parameters": [
+                    {
+                        "description": "NewTeam",
+                        "name": "Team",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/equipes.Equipe"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/equipes/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Returns a team, all their members, all projects and all tasks they are assigned to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get Specific Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id_Team",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.ReqEquipe"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "DELETE a Team",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "DELETE a Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResOk"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/equipes/{id}/pessoas": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all members of a specific Team with ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get Members of a specific Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.ReqMembros"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/equipes/{id}/projetos": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all projects of a specific Team with ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get Projects of a specific Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.ReqEquipeProjetos"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/equipes/{id}/tasks": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all tasks of a specific Team with ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get Tasks of a specific Team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.ReqTasksbyTeam"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Authenticates a user and provides a JWT to Authorize API calls",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Provides a JSON Web Token",
+                "operationId": "Authentication",
+                "parameters": [
+                    {
+                        "description": "Login",
+                        "name": "Login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoas": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Returns all registered people and the name of the team they are assigned to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "Get All People",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.ReqGetPessoa"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "POST a new Person. For the request to be met, the \"nome_pessoa\", \"funcao_pessoa\", \"equipe_id\" are required.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "POST a new Person",
+                "parameters": [
+                    {
+                        "description": "New Person",
+                        "name": "Person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pessoas.ReqPessoa"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoas/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET a specific person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "GET a specific Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.ReqGetPessoa"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "PUT a specific person. For the request to be met, the \"nome_pessoa\" and \"funcao_pessoa\" and \"equipe_id\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "PUT Person with ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Pessoa",
+                        "name": "Pessoa",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pessoas.ReqAtualizarPessoa"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "DELETE a person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "DELETE a Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResOk"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoas/{id}/tasks": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET the tasks registered and assigned to a specific person",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "GET All Tasks of a specific Person",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Pessoa_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.ReqTarefaPessoa"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Get list all project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get All Projects",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.ReqProjetos"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "POST a new project. For the request to be met, the \"nome_projeto\", \"equipe_id\", \"descricao_projeto\" are required. The status already goes with a predefined value \"A Fazer\". the \"prazo_entrega\" is the number of days that the delivery time will be",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "POST a new Project",
+                "parameters": [
+                    {
+                        "description": "NewProject",
+                        "name": "NewProject",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/projetos.ReqProjeto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos/status/{status}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all registered projects that have the status passed as a parameter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get Status of Projects with a specific status with Param Status",
+                "parameters": [
+                    {
+                        "enum": [
+                            "A Fazer",
+                            "Em Andamento",
+                            "Em Teste",
+                            "Concluido"
+                        ],
+                        "type": "string",
+                        "description": "Status",
+                        "name": "status",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.ReqStatusProjeto"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET a project with a specific ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get Project with specific ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Projeto ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.ReqProjetos"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Project does not exist",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not authorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "PUT a specific project. For the request to be met, the \"nome_projeto\" and \"equipe_id\" and \"descricao_projeto\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "PUT Project with ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Projeto ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Project",
+                        "name": "Project",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/projetos.ReqAtualizarProjetoData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "DELETE a specific project. For the request to be met, the \"id_projeto\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Delete a specific Project",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Projeto ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/errorstratment.ResOk"
+                        }
+                    },
+                    "401": {
+                        "description": "Not Authorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos/{id}/status": {
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "PUT Status of a specific project. For the request to be met, the \"status\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "PUT Status of a Project",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Status-Project",
+                        "name": "Status-Project",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/projetos.ReqUpdateStatusProjeto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/projetos/{id}/tasks": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all tasks of a project with ID_Projeto specific",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get Tasks of Project with Param ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Projeto ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.ReqTasksProjeto"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "not authorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Project does not exist",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Get list all task",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Get All Tasks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.ReqTasks"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "POST a new task. For the request to be met, the \"descricao_task\", \"pessoa_id\", \"projeto_id\", \"prazo_entrega(in days)\", \"prioridade\" are required. The status already goes with a predefined value \"A Fazer\". the \"prazo_entrega\" is the number of days that the delivery time will be",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "POST a new Task",
+                "parameters": [
+                    {
+                        "description": "NewTask",
+                        "name": "NewTask",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tasks.ReqTaskApresent"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/status/{status}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET All tasks with a specific status. \"Em Andamento\" or \"Concluido\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "GET status of tasks",
+                "parameters": [
+                    {
+                        "enum": [
+                            "A Fazer",
+                            "Em Andamento",
+                            "Em Teste",
+                            "Concluido"
+                        ],
+                        "type": "string",
+                        "description": "Status",
+                        "name": "status",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.ReqTasks"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Get a specific task with id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Get a specific Task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.ReqTasks"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "PUT a specific task. For the request to be met, the \"descricao_task\" and \"pessoa_id\" and \"projeto_id\" and \"prioridade\" are required.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "PUT Task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "PUT Task",
+                        "name": "Task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tasks.ReqUpdateTaskData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "DELETE a Task with id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "DELETE a Task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task_ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResOk"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/{id}/status": {
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "PUT Status of a specific Task. For the request to be met, the \"status\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "PUT Status of a Task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Status",
+                        "name": "Status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tasks.ReqUpdateStatusTask"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "PUT a specific Team. For the request to be met, the \"id_equipe\" and \"nome_equipe\" are required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "PUT Team with ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Team",
+                        "name": "Team",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/equipes.UpdateEquipe"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "POST a new User. For the request to be met, the \"nome\", \"email\", \"password\", are required.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "POST a new User",
+                "parameters": [
+                    {
+                        "description": "NewUser",
+                        "name": "NewUser",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/users.ReqUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "equipes.Equipe": {
+            "type": "object",
+            "properties": {
+                "id_Equipe": {
+                    "type": "integer"
+                },
+                "nome_Equipe": {
+                    "type": "string"
+                }
+            }
+        },
+        "equipes.ReqEquipe": {
+            "type": "object",
+            "properties": {
+                "data_criacao": {
+                    "type": "string"
+                },
+                "id_equipe": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "pessoas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pessoas.ReqMembros"
+                    }
+                },
+                "projetos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/equipes.ReqEquipeProjetos"
+                    }
+                },
+                "tasks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/equipes.ReqTasksbyTeam"
+                    }
+                }
+            }
+        },
+        "equipes.ReqEquipeProjetos": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
+                "descricao_projeto": {
+                    "type": "string"
+                },
+                "id_projeto": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "equipes.ReqTasksbyTeam": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
+                "descricao_task": {
+                    "type": "string"
+                },
+                "id_task": {
+                    "type": "integer"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                },
+                "pessoa_id": {
+                    "type": "integer"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "prioridade": {
+                    "type": "integer"
+                },
+                "projeto_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "Em Andamento",
+                        " Concluido"
+                    ]
+                }
+            }
+        },
+        "equipes.UpdateEquipe": {
+            "type": "object",
+            "properties": {
+                "nome_Equipe": {
+                    "type": "string"
+                }
+            }
+        },
+        "errorstratment.ResError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "errorstratment.ResOk": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Project deleted successfully"
+                }
+            }
+        },
+        "pessoas.ReqAtualizarPessoa": {
+            "type": "object",
+            "properties": {
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "funcao_pessoa": {
+                    "type": "string",
+                    "example": "Back-End"
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Caio Swagger"
+                }
+            }
+        },
+        "pessoas.ReqGetPessoa": {
+            "type": "object",
+            "properties": {
+                "data_contratacao": {
+                    "type": "string",
+                    "example": "19/09/2022"
+                },
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "funcao_pessoa": {
+                    "type": "string",
+                    "example": "Back-End"
+                },
+                "id_pessoa": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "nome_equipe": {
+                    "type": "string",
+                    "example": "Komanda"
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Caio Sousa"
+                }
+            }
+        },
+        "pessoas.ReqMembros": {
+            "type": "object",
+            "properties": {
+                "data_contratacao": {
+                    "type": "string"
+                },
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "funcao_pessoa": {
+                    "type": "string"
+                },
+                "id_pessoa": {
+                    "type": "integer"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                }
+            }
+        },
+        "pessoas.ReqPessoa": {
+            "type": "object",
+            "properties": {
+                "data_contratacao": {
+                    "type": "string",
+                    "example": "19/09/2022"
+                },
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "funcao_pessoa": {
+                    "type": "string",
+                    "example": "Back-End"
+                },
+                "id_pessoa": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Caio Sousa"
+                }
+            }
+        },
+        "pessoas.ReqTarefaPessoa": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string",
+                    "example": "22/09/2022"
+                },
+                "data_criacao": {
+                    "type": "string",
+                    "example": "22/09/2022"
+                },
+                "descricao_task": {
+                    "type": "string",
+                    "example": "Exemplo"
+                },
+                "funcao_pessoa": {
+                    "type": "string",
+                    "example": "Back-End"
+                },
+                "id_equipe": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id_pessoa": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "id_task": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "nome_equipe": {
+                    "type": "string",
+                    "example": "Komanda"
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Caio Sousa"
+                },
+                "nome_projeto": {
+                    "type": "string",
+                    "example": "Casas Bahias"
+                },
+                "prazo_entrega": {
+                    "type": "string",
+                    "example": "22/09/2022"
+                },
+                "prioridade": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "projeto_id": {
+                    "type": "integer",
+                    "example": 40
+                },
+                "status": {
+                    "type": "string",
+                    "example": "Em Teste"
+                }
+            }
+        },
+        "projetos.ReqAtualizarProjetoData": {
+            "type": "object",
+            "properties": {
+                "descricao_projeto": {
+                    "type": "string",
+                    "example": "Criacao de sistema e-commerce"
+                },
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "nome_projeto": {
+                    "type": "string",
+                    "example": "Casas Bahias"
+                }
+            }
+        },
+        "projetos.ReqProjeto": {
+            "type": "object",
+            "properties": {
+                "descricao_projeto": {
+                    "type": "string",
+                    "example": "Descricao"
+                },
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "nome_projeto": {
+                    "type": "string",
+                    "example": "Nome"
+                },
+                "prazo_entrega": {
+                    "type": "integer",
+                    "example": 2
+                }
+            }
+        },
+        "projetos.ReqProjetos": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string",
+                    "example": ""
+                },
+                "data_criacao": {
+                    "type": "string",
+                    "example": "2022-07-25"
+                },
+                "descricao_projeto": {
+                    "type": "string",
+                    "example": "Descricao"
+                },
+                "equipe_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "id_projeto": {
+                    "type": "integer",
+                    "example": 58
+                },
+                "nome_equipe": {
+                    "type": "string",
+                    "example": "Cariri Inovação"
+                },
+                "nome_projeto": {
+                    "type": "string",
+                    "example": "Nome"
+                },
+                "prazo_entrega": {
+                    "type": "string",
+                    "example": "2022-07-25"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "Concluido"
+                }
+            }
+        },
+        "projetos.ReqStatusProjeto": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string",
+                    "example": ""
+                },
+                "data_criacao": {
+                    "type": "string",
+                    "example": "2022-07-25"
+                },
+                "descricao_projeto": {
+                    "type": "string"
+                },
+                "equipe_id": {
+                    "type": "integer"
+                },
+                "id_projeto": {
+                    "type": "integer"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "prazo_entrega": {
+                    "type": "string",
+                    "example": "2022-07-25"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "projetos.ReqTasksProjeto": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string"
+                },
+                "data_criacao": {
+                    "type": "string"
+                },
+                "descricao_task": {
+                    "type": "string"
+                },
+                "id_projeto": {
+                    "type": "integer"
+                },
+                "id_task": {
+                    "type": "integer"
+                },
+                "nome_equipe": {
+                    "type": "string"
+                },
+                "nome_pessoa": {
+                    "type": "string"
+                },
+                "nome_projeto": {
+                    "type": "string"
+                },
+                "pessoa_id": {
+                    "type": "integer"
+                },
+                "prazo_entrega": {
+                    "type": "string"
+                },
+                "prioridade": {
+                    "type": "integer"
+                },
+                "projeto_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "projetos.ReqUpdateStatusProjeto": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "Em Andamento"
+                }
+            }
+        },
+        "tasks.ReqTaskApresent": {
+            "type": "object",
+            "properties": {
+                "descricao_task": {
+                    "type": "string",
+                    "example": "Descrição Teste"
+                },
+                "pessoa_id": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "prazo_entrega": {
+                    "type": "integer",
+                    "example": 17
+                },
+                "prioridade": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "projeto_id": {
+                    "type": "integer",
+                    "example": 24
+                }
+            }
+        },
+        "tasks.ReqTasks": {
+            "type": "object",
+            "properties": {
+                "data_conclusao": {
+                    "type": "string",
+                    "example": "19/09/2022"
+                },
+                "data_criacao": {
+                    "type": "string",
+                    "example": "19/09/2022"
+                },
+                "descricao_task": {
+                    "type": "string",
+                    "example": "Descricao"
+                },
+                "id_task": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "nome_pessoa": {
+                    "type": "string",
+                    "example": "Fulano"
+                },
+                "nome_projeto": {
+                    "type": "string",
+                    "example": "Grupo BrisaNet"
+                },
+                "pessoa_id": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "prazo_entrega": {
+                    "type": "string",
+                    "example": "19/09/2022"
+                },
+                "prioridade": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "projeto_id": {
+                    "type": "integer",
+                    "example": 3
+                },
+                "status": {
+                    "type": "string",
+                    "example": "Em Andamento"
+                }
+            }
+        },
+        "tasks.ReqUpdateStatusTask": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "Em Teste"
+                }
+            }
+        },
+        "tasks.ReqUpdateTaskData": {
+            "type": "object",
+            "properties": {
+                "descricao_task": {
+                    "type": "string",
+                    "example": "Descrição Teste"
+                },
+                "pessoa_id": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "prioridade": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "projeto_id": {
+                    "type": "integer",
+                    "example": 24
+                }
+            }
+        },
+        "users.ReqUser": {
+            "type": "object",
+            "properties": {
+                "data_criacao": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id_usuario": {
+                    "type": "integer"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "bearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
