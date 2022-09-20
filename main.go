@@ -31,7 +31,7 @@ func main() {
 	docs.SwaggerInfo.Title = "Gerenciador de Projetos"
 	docs.SwaggerInfo.Description = "REST API Desafio"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.Host = "golang-posgre-brisanet.herokuapp.com"
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"https"}
 	
