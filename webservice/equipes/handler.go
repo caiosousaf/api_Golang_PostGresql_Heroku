@@ -11,6 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Security bearerAuth
+// @Summary POST a new Team
+// @Description POST a new Team. For the request to be met, the "nome_equipe" are required. 
+// @Param		Team		body	string		true	"NewTeam"
+// @Accept json
+// @Produce json
+// @Success 201 {object} equipes.Equipe "OK"
+// @Failure 401,400 {array} utils.ResError 
+// @Tags Teams
+// @Router /equipes [post]
 func novaEquipe(c *gin.Context) {
 	fmt.Println("Tentando adicionar nova equipe")
 	req := modelApresentacao.ReqEquipe{}
@@ -28,6 +38,16 @@ func novaEquipe(c *gin.Context) {
 	}
 }
 
+// Get Teams
+// @Security bearerAuth
+// @Summary Get All Teams
+// @Description Returns all registered teams and all their members they are assigned to
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqEquipe "OK"
+// @Failure 401,404 {string} string "error"
+// @Tags Teams
+// @Router /equipes [get]
 func listarEquipes(c *gin.Context) {
 	fmt.Println("Tentando listar equipes")
 	if equipes, err := equipe.ListarEquipes(); err != nil {
@@ -37,6 +57,16 @@ func listarEquipes(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary Get Specific Team
+// @Description Returns a team, all their members, all projects and all tasks they are assigned to
+// @Param		id		path	int		true	"id_Team"
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqEquipe "OK"
+// @Failure 401,404 {array} utils.ResError
+// @Tags Teams
+// @Router /equipes/{id} [get]
 func buscarEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando encontrar equipe")
@@ -47,6 +77,16 @@ func buscarEquipe(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary Get Members of a specific Team
+// @Description GET all members of a specific Team with ID
+// @Param        id   path      int  true  "Team ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} pessoas.ReqMembros "OK"
+// @Failure 401,404,204 {array} utils.ResError
+// @Tags Teams
+// @Router /equipes/{id}/pessoas [get]
 func buscarMembrosDeEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando encontrar os membros de uma equipe")
@@ -59,6 +99,16 @@ func buscarMembrosDeEquipe(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary Get Projects of a specific Team
+// @Description GET all projects of a specific Team with ID
+// @Param        id   path      int  true  "Team ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqEquipeProjetos "OK"
+// @Failure 401,404,204 {array} utils.ResError
+// @Tags Teams
+// @Router /equipes/{id}/projetos [get]
 func buscarProjetosDeEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando encontrar os Projetos de uma equipe")
@@ -71,6 +121,16 @@ func buscarProjetosDeEquipe(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary Get Tasks of a specific Team
+// @Description GET all tasks of a specific Team with ID
+// @Param        id   path      int  true  "Team ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqTasksbyTeam "OK"
+// @Failure 401,404,204 {array} utils.ResError
+// @Tags Teams
+// @Router /equipes/{id}/tasks [get]
 func buscarTasksDeEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando encontrar as Tarefas de uma equipe")
@@ -83,6 +143,16 @@ func buscarTasksDeEquipe(c *gin.Context) {
 	}
 }
 
+// @Security bearerAuth
+// @Summary DELETE a Team
+// @Description DELETE a Team
+// @Param		id		path	int		true		"Team_ID"
+// @Accept json
+// @Produce json
+// @Success 200 {array} utils.ResOk
+// @Failure 401,404 {array} utils.ResError
+// @Tags Teams
+// @Router /equipes/{id} [delete]
 func deletarEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando deletar uma equipe")
@@ -94,6 +164,18 @@ func deletarEquipe(c *gin.Context) {
 	}
 }
 
+// PUT Team
+// @Security bearerAuth
+// @Summary PUT Team with ID
+// @Description PUT a specific Team. For the request to be met, the "id_equipe" and "nome_equipe" are required
+// @Param        id   				path      	int  	true  	"Team ID"
+// @Param		Team				body		string 	true 	"Team"
+// @Accept json
+// @Produce json
+// @Success 200 {object} equipes.UpdateEquipe
+// @Failure 401,400 {array} utils.ResError
+// @Tags Teams
+// @Router /teams/{id} [put]
 func atualizarEquipe(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Println("Tentando atualizar equipe")

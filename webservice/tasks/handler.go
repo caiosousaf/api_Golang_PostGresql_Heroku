@@ -15,7 +15,7 @@ import (
 // @Param		NewTask		body	string		true	"NewTask"
 // @Accept json
 // @Produce json
-// @Success 200 {object} modelApresentacao.ReqTaskApresent "OK"
+// @Success 201 {object} modelApresentacao.ReqTaskApresent "OK"
 // @Failure 401,400 {array} utils.ResError
 // @Tags Tasks
 // @Router /tasks [post]

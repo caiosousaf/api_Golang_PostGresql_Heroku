@@ -1,4 +1,82 @@
 definitions:
+  equipes.Equipe:
+    properties:
+      id_Equipe:
+        type: integer
+      nome_Equipe:
+        type: string
+    type: object
+  equipes.ReqEquipe:
+    properties:
+      data_criacao:
+        type: string
+      id_equipe:
+        type: integer
+      nome_equipe:
+        type: string
+      pessoas:
+        items:
+          $ref: '#/definitions/pessoas.ReqMembros'
+        type: array
+      projetos:
+        items:
+          $ref: '#/definitions/equipes.ReqEquipeProjetos'
+        type: array
+      tasks:
+        items:
+          $ref: '#/definitions/equipes.ReqTasksbyTeam'
+        type: array
+    type: object
+  equipes.ReqEquipeProjetos:
+    properties:
+      data_conclusao:
+        type: string
+      data_criacao:
+        type: string
+      descricao_projeto:
+        type: string
+      id_projeto:
+        type: integer
+      nome_equipe:
+        type: string
+      nome_projeto:
+        type: string
+      prazo_entrega:
+        type: string
+      status:
+        type: string
+    type: object
+  equipes.ReqTasksbyTeam:
+    properties:
+      data_conclusao:
+        type: string
+      data_criacao:
+        type: string
+      descricao_task:
+        type: string
+      id_task:
+        type: integer
+      nome_pessoa:
+        type: string
+      pessoa_id:
+        type: integer
+      prazo_entrega:
+        type: string
+      prioridade:
+        type: integer
+      projeto_id:
+        type: integer
+      status:
+        enum:
+        - Em Andamento
+        - ' Concluido'
+        type: string
+    type: object
+  equipes.UpdateEquipe:
+    properties:
+      nome_Equipe:
+        type: string
+    type: object
   errorstratment.ResError:
     properties:
       code:
@@ -48,6 +126,19 @@ definitions:
         type: string
       nome_pessoa:
         example: Caio Sousa
+        type: string
+    type: object
+  pessoas.ReqMembros:
+    properties:
+      data_contratacao:
+        type: string
+      equipe_id:
+        type: integer
+      funcao_pessoa:
+        type: string
+      id_pessoa:
+        type: integer
+      nome_pessoa:
         type: string
     type: object
   pessoas.ReqPessoa:
@@ -302,6 +393,19 @@ definitions:
         example: 24
         type: integer
     type: object
+  users.ReqUser:
+    properties:
+      data_criacao:
+        type: string
+      email:
+        type: string
+      id_usuario:
+        type: integer
+      nome:
+        type: string
+      password:
+        type: string
+    type: object
 info:
   contact:
     email: caiosousafernandesferreira@hotmail.com
@@ -311,6 +415,304 @@ info:
     name: Mozilla Public License 2.0
     url: https://www.mozilla.org/en-US/MPL/2.0/
 paths:
+  /equipes:
+    get:
+      consumes:
+      - application/json
+      description: Returns all registered teams and all their members they are assigned
+        to
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.ReqEquipe'
+            type: array
+        "401":
+          description: error
+          schema:
+            type: string
+        "404":
+          description: error
+          schema:
+            type: string
+      security:
+      - bearerAuth: []
+      summary: Get All Teams
+      tags:
+      - Teams
+    post:
+      consumes:
+      - application/json
+      description: POST a new Team. For the request to be met, the "nome_equipe" are
+        required.
+      parameters:
+      - description: NewTeam
+        in: body
+        name: Team
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            $ref: '#/definitions/equipes.Equipe'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: POST a new Team
+      tags:
+      - Teams
+  /equipes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: DELETE a Team
+      parameters:
+      - description: Team_ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResOk'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: DELETE a Team
+      tags:
+      - Teams
+    get:
+      consumes:
+      - application/json
+      description: Returns a team, all their members, all projects and all tasks they
+        are assigned to
+      parameters:
+      - description: id_Team
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.ReqEquipe'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: Get Specific Team
+      tags:
+      - Teams
+  /equipes/{id}/pessoas:
+    get:
+      consumes:
+      - application/json
+      description: GET all members of a specific Team with ID
+      parameters:
+      - description: Team ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pessoas.ReqMembros'
+            type: array
+        "204":
+          description: No Content
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: Get Members of a specific Team
+      tags:
+      - Teams
+  /equipes/{id}/projetos:
+    get:
+      consumes:
+      - application/json
+      description: GET all projects of a specific Team with ID
+      parameters:
+      - description: Team ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.ReqEquipeProjetos'
+            type: array
+        "204":
+          description: No Content
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: Get Projects of a specific Team
+      tags:
+      - Teams
+  /equipes/{id}/tasks:
+    get:
+      consumes:
+      - application/json
+      description: GET all tasks of a specific Team with ID
+      parameters:
+      - description: Team ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.ReqTasksbyTeam'
+            type: array
+        "204":
+          description: No Content
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: Get Tasks of a specific Team
+      tags:
+      - Teams
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user and provides a JWT to Authorize API calls
+      operationId: Authentication
+      parameters:
+      - description: Login
+        in: body
+        name: Login
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Provides a JSON Web Token
+      tags:
+      - Users
   /pessoas:
     get:
       consumes:
@@ -863,7 +1265,7 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
+        "201":
           description: OK
           schema:
             $ref: '#/definitions/tasks.ReqTaskApresent'
@@ -1088,6 +1490,85 @@ paths:
       summary: GET status of tasks
       tags:
       - Tasks
+  /teams/{id}:
+    put:
+      consumes:
+      - application/json
+      description: PUT a specific Team. For the request to be met, the "id_equipe"
+        and "nome_equipe" are required
+      parameters:
+      - description: Team ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Team
+        in: body
+        name: Team
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/equipes.UpdateEquipe'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: PUT Team with ID
+      tags:
+      - Teams
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: POST a new User. For the request to be met, the "nome", "email",
+        "password", are required.
+      parameters:
+      - description: NewUser
+        in: body
+        name: NewUser
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.ReqUser'
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: POST a new User
+      tags:
+      - Users
 securityDefinitions:
   bearerAuth:
     in: header
