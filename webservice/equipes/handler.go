@@ -1,10 +1,9 @@
 package equipes
 
 import (
-	"fmt"
 	"net/http"
 
-	"gerenciadorDeProjetos/domain/equipes"
+	equipe "gerenciadorDeProjetos/domain/equipes"
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	utils "gerenciadorDeProjetos/utils/errors-tratment"
 
@@ -13,16 +12,16 @@ import (
 
 // @Security bearerAuth
 // @Summary POST a new Team
-// @Description POST a new Team. For the request to be met, the "nome_equipe" are required. 
+// @Description POST a new Team. For the request to be met, the "nome_equipe" are required.
 // @Param		Team		body	string		true	"NewTeam"
 // @Accept json
 // @Produce json
 // @Success 201 {object} equipes.Equipe "OK"
-// @Failure 401,400 {array} utils.ResError 
+// @Failure 401,400 {array} utils.ResError
 // @Tags Teams
 // @Router /equipes [post]
 func novaEquipe(c *gin.Context) {
-	fmt.Println("Tentando adicionar nova equipe")
+
 	req := modelApresentacao.ReqEquipe{}
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(),
@@ -49,7 +48,7 @@ func novaEquipe(c *gin.Context) {
 // @Tags Teams
 // @Router /equipes [get]
 func listarEquipes(c *gin.Context) {
-	fmt.Println("Tentando listar equipes")
+
 	if equipes, err := equipe.ListarEquipes(); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
@@ -69,7 +68,7 @@ func listarEquipes(c *gin.Context) {
 // @Router /equipes/{id} [get]
 func buscarEquipe(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando encontrar equipe")
+
 	if equipe, err := equipe.BuscarEquipe(id); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Team does not exist", 404))
 	} else {
@@ -89,7 +88,7 @@ func buscarEquipe(c *gin.Context) {
 // @Router /equipes/{id}/membros [get]
 func buscarMembrosDeEquipe(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando encontrar os membros de uma equipe")
+
 	if equipe, err := equipe.BuscarMembrosDeEquipe(id); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Team does not exist", 404))
 	} else if len(equipe) == 0 {
@@ -111,7 +110,7 @@ func buscarMembrosDeEquipe(c *gin.Context) {
 // @Router /equipes/{id}/projetos [get]
 func buscarProjetosDeEquipe(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando encontrar os Projetos de uma equipe")
+
 	if equipe, err := equipe.BuscarProjetosDeEquipe(id); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Team does not exist", 404))
 	} else if len(equipe) == 0 {
@@ -133,7 +132,7 @@ func buscarProjetosDeEquipe(c *gin.Context) {
 // @Router /equipes/{id}/tasks [get]
 func buscarTasksDeEquipe(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando encontrar as Tarefas de uma equipe")
+
 	if equipe, err := equipe.BuscarTasksDeEquipe(id); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Team does not exist", 404))
 	} else if len(equipe) == 0 {
@@ -155,7 +154,6 @@ func buscarTasksDeEquipe(c *gin.Context) {
 // @Router /equipes/{id} [delete]
 func deletarEquipe(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando deletar uma equipe")
 
 	if err := equipe.DeletarEquipe(id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -178,7 +176,6 @@ func deletarEquipe(c *gin.Context) {
 // @Router /teams/{id} [put]
 func atualizarEquipe(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando atualizar equipe")
 
 	req := modelApresentacao.ReqEquipe{}
 	if err := c.BindJSON(&req); err != nil {

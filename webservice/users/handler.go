@@ -1,7 +1,6 @@
 package users
 
 import (
-	"fmt"
 	"gerenciadorDeProjetos/domain/users"
 	modelApresentacao "gerenciadorDeProjetos/domain/users/model"
 	"net/http"
@@ -11,7 +10,7 @@ import (
 
 // @Security bearerAuth
 // @Summary POST a new User
-// @Description POST a new User. For the request to be met, the "nome", "email", "password", are required. 
+// @Description POST a new User. For the request to be met, the "nome", "email", "password", are required.
 // @Param		NewUser		body	string		true	"NewUser"
 // @Accept json
 // @Produce json
@@ -20,7 +19,7 @@ import (
 // @Tags Users
 // @Router /users [post]
 func NovoUsuario(c *gin.Context) {
-	fmt.Println("Tentando cadastrar usuário")
+
 	req := modelApresentacao.ReqUser{}
 
 	if err := c.BindJSON(&req); err != nil {

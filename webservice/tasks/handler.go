@@ -1,12 +1,12 @@
 package tasks
 
 import (
-	"fmt"
 	"gerenciadorDeProjetos/domain/tasks"
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
 	utils "gerenciadorDeProjetos/utils/errors-tratment"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // @Security bearerAuth
@@ -20,7 +20,7 @@ import (
 // @Tags Tasks
 // @Router /tasks [post]
 func NovaTask(c *gin.Context) {
-	fmt.Println("Tentando cadastrar uma nova task")
+
 	req := modelApresentacao.ReqTaskApresent{}
 
 	if err := c.BindJSON(&req); err != nil {
@@ -48,7 +48,7 @@ func NovaTask(c *gin.Context) {
 // @Tags Tasks
 // @Router /tasks [get]
 func ListarTasks(c *gin.Context) {
-	fmt.Println("Tentando listar todos as tasks")
+
 	if tasks, err := tasks.ListarTasks(); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
@@ -67,7 +67,7 @@ func ListarTasks(c *gin.Context) {
 // @Tags Tasks
 // @Router /tasks/{id} [get]
 func ListarTask(c *gin.Context) {
-	fmt.Println("Tentando listar uma task")
+
 	id := c.Param("id")
 	if tasks, err := tasks.ListarTask(id); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Task does not exist", 404))
@@ -87,7 +87,7 @@ func ListarTask(c *gin.Context) {
 // @Tags Tasks
 // @Router /tasks/status/{status} [get]
 func ListarStatusTasks(c *gin.Context) {
-	fmt.Println("Tentando listar todas as tarefas com um status especifico")
+
 	status := c.Param("status")
 	if tasks, err := tasks.ListarStatusTasks(status); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Status does not exist", 404))
@@ -97,7 +97,7 @@ func ListarStatusTasks(c *gin.Context) {
 }
 
 // @Security bearerAuth
-// @Summary PUT Task 
+// @Summary PUT Task
 // @Description PUT a specific task. For the request to be met, the "descricao_task" and "pessoa_id" and "projeto_id" and "prioridade" are required.
 // @Param        id   				path      	int  	true  	"Task ID"
 // @Param		Task				body		string 	true 	"PUT Task"
@@ -109,7 +109,6 @@ func ListarStatusTasks(c *gin.Context) {
 // @Router /tasks/{id} [put]
 func AtualizarTask(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando atualizar uma task")
 
 	req := modelApresentacao.ReqTask{}
 	if err := c.BindJSON(&req); err != nil {
@@ -138,7 +137,6 @@ func AtualizarTask(c *gin.Context) {
 // @Router /tasks/{id}/status [put]
 func AtualizarStatusTask(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando atualizar status de uma task")
 
 	req := modelApresentacao.ReqTask{}
 	if err := c.BindJSON(&req); err != nil {
@@ -169,7 +167,6 @@ func AtualizarStatusTask(c *gin.Context) {
 // @Router /tasks/{id} [delete]
 func DeletarTask(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando deletar uma task")
 
 	err := tasks.DeletarTask(id)
 	if err != nil {

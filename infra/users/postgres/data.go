@@ -2,7 +2,7 @@ package postgres
 
 import (
 	"database/sql"
-	"fmt"
+
 	modelApresentacao "gerenciadorDeProjetos/domain/users/model"
 	modelData "gerenciadorDeProjetos/infra/users/model"
 )
@@ -25,6 +25,6 @@ func (postgres *DBUsers) NovoUsuario(req *modelData.ReqUser) (*modelApresentacao
 			return nil, err
 		}
 	}
-	fmt.Println("Cadastro de novo usuario deu certo")
+
 	return user, nil
 }

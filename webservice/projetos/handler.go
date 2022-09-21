@@ -1,7 +1,6 @@
 package projetos
 
 import (
-	"fmt"
 	"net/http"
 
 	"gerenciadorDeProjetos/domain/projetos"
@@ -22,7 +21,7 @@ import (
 // @Tags Projects
 // @Router /projetos [post]
 func NovoProjeto(c *gin.Context) {
-	fmt.Println("Tentando cadastrar um novo projeto")
+
 	req := modelApresentacao.ReqProjeto{}
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(),
@@ -47,7 +46,7 @@ func NovoProjeto(c *gin.Context) {
 // @Tags Projects
 // @Router /projetos [get]
 func ListarProjetos(c *gin.Context) {
-	fmt.Println("Tentando listar todos os projetos")
+
 	if projetos, err := projetos.ListarProjetos(); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
@@ -69,7 +68,7 @@ func ListarProjetos(c *gin.Context) {
 // @Router /projetos/{id} [get]
 func ListarProjeto(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando listar um projeto")
+
 	if projetos, err := projetos.ListarProjeto(id); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Project does not exist", 404))
 	} else {
@@ -91,7 +90,7 @@ func ListarProjeto(c *gin.Context) {
 // @Router /projetos/{id}/tasks [get]
 func ListarTasksProjeto(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando listar tarefas de um projeto")
+
 	if projetos, err := projetos.ListarTasksProjeto(id); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Project does not exist", 404))
 	} else {
@@ -112,7 +111,7 @@ func ListarTasksProjeto(c *gin.Context) {
 // @Router /projetos/status/{status} [get]
 func ListarProjetosComStatus(c *gin.Context) {
 	status := c.Param("status")
-	fmt.Println("Tentando listar todos os projetos com um status especifico")
+
 	if projetos, err := projetos.ListarProjetosComStatus(status); err != nil {
 		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Status does not exist", 404))
 	} else {
@@ -133,7 +132,7 @@ func ListarProjetosComStatus(c *gin.Context) {
 // @Router /projetos/{id} [delete]
 func DeletarProjeto(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando deletar um projeto")
+
 	if err := projetos.DeletarProjeto(id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
@@ -155,7 +154,6 @@ func DeletarProjeto(c *gin.Context) {
 // @Router /projetos/{id} [put]
 func AtualizarProjeto(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando atualizar um projeto")
 
 	req := modelApresentacao.ReqAtualizarProjeto{}
 	if err := c.BindJSON(&req); err != nil {
@@ -184,7 +182,6 @@ func AtualizarProjeto(c *gin.Context) {
 // @Router /projetos/{id}/status [put]
 func AtualizarStatusProjeto(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println("Tentando atualizar status de um projeto")
 
 	req := modelApresentacao.ReqAtualizarProjeto{}
 	if err := c.BindJSON(&req); err != nil {

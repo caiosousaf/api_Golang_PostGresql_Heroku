@@ -2,7 +2,7 @@ package postgres
 
 import (
 	"database/sql"
-	"fmt"
+
 	modelApresentacao "gerenciadorDeProjetos/domain/projetos/model"
 	modelData "gerenciadorDeProjetos/infra/projetos/model"
 
@@ -29,7 +29,7 @@ func (postgres *DBProjetos) NovoProjeto(req *modelData.ReqProjeto) (*modelAprese
 		}
 		return nil, err
 	}
-	fmt.Println("Cadastro de novo projeto deu certo")
+
 	return projeto, nil
 }
 
@@ -59,7 +59,6 @@ func (postgres *DBProjetos) ListarProjetos() ([]modelApresentacao.ReqProjetos, e
 		}
 		res = append(res, projeto)
 	}
-	fmt.Println("Listagem de todas os projetos deu certo!!")
 	return res, nil
 }
 
@@ -84,7 +83,6 @@ func (postgres *DBProjetos) ListarProjeto(id string) (*modelApresentacao.ReqProj
 		}
 	}
 
-	fmt.Println("Listagem de um projeto deu certo!!")
 	return projeto, nil
 }
 
@@ -105,8 +103,8 @@ func (postgres *DBProjetos) ListarTasksProjeto(id string) ([]modelApresentacao.R
 
 	for rows.Next() {
 		if err := rows.Scan(&projeto.ID_Task, &projeto.Descricao_Task, &projeto.Pessoa_ID, &projeto.Projeto_ID, &projeto.Status,
-			  &projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega, &projeto.Prioridade, &projeto.ID_Projeto,
-			  &projeto.Nome_Projeto, &projeto.Nome_Equipe, &projeto.Nome_Pessoa); err != nil {
+			&projeto.Prioridade, &projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega,
+			&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Nome_Equipe, &projeto.Nome_Pessoa); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, err
 			} else {
@@ -115,7 +113,7 @@ func (postgres *DBProjetos) ListarTasksProjeto(id string) ([]modelApresentacao.R
 		}
 		res = append(res, projeto)
 	}
-	fmt.Println("Listagem de todas as tarefas de um projeto deu certo!!")
+
 	return res, nil
 }
 
@@ -131,8 +129,8 @@ func (postgres *DBProjetos) ListarProjetosComStatus(status string) ([]modelApres
 	}
 
 	for rows.Next() {
-		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID,
-			&projeto.Status, &projeto.Descricao_Projeto, &projeto.Data_Criacao,
+		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto, &projeto.EquipeID,
+			&projeto.Status, &projeto.Data_Criacao,
 			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, err
@@ -142,7 +140,7 @@ func (postgres *DBProjetos) ListarProjetosComStatus(status string) ([]modelApres
 		}
 		res = append(res, projeto)
 	}
-	fmt.Println("Listagem de todos os projetos com status especifico deu certo!!")
+
 	return res, nil
 }
 
@@ -153,7 +151,7 @@ func (postgres *DBProjetos) DeletarProjeto(id string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Tudo certo em deletar um projeto!!")
+
 	return nil
 }
 
@@ -174,7 +172,7 @@ func (postgres *DBProjetos) AtualizarProjeto(id string, req *modelData.ReqAtuali
 			return nil, err
 		}
 	}
-	fmt.Println("Atualizar projeto deu certo")
+
 	return projeto, nil
 }
 
@@ -200,6 +198,6 @@ func (postgres *DBProjetos) AtualizarStatusProjeto(id string, req *modelData.Req
 	if err != nil {
 		return projeto, nil
 	}
-	fmt.Println("Atualizar status de um projeto deu certo")
+
 	return projeto, nil
 }

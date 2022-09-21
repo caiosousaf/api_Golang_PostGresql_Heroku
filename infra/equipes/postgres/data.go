@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"database/sql"
-	"fmt"
 
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
@@ -48,7 +47,6 @@ func (postgres *DBEquipes) ListarEquipes() ([]modelApresentacao.ReqEquipe, error
 
 		res = append(res, equipe)
 	}
-	fmt.Println("Listagem de todas as equipes deu certo!")
 	return res, nil
 }
 
@@ -64,7 +62,6 @@ func (postgres *DBEquipes) BuscarEquipe(id string) (*modelApresentacao.ReqEquipe
 			return nil, err
 		}
 	}
-	fmt.Println("Busca deu certo!")
 	return equipe, nil
 }
 
@@ -88,7 +85,6 @@ func (postgres *DBEquipes) BuscarMembrosDeEquipe(id string) ([]modelPessoa.ReqMe
 		}
 		res = append(res, equipe)
 	}
-	fmt.Println("Busca de membros de uma equipe deu certo!")
 	return res, nil
 }
 
@@ -115,13 +111,12 @@ func (postgres *DBEquipes) BuscarProjetosDeEquipe(id string) ([]modelApresentaca
 		}
 		res = append(res, equipe)
 	}
-	fmt.Println("Busca dos projetos de uma equipe deu certo!")
 	return res, nil
 }
 
 func (postgres *DBEquipes) BuscarTasksDeEquipe(id string) ([]modelApresentacao.ReqTasksbyTeam, error) {
 	sqlStatement := `select tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, tk.status,
-	tk.data_criacao, tk.prazo_entrega, tk.data_conclusao
+	tk.data_criacao, tk.prazo_entrega, tk.data_conclusao, tk.prioridade
 					 from tasks tk 
 					 inner join pessoas pe on pe.id_pessoa = tk.pessoa_id 
 					 inner join equipes eq on eq.id_equipe = pe.equipe_id	
@@ -135,7 +130,7 @@ func (postgres *DBEquipes) BuscarTasksDeEquipe(id string) ([]modelApresentacao.R
 	}
 	for rows.Next() {
 		if err := rows.Scan(&equipe.ID_Task, &equipe.Descricao_Task, &equipe.Pessoa_ID, &equipe.Nome_Pessoa, &equipe.Projeto_ID,
-			&equipe.Status, &equipe.Data_Criacao, &equipe.Prazo_Entrega, &equipe.Data_Conclusao); err != nil {
+			&equipe.Status, &equipe.Data_Criacao, &equipe.Prazo_Entrega, &equipe.Data_Conclusao, &equipe.Prioridade); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, err
 			} else {
@@ -144,7 +139,6 @@ func (postgres *DBEquipes) BuscarTasksDeEquipe(id string) ([]modelApresentacao.R
 		}
 		res = append(res, equipe)
 	}
-	fmt.Println("Busca das tarefas de uma equipe deu certo!")
 	return res, nil
 }
 
@@ -155,7 +149,6 @@ func (postgres *DBEquipes) DeletarEquipe(id string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Tudo certo em deletar uma equipe!!")
 	return nil
 }
 

@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"database/sql"
-	"fmt"
 
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/pessoas/model"
@@ -26,7 +25,7 @@ func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa) (*modelApresenta
 		}
 		return nil, err
 	}
-	fmt.Println("Cadastro de nova pessoa deu certo")
+
 	return pessoa, nil
 }
 
@@ -52,7 +51,7 @@ func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, er
 		}
 		res = append(res, pessoa)
 	}
-	fmt.Println("Listagem de todas as pessoas deu certo!!")
+
 	return res, nil
 }
 
@@ -72,18 +71,18 @@ func (postgres *DBPessoas) ListarPessoa(id string) (*modelApresentacao.ReqGetPes
 			return nil, err
 		}
 	}
-	fmt.Println("Buscar de uma pessoa deu certo!!")
+
 	return pessoa, nil
 }
 
 func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error) {
 	sqlStatement := `	SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, eq.id_equipe, eq.nome_equipe, pr.nome_projeto,tk.id_task, tk.descricao_task,
-						tk.projeto_id, tk.status, tk.data_criacao, tk.data_conclusao, tk.prazo_entrega, tk.prioridade 
-						FROM pessoas AS pe 
-						INNER JOIN equipes AS eq ON pe.equipe_id = eq.id_equipe 
-						INNER JOIN projetos AS pr ON pr.equipe_id = eq.id_equipe 
-						INNER JOIN tasks as tk ON tk.projeto_id = pr.id_projeto AND tk.pessoa_id = pe.id_pessoa 
-						WHERE pe.id_pessoa = $1`
+	tk.projeto_id, tk.status, tk.data_criacao, tk.data_conclusao, tk.prazo_entrega, tk.prioridade 
+	FROM pessoas pe 
+	INNER JOIN equipes eq ON pe.equipe_id = eq.id_equipe 
+	INNER JOIN projetos pr ON pr.equipe_id = eq.id_equipe 
+	INNER JOIN tasks tk ON tk.pessoa_id = pe.id_pessoa 
+	WHERE pe.id_pessoa = $1`
 
 	var pessoa = modelApresentacao.ReqTarefaPessoa{}
 	var res = []modelApresentacao.ReqTarefaPessoa{}
@@ -104,7 +103,7 @@ func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.R
 		}
 		res = append(res, pessoa)
 	}
-	fmt.Println("Busca de tarefas de uma pessoa deu certo!!")
+
 	return res, nil
 }
 
@@ -123,7 +122,7 @@ func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) 
 			return nil, err
 		}
 	}
-	fmt.Println("Atualizar pessoa deu certo")
+
 	return pessoa, nil
 }
 
@@ -134,6 +133,6 @@ func (postgres *DBPessoas) DeletarPessoa(id string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Tudo certo em deletar um projeto!!")
+
 	return nil
 }
