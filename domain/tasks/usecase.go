@@ -72,8 +72,8 @@ func AtualizarStatusTask(id string, req *modelApresentacao.ReqTask) (res *modelA
 
 	res, err = tasksRepo.AtualizarStatusTask(id, req)
 	if err != nil {
-		return nil, fmt.Errorf("could not update: Task does not exist")
-	}
+		return nil, err
+	}	
 	return
 }
 

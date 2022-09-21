@@ -164,7 +164,7 @@ func (postgres *DBProjetos) AtualizarProjeto(id string, req *modelData.ReqAtuali
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Projeto, req.Equipe_ID, req.Descricao_Projeto, id)
 
-	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID, &projeto.Status, &projeto.Descricao_Projeto,
+	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto,  &projeto.Descricao_Projeto, &projeto.EquipeID, &projeto.Status,
 		&projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
@@ -185,7 +185,7 @@ func (postgres *DBProjetos) AtualizarStatusProjeto(id string, req *modelData.Req
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Status, id)
 
-	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID, &projeto.Status, &projeto.Descricao_Projeto,
+	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto, &projeto.EquipeID, &projeto.Status, 
 		&projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err

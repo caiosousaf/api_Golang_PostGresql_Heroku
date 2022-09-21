@@ -121,7 +121,7 @@ func (postgres *DBTasks) AtualizarTask(id string, req *modelData.ReqUpdateTaskDa
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Descricao_Task, req.PessoaID, req.ProjetoID, req.Prioridade, id)
 
-	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Prioridade, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega ); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
 		} else {
@@ -133,7 +133,7 @@ func (postgres *DBTasks) AtualizarTask(id string, req *modelData.ReqUpdateTaskDa
 }
 
 func (postgres *DBTasks) AtualizarStatusTask(id string, req *modelData.ReqUpdateStatusTask) (*modelApresentacao.ReqTask, error) {
-	sqlStatement := `UPDATE tasks SET status = $1 WHERE id_task = $2 RETURNING *`
+	sqlStatement := `UPDATE tasks SET status = $1 WHERE id_task = $2 RETURNING *;`
 
 	var task = &modelApresentacao.ReqTask{}
 
@@ -143,7 +143,8 @@ func (postgres *DBTasks) AtualizarStatusTask(id string, req *modelData.ReqUpdate
 		return nil, err
 	}
 	row := postgres.DB.QueryRow(sqlStatement, req.Status, id)
-	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status,&task.Prioridade, &task.Data_Criacao, 
+					   &task.Data_Conclusao, &task.Prazo_Entrega); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
 		} else {

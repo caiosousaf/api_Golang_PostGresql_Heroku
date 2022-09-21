@@ -147,9 +147,7 @@ func AtualizarStatusTask(c *gin.Context) {
 	}
 
 	if res, err := tasks.AtualizarStatusTask(id, &req); err != nil {
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		}
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, res)
 	}
