@@ -5,6 +5,7 @@ import (
 
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/pessoas/model"
+	sq "github.com/Masterminds/squirrel"
 )
 
 type DBPessoas struct {
@@ -32,6 +33,7 @@ func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa) (*modelApresenta
 func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {
 	sqlStatement := `SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, pe.equipe_id, eq.nome_equipe, pe.data_contratacao
 	FROM pessoas as pe INNER JOIN equipes as eq on pe.equipe_id = eq.id_equipe ORDER BY pe.id_pessoa`
+
 	var pessoa = modelApresentacao.ReqGetPessoa{}
 	var res = []modelApresentacao.ReqGetPessoa{}
 
@@ -55,14 +57,26 @@ func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, er
 	return res, nil
 }
 
-func (postgres *DBPessoas) ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
-	sqlStatement := `select pe.*, eq.nome_equipe
-					 from pessoas as pe 
-					 inner join equipes as eq on pe.equipe_id = eq.id_equipe 
-					 where id_pessoa = $1`
+func (pg *DBPessoas) ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
+	// sqlStatement := `select pe.*, eq.nome_equipe
+	// 				 from pessoas as pe
+	// 				 inner join equipes as eq on pe.equipe_id = eq.id_equipe
+	// 				 where id_pessoa = $1`
+
+	sqlStatement1, sqlValues, err := sq.Select("pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, pe.equipe_id, eq.nome_equipe, pe.data_contratacao").
+		From("pessoas pe").
+		Join("equipes eq ON pe.equipe_id = eq.id_equipe").
+		Where(sq.Eq{
+			"pe.id_pessoa": id,
+		}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	if err != nil {
+		return nil, err
+	}
 	var pessoa = &modelApresentacao.ReqGetPessoa{}
 
-	row := postgres.DB.QueryRow(sqlStatement, id)
+	row := pg.DB.QueryRow(sqlStatement1, sqlValues...)
 	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa,
 		&pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
 		if err == sql.ErrNoRows {

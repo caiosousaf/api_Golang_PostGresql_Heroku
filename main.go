@@ -39,21 +39,16 @@ func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
 
-	eq := r.Group("equipes", middlewares.Auth())
-	pe := r.Group("pessoas", middlewares.Auth())
-	pr := r.Group("projetos", middlewares.Auth())
-	tk := r.Group("tasks", middlewares.Auth())
-	us := r.Group("users", middlewares.Auth())
-	lo := r.Group("login")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	equipes.Router(eq)
-	pessoas.Router(pe)
-	projetos.Router(pr)
-	tasks.Router(tk)
-	users.Router(us)
-	login.Router(lo)
+	equipes.Router(r.Group("equipes", middlewares.Auth()))
+	pessoas.Router(r.Group("pessoas", middlewares.Auth()) )
+	projetos.Router(r.Group("projetos", middlewares.Auth()))
+	tasks.Router(r.Group("tasks", middlewares.Auth()))
+	users.Router(r.Group("users", middlewares.Auth()))
+	login.Router(r.Group("login"))
 
 	r.Run(":" + port)
+	//export PATH=$(go env GOPATH)/bin:$PATH
 	//r.Run()
 }
