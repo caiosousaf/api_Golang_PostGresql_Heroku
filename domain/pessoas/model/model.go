@@ -33,6 +33,10 @@ type ReqGetPessoa struct {
 	Data_Contratacao *string `json:"data_contratacao" example:"19/09/2022"`
 }
 
+type ListarGetPessoa struct {
+	Pessoas []ReqGetPessoa `json:"pessoas"`
+}
+
 type ReqTarefaPessoa struct {
 	ID_Pessoa      *int       `json:"id_pessoa" example:"4"`
 	Nome_Pessoa    *string    `json:"nome_pessoa" example:"Caio Sousa"`

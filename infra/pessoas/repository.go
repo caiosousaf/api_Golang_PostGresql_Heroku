@@ -22,7 +22,7 @@ func (r *repositorio) NovaPessoa(req *modelApresentacao.ReqPessoa) (*modelAprese
 	return r.Data.NovaPessoa(&modelData.ReqPessoa{Nome_Pessoa: req.Nome_Pessoa, 
 		Funcao_Pessoa: req.Funcao_Pessoa, Equipe_ID: req.Equipe_ID})
 }
-func (r *repositorio) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {
+func (r *repositorio) ListarPessoas() (*modelApresentacao.ListarGetPessoa, error) {
 	return r.Data.ListarPessoas()
 }
 func (r *repositorio) ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {

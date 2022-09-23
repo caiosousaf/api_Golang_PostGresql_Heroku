@@ -5,7 +5,7 @@ import (
 )
 type IPessoa interface {
 	NovaPessoa(req *modelApresentacao.ReqPessoa) (*modelApresentacao.ReqPessoa, error)
-	ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error)
+	ListarPessoas() (*modelApresentacao.ListarGetPessoa, error)
 	ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error)
 	ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error)
 	AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (*modelApresentacao.ReqAtualizarPessoa, error)

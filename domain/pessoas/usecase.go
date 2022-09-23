@@ -15,7 +15,7 @@ func NovaPessoa(req *modelApresentacao.ReqPessoa) (*modelApresentacao.ReqPessoa,
 	return pessoasRepo.NovaPessoa(req)
 }
 
-func ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {
+func ListarPessoas() (*modelApresentacao.ListarGetPessoa, error) {
 	db := database.Conectar()
 	defer db.Close()
 

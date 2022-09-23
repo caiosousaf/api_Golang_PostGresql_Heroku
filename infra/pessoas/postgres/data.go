@@ -30,16 +30,29 @@ func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa) (*modelApresenta
 	return pessoa, nil
 }
 
-func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, error) {
-	sqlStatement := `SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, pe.equipe_id, eq.nome_equipe, pe.data_contratacao
-	FROM pessoas as pe INNER JOIN equipes as eq on pe.equipe_id = eq.id_equipe ORDER BY pe.id_pessoa`
-
+func (pg *DBPessoas) ListarPessoas() (res *modelApresentacao.ListarGetPessoa,err error) {
+	//sqlStatement := `SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, pe.equipe_id, eq.nome_equipe, pe.data_contratacao
+	//FROM pessoas as pe INNER JOIN equipes as eq on pe.equipe_id = eq.id_equipe ORDER BY pe.id_pessoa`
 	var pessoa = modelApresentacao.ReqGetPessoa{}
-	var res = []modelApresentacao.ReqGetPessoa{}
 
-	rows, err := postgres.DB.Query(sqlStatement)
+	sqlStatement, sqlValues, err := sq.
+		Select("pe.*, eq.nome_equipe").
+		From("pessoas pe").
+		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+		OrderBy("pe.id_pessoa").
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+
 	if err != nil {
 		return nil, err
+	}
+	rows, err := pg.DB.Query(sqlStatement, sqlValues...)
+	if err != nil {
+		return nil, err
+	}
+
+	res = &modelApresentacao.ListarGetPessoa{
+		Pessoas: make([]modelApresentacao.ReqGetPessoa, 0),
 	}
 
 	for rows.Next() {
@@ -47,23 +60,19 @@ func (postgres *DBPessoas) ListarPessoas() ([]modelApresentacao.ReqGetPessoa, er
 			&pessoa.EquipeID, &pessoa.Nome_Equipe, &pessoa.Data_Contratacao); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, err
-			} else {
-				return nil, err
-			}
+			} 
+			return nil, err
 		}
-		res = append(res, pessoa)
+		res.Pessoas = append(res.Pessoas, pessoa)
 	}
 
 	return res, nil
 }
 
-func (pg *DBPessoas) ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
-	// sqlStatement := `select pe.*, eq.nome_equipe
-	// 				 from pessoas as pe
-	// 				 inner join equipes as eq on pe.equipe_id = eq.id_equipe
-	// 				 where id_pessoa = $1`
+func (pg *DBPessoas) ListarPessoa(id string) (res *modelApresentacao.ReqGetPessoa, err error) {
 
-	sqlStatement1, sqlValues, err := sq.Select("pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, pe.equipe_id, eq.nome_equipe, pe.data_contratacao").
+	sqlStatement1, sqlValues, err := sq.
+		Select("pe.*, eq.nome_equipe").
 		From("pessoas pe").
 		Join("equipes eq ON pe.equipe_id = eq.id_equipe").
 		Where(sq.Eq{
@@ -71,19 +80,20 @@ func (pg *DBPessoas) ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, e
 		}).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
-	if err != nil {
-		return nil, err
-	}
+
 	var pessoa = &modelApresentacao.ReqGetPessoa{}
 
 	row := pg.DB.QueryRow(sqlStatement1, sqlValues...)
+	if err != nil {
+		return nil, err
+	}
+
 	if err := row.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa,
 		&pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
-		} else {
-			return nil, err
 		}
+		return nil, err
 	}
 
 	return pessoa, nil
