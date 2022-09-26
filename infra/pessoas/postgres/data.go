@@ -71,7 +71,7 @@ func (pg *DBPessoas) ListarPessoas() (res *modelApresentacao.ListarGetPessoa,err
 	return res, nil
 }
 
-func (pg *DBPessoas) ListarPessoa(id string) (res *modelApresentacao.ReqGetPessoa, err error) {
+func (pg *DBPessoas) ListarPessoa(id *int64) (res *modelApresentacao.ReqGetPessoa, err error) {
 
 	sqlStatement1, sqlValues, err := sq.
 		Select("pe.*, eq.nome_equipe").
@@ -101,7 +101,7 @@ func (pg *DBPessoas) ListarPessoa(id string) (res *modelApresentacao.ReqGetPesso
 	return pessoa, nil
 }
 
-func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error) {
+func (postgres *DBPessoas) ListarTarefasPessoa(id *int64) ([]modelApresentacao.ReqTarefaPessoa, error) {
 	sqlStatement := `	SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, eq.id_equipe, eq.nome_equipe, pr.nome_projeto,tk.id_task, tk.descricao_task,
 	tk.projeto_id, tk.status, tk.data_criacao, tk.data_conclusao, tk.prazo_entrega, tk.prioridade 
 	FROM pessoas pe 
@@ -133,7 +133,7 @@ func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.R
 	return res, nil
 }
 
-func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) (*modelApresentacao.ReqAtualizarPessoa, error) {
+func (postgres *DBPessoas) AtualizarPessoa(id *int64, req *modelData.ReqPessoa) (*modelApresentacao.ReqAtualizarPessoa, error) {
 	sqlStatement := `UPDATE pessoas 
 					 SET nome_pessoa = $1, funcao_pessoa = $2, equipe_id = $3 
 					 WHERE id_pessoa = $4 RETURNING nome_pessoa, funcao_pessoa, equipe_id`
@@ -152,7 +152,7 @@ func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) 
 	return pessoa, nil
 }
 
-func (postgres *DBPessoas) DeletarPessoa(id string) error {
+func (postgres *DBPessoas) DeletarPessoa(id *int64) error {
 	sqlStatement := `DELETE FROM pessoas WHERE id_pessoa = $1`
 
 	_, err := postgres.DB.Exec(sqlStatement, id)
