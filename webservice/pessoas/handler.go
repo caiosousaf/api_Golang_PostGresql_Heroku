@@ -3,15 +3,9 @@ package pessoas
 import (
 	"gerenciadorDeProjetos/domain/pessoas"
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
-<<<<<<< HEAD
 	errorstratment "gerenciadorDeProjetos/utils/errors-tratment"
 	utils "gerenciadorDeProjetos/utils/params"
-=======
-	utils "gerenciadorDeProjetos/utils/errors-tratment"
-	pointer "gerenciadorDeProjetos/utils"
->>>>>>> 91ec8327816946fa99cde1dd4e53e69a84ca1097
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -71,24 +65,12 @@ func listarPessoas(c *gin.Context) {
 // @Failure 401,404 {array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas/{id} [get]
-<<<<<<< HEAD
 func listarPessoa(c *gin.Context) {
 	id := c.Param("id")
 
 	pessoas, err := pessoas.ListarPessoa(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, errorstratment.KeyError(err.Error(), "Person does not exist", 404))
-=======
-func ListarPessoa(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusNotFound,utils.KeyError(err.Error(), "The id must be a number", 404))
-		return
-	}
-
-	if pessoas, err := pessoas.ListarPessoa(pointer.GetInt64Pointer(int64(id))); err != nil {
-		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Person does not exist", 404))
->>>>>>> 91ec8327816946fa99cde1dd4e53e69a84ca1097
 	} else {
 		c.JSON(http.StatusOK, pessoas)
 	}
@@ -104,23 +86,11 @@ func ListarPessoa(c *gin.Context) {
 // @Failure 401,404 {array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas/{id}/tasks [get]
-<<<<<<< HEAD
 func listarTarefasPessoa(c *gin.Context) {
 	id := c.Param("id")
 
 	if pessoas, err := pessoas.ListarTarefasPessoa(id); err != nil {
 		c.JSON(http.StatusNotFound, errorstratment.KeyError(err.Error(), "Person does not exist", 404))
-=======
-func ListarTarefasPessoa(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusNotFound,utils.KeyError(err.Error(), "The id must be a number", 404))
-		return
-	}
-
-	if pessoas, err := pessoas.ListarTarefasPessoa(pointer.GetInt64Pointer(int64(id))); err != nil {
-		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Person does not exist", 404))
->>>>>>> 91ec8327816946fa99cde1dd4e53e69a84ca1097
 	} else if len(pessoas) == 0 {
 		c.JSON(http.StatusNoContent, pessoas)
 	} else {
@@ -139,17 +109,8 @@ func ListarTarefasPessoa(c *gin.Context) {
 // @Failure 401,400	{array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas/{id} [put]
-<<<<<<< HEAD
 func atualizarPessoa(c *gin.Context) {
 	id := c.Param("id")
-=======
-func AtualizarPessoa(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusNotFound,utils.KeyError(err.Error(), "The id must be a number", 404))
-		return
-	}
->>>>>>> 91ec8327816946fa99cde1dd4e53e69a84ca1097
 
 	req := modelApresentacao.ReqAtualizarPessoa{}
 	if err := c.BindJSON(&req); err != nil {
@@ -159,7 +120,7 @@ func AtualizarPessoa(c *gin.Context) {
 		return
 	}
 
-	if res, err := pessoas.AtualizarPessoa(pointer.GetInt64Pointer(int64(id)), &req); err != nil {
+	if res, err := pessoas.AtualizarPessoa(id, &req); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, res)
@@ -176,19 +137,10 @@ func AtualizarPessoa(c *gin.Context) {
 // @Failure 401,400 {array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas/{id} [delete]
-<<<<<<< HEAD
 func deletarPessoa(c *gin.Context) {
 	id := c.Param("id")
-=======
-func DeletarPessoa(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusNotFound,utils.KeyError(err.Error(), "The id must be a number", 404))
-		return
-	}
->>>>>>> 91ec8327816946fa99cde1dd4e53e69a84ca1097
 
-	if err := pessoas.DeletarPessoa(pointer.GetInt64Pointer(int64(id))); err != nil {
+	if err := pessoas.DeletarPessoa(id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, errorstratment.KeyOk("Person deleted successfully", 200))

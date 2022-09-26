@@ -24,7 +24,7 @@ func ListarPessoas() (*modelApresentacao.ListarGetPessoa, error) {
 	return pessoasRepo.ListarPessoas()
 }
 
-func ListarPessoa(id *int64) (res *modelApresentacao.ReqGetPessoa,err error) {
+func ListarPessoa(id string) (*modelApresentacao.ReqGetPessoa, error) {
 	db := database.Conectar()
 	defer db.Close()
 
@@ -32,7 +32,7 @@ func ListarPessoa(id *int64) (res *modelApresentacao.ReqGetPessoa,err error) {
 	return pessoasRepo.ListarPessoa(id)
 }
 
-func ListarTarefasPessoa(id *int64) (res []modelApresentacao.ReqTarefaPessoa, err error) {
+func ListarTarefasPessoa(id string) (res []modelApresentacao.ReqTarefaPessoa, err error) {
 	db := database.Conectar()
 	defer db.Close()
 
@@ -55,7 +55,7 @@ func ListarTarefasPessoa(id *int64) (res []modelApresentacao.ReqTarefaPessoa, er
 	return
 }
 
-func AtualizarPessoa(id *int64, req *modelApresentacao.ReqAtualizarPessoa) (res *modelApresentacao.ReqAtualizarPessoa, err error) {
+func AtualizarPessoa(id string, req *modelApresentacao.ReqAtualizarPessoa) (res *modelApresentacao.ReqAtualizarPessoa, err error) {
 	db := database.Conectar()
 	defer db.Close()
 
@@ -78,7 +78,7 @@ func AtualizarPessoa(id *int64, req *modelApresentacao.ReqAtualizarPessoa) (res 
 	return
 }
 
-func DeletarPessoa(id *int64) (err error) {
+func DeletarPessoa(id string) (err error) {
 	db := database.Conectar()
 	defer db.Close()
 
