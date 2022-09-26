@@ -3,7 +3,8 @@ package pessoas
 import (
 	"gerenciadorDeProjetos/domain/pessoas"
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
-	utils "gerenciadorDeProjetos/utils/errors-tratment"
+	errorstratment "gerenciadorDeProjetos/utils/errors-tratment"
+	utils "gerenciadorDeProjetos/utils/params"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,19 +17,19 @@ import (
 // @Accept json
 // @Produce json
 // @Success 201 {object} modelApresentacao.ReqPessoa "OK"
-// @Failure 400,401 {array} utils.ResError
+// @Failure 400,401 {array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas [post]
-func NovaPessoa(c *gin.Context) {
+func novaPessoa(c *gin.Context) {
 
 	req := modelApresentacao.ReqPessoa{}
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(),
+		c.JSON(http.StatusBadRequest, errorstratment.KeyError(err.Error(),
 			"Could not create. Parameters were not passed correctly", 400))
 		return
 	}
 	if res, err := pessoas.NovaPessoa(&req); err != nil {
-		c.JSON(http.StatusBadRequest, utils.KeyError(err.Error(), "Team does not exist", 400))
+		c.JSON(http.StatusBadRequest, errorstratment.KeyError(err.Error(), "Team does not exist", 400))
 	} else {
 		c.JSON(http.StatusCreated, res)
 	}
@@ -42,10 +43,10 @@ func NovaPessoa(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} modelApresentacao.ReqGetPessoa "OK"
-// @Failure 404,401 {array} utils.ResError
+// @Failure 404,401 {array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas [get]
-func ListarPessoas(c *gin.Context) {
+func listarPessoas(c *gin.Context) {
 
 	if pessoas, err := pessoas.ListarPessoas(); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -61,14 +62,15 @@ func ListarPessoas(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} modelApresentacao.ReqGetPessoa "OK"
-// @Failure 401,404 {array} utils.ResError
+// @Failure 401,404 {array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas/{id} [get]
-func ListarPessoa(c *gin.Context) {
+func listarPessoa(c *gin.Context) {
 	id := c.Param("id")
 
-	if pessoas, err := pessoas.ListarPessoa(id); err != nil {
-		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Person does not exist", 404))
+	pessoas, err := pessoas.ListarPessoa(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, errorstratment.KeyError(err.Error(), "Person does not exist", 404))
 	} else {
 		c.JSON(http.StatusOK, pessoas)
 	}
@@ -81,14 +83,14 @@ func ListarPessoa(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} modelApresentacao.ReqTarefaPessoa "OK"
-// @Failure 401,404 {array} utils.ResError
+// @Failure 401,404 {array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas/{id}/tasks [get]
-func ListarTarefasPessoa(c *gin.Context) {
+func listarTarefasPessoa(c *gin.Context) {
 	id := c.Param("id")
 
 	if pessoas, err := pessoas.ListarTarefasPessoa(id); err != nil {
-		c.JSON(http.StatusNotFound, utils.KeyError(err.Error(), "Person does not exist", 404))
+		c.JSON(http.StatusNotFound, errorstratment.KeyError(err.Error(), "Person does not exist", 404))
 	} else if len(pessoas) == 0 {
 		c.JSON(http.StatusNoContent, pessoas)
 	} else {
@@ -104,10 +106,10 @@ func ListarTarefasPessoa(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} modelApresentacao.ReqAtualizarPessoa
-// @Failure 401,400	{array} utils.ResError
+// @Failure 401,400	{array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas/{id} [put]
-func AtualizarPessoa(c *gin.Context) {
+func atualizarPessoa(c *gin.Context) {
 	id := c.Param("id")
 
 	req := modelApresentacao.ReqAtualizarPessoa{}
@@ -131,16 +133,39 @@ func AtualizarPessoa(c *gin.Context) {
 // @Param		id		path	int		true		"Pessoa_ID"
 // @Accept json
 // @Produce json
-// @Success 200 {array} utils.ResOk "OK"
-// @Failure 401,400 {array} utils.ResError
+// @Success 200 {array} errorstratment.ResOk "OK"
+// @Failure 401,400 {array} errorstratment.ResError
 // @Tags People
 // @Router /pessoas/{id} [delete]
-func DeletarPessoa(c *gin.Context) {
+func deletarPessoa(c *gin.Context) {
 	id := c.Param("id")
 
 	if err := pessoas.DeletarPessoa(id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(http.StatusOK, utils.KeyOk("Person deleted successfully", 200))
+		c.JSON(http.StatusOK, errorstratment.KeyOk("Person deleted successfully", 200))
 	}
+}
+
+// @Security bearerAuth
+// @Summary GET all people with sort 
+// @Description GET all people with sort orderBy & || order (desc, cresc)
+// @Param		orderBy		query			string				false		"column" 		Enums(id_pessoa,nome_pessoa, funcao_pessoa, data_contratacao, equipe_id)
+// @Param		order		query			string				false		"order desc"	
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqGetPessoa "OK"
+// @Failure 401,400 {array} errorstratment.ResError
+// @Tags People
+// @Router /pessoas/filtros [get]
+func listarPessoasFiltro(c *gin.Context) {
+	params := utils.ParseParams(c)
+
+	res, err := pessoas.ListarPessoasFiltro(params)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"err": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }

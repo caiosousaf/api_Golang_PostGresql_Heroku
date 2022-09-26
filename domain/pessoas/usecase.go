@@ -5,6 +5,7 @@ import (
 	"gerenciadorDeProjetos/config/database"
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	"gerenciadorDeProjetos/infra/pessoas"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 func NovaPessoa(req *modelApresentacao.ReqPessoa) (*modelApresentacao.ReqPessoa, error) {
@@ -93,5 +94,18 @@ func DeletarPessoa(id string) (err error) {
 		return fmt.Errorf("unrecognized error")
 	}
 	err = pessoasRepo.DeletarPessoa(id)
+	return
+}
+
+func ListarPessoasFiltro(params *utils.RequestParams) (res *modelApresentacao.ListarGetPessoa, err error) {
+	db := database.Conectar()
+	defer db.Close()
+	pessoasRepo := pessoas.NovoRepo(db)
+
+	res, err = pessoasRepo.ListarPessoasFiltro(params)
+	if err != nil {
+		return nil, fmt.Errorf("usuarios nao listados // " + err.Error())
+	}
+
 	return
 }

@@ -588,6 +588,76 @@ const docTemplate = `{
                 }
             }
         },
+        "/pessoas/filtros": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all people with sort orderBy \u0026 || order (desc, cresc)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "People"
+                ],
+                "summary": "GET all people with sort",
+                "parameters": [
+                    {
+                        "enum": [
+                            "id_pessoa",
+                            "nome_pessoa",
+                            "funcao_pessoa",
+                            "data_contratacao",
+                            "equipe_id"
+                        ],
+                        "type": "string",
+                        "description": "column",
+                        "name": "orderBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "order desc",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pessoas.ReqGetPessoa"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/pessoas/{id}": {
             "get": {
                 "security": [

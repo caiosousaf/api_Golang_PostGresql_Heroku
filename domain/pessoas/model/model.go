@@ -53,3 +53,12 @@ type ReqTarefaPessoa struct {
 	Prazo_Entrega  *time.Time `json:"prazo_entrega" example:"22/09/2022"`
 	Prioridade     *int       `json:"prioridade" example:"2"`
 }
+
+type Pessoa struct {
+	ID_Pessoa        *uint
+	Nome_Pessoa      *string
+	Funcao_Pessoa    *string
+	EquipeID         *int
+	Nome_Equipe      *string
+	Data_Contratacao *time.Time
+}

@@ -3,10 +3,11 @@ package pessoas
 import "github.com/gin-gonic/gin"
 
 func Router(r *gin.RouterGroup) {
-	r.POST("/", NovaPessoa)
-	r.GET("/", ListarPessoas)
-	r.GET("/:id", ListarPessoa)
-	r.GET("/:id/tasks", ListarTarefasPessoa)
-	r.PUT("/:id", AtualizarPessoa)
-	r.DELETE("/:id", DeletarPessoa)
+	r.POST("/", novaPessoa)
+	r.GET("/", listarPessoas)
+	r.GET("/:id", listarPessoa)
+	r.GET("/:id/tasks", listarTarefasPessoa)
+	r.PUT("/:id", atualizarPessoa)
+	r.DELETE("/:id", deletarPessoa)
+	r.GET("/filtros", listarPessoasFiltro)
 }

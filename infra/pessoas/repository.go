@@ -6,6 +6,7 @@ import (
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/pessoas/model"
 	"gerenciadorDeProjetos/infra/pessoas/postgres"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 type repositorio struct {
@@ -36,4 +37,7 @@ func (r *repositorio) AtualizarPessoa(id string, req *modelApresentacao.ReqAtual
 }
 func (r *repositorio) DeletarPessoa(id string) error {
 	return r.Data.DeletarPessoa(id)
+}
+func (r *repositorio) ListarPessoasFiltro(params *utils.RequestParams) (*modelApresentacao.ListarGetPessoa, error) {
+	return r.Data.ListarPessoasFiltro(params)
 }

@@ -5,6 +5,8 @@ import (
 
 	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/pessoas/model"
+	utils "gerenciadorDeProjetos/utils/params"
+
 	sq "github.com/Masterminds/squirrel"
 )
 
@@ -159,4 +161,63 @@ func (postgres *DBPessoas) DeletarPessoa(id string) error {
 	}
 
 	return nil
+}
+
+func (pg *DBPessoas) ListarPessoasFiltro(params *utils.RequestParams) (res *modelApresentacao.ListarGetPessoa, err error) {
+	var (
+		ordem, ordenador string
+		
+	)
+
+	if params.TemFiltro("order") {
+		ordem = params.Filters["order"][0]
+	}
+
+	if params.TemFiltro("orderBy") {
+		ordenador = params.Filters["orderBy"][0]
+	}
+
+	sqlStmt, sqlValues, err := sq.
+		// Select("pe.*, eq.nome_equipe").
+		// From("pessoas pe").
+		// Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+		// OrderBy(ordenador + " " + ordem).
+		// PlaceholderFormat(sq.Dollar).
+		// ToSql()
+
+		Select("pe.*, eq.nome_equipe").
+		From("pessoas pe").
+		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+		Where(sq.ILike{
+			ordenador : "%"+ordem+"%",
+		}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := pg.DB.Query(sqlStmt, sqlValues...)
+	if err != nil {
+		return nil, err
+	}
+
+	var pessoa = modelApresentacao.ReqGetPessoa{}
+
+	res = &modelApresentacao.ListarGetPessoa{
+		Pessoas: make([]modelApresentacao.ReqGetPessoa, 0),
+	}
+
+	for rows.Next() {
+		if err := rows.Scan(&pessoa.ID_Pessoa, &pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa,
+			&pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
+			if err == sql.ErrNoRows {
+				return res, nil
+			}
+			return nil, err
+		}
+		res.Pessoas = append(res.Pessoas, pessoa)
+	}
+	return
 }

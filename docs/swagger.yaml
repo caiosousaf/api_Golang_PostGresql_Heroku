@@ -932,6 +932,52 @@ paths:
       summary: GET All Tasks of a specific Person
       tags:
       - People
+  /pessoas/filtros:
+    get:
+      consumes:
+      - application/json
+      description: GET all people with sort orderBy & || order (desc, cresc)
+      parameters:
+      - description: column
+        enum:
+        - id_pessoa
+        - nome_pessoa
+        - funcao_pessoa
+        - data_contratacao
+        - equipe_id
+        in: query
+        name: orderBy
+        type: string
+      - description: order desc
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pessoas.ReqGetPessoa'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: GET all people with sort
+      tags:
+      - People
   /projetos:
     get:
       consumes:
