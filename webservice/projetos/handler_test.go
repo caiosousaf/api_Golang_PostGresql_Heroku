@@ -1,4 +1,4 @@
-package pessoas
+package projetos
 
 import (
 	"bytes"
@@ -7,20 +7,23 @@ import (
 	"gerenciadorDeProjetos/config/server/middlewares"
 	"gerenciadorDeProjetos/config/services"
 	modelApresentacaoLogin "gerenciadorDeProjetos/domain/login/model"
-	modelApresentacao "gerenciadorDeProjetos/domain/pessoas/model"
+	modelApresentacao "gerenciadorDeProjetos/domain/projetos/model"
 	modelData "gerenciadorDeProjetos/infra/login/model"
 	"gerenciadorDeProjetos/webservice/login"
-	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestGetPerson(t *testing.T) {
-
+func GetToken() (token string){
+	var t = &testing.T{}
 	r := gin.Default()
-
+	r.Use(cors.Default())
+	
 	r.POST("/login", login.Login)
 	usuario := modelData.ReqLogin{
 		Email:    "caio@caio.com",
@@ -37,43 +40,37 @@ func TestGetPerson(t *testing.T) {
 
 	token, err := services.NewJWTService().GenerateToken(pessoa.ID_Usuario)
 	if err != nil {
-		return
+		return 
 	}
 	fmt.Println(token)
-	Router(r.Group("pessoas", middlewares.Auth()))
-	t.Run("BuscaPessoasSucesso", func(t *testing.T) {
+	return 
+}
 
-		req, _ := http.NewRequest("GET", "/pessoas/", nil)
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-		r.ServeHTTP(w, req)
+func TestGetProject(t *testing.T) {
 
-		var pessoas modelApresentacao.ListarGetPessoa
-		json.Unmarshal(w.Body.Bytes(), &pessoas)
+	r := gin.Default()
+	r.Use(cors.Default())
 
-		assert.Equal(t, http.StatusOK, w.Code)
+	token := GetToken()
+	Router(r.Group("/projetos", middlewares.Auth()))
+	t.Run("BuscaProjetoSucesso", func(t *testing.T) {
+		//r.GET("/projetos/:id", ListarProjeto, middlewares.Auth())
 
-		assert.NotEmpty(t, pessoas)
-	})
-
-	t.Run("BuscaPessoaSucesso", func(t *testing.T) {
-		//r.GET("/pessoas/:id", listarPessoa)
-
-		req, err := http.NewRequest("GET", "/pessoas/1", nil)
+		id := "1"
+		req, err := http.NewRequest("GET", "/projetos/"+id, nil)
 		if err != nil {
 			fmt.Println(err)
 		}
-
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
 
 		r.ServeHTTP(w, req)
 
-		var pessoas modelApresentacao.ReqGetPessoa
-		json.Unmarshal(w.Body.Bytes(), &pessoas)
+		var projetos modelApresentacao.ReqProjetos
+		json.Unmarshal(w.Body.Bytes(), &projetos)
 
 		assert.Equal(t, http.StatusOK, w.Code)
-		assert.NotEmpty(t, pessoas)
+		assert.NotEmpty(t, projetos)
 
 	})
-
 }
