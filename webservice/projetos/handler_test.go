@@ -204,3 +204,49 @@ func TestGetTasksProject(t *testing.T) {
 		assert.Empty(t, projetos)
 	})
 }
+
+func TestGetStatusOfAllProjects(t *testing.T) {
+	r := gin.Default()
+	r.GET("/projetos/status/:status", ListarProjetosComStatus, middlewares.Auth())
+	r.Use(cors.Default())
+
+	token := GetToken()
+
+	t.Run("Busca-Status-Projetos-Sucesso", func(t *testing.T) {
+			status := "A Fazer"
+			req, err := http.NewRequest("GET", "/projetos/status/"+status, nil)
+			if err != nil {
+				fmt.Println(err)
+			}
+	
+			req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+			w := httptest.NewRecorder()
+	
+			r.ServeHTTP(w, req)
+	
+			var StatusProjects []modelApresentacao.ReqStatusProjeto
+			json.Unmarshal(w.Body.Bytes(),&StatusProjects)
+	
+			assert.Equal(t, http.StatusOK, w.Code)
+			assert.NotEmpty(t, StatusProjects)
+	})
+
+	t.Run("Busca-Status-Projetos-Erro-Status-Inexistente", func(t *testing.T) {
+		status := "naoexiste"
+		req, err := http.NewRequest("GET", "/projetos/status/"+status, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var StatusProjects []modelApresentacao.ReqStatusProjeto
+		json.Unmarshal(w.Body.Bytes(),&StatusProjects)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.Empty(t, StatusProjects)
+})
+}
