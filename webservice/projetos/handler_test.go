@@ -53,7 +53,7 @@ func TestGetProjects(t *testing.T) {
 	r.Use(cors.Default())
 	token := GetToken()
 
-	t.Run("Busca Projetos Sucesso", func(t *testing.T) {
+	t.Run("Busca-Projetos-Sucesso", func(t *testing.T) {
 
 		req, err := http.NewRequest("GET", "/projetos/", nil)
 		if err != nil {
@@ -80,7 +80,7 @@ func TestGetProject(t *testing.T) {
 
 	token := GetToken()
 
-	t.Run("BuscaProjetoSucesso", func(t *testing.T) {
+	t.Run("Busca-Projeto-Sucesso", func(t *testing.T) {
 		
 		id := "1"
 		req, err := http.NewRequest("GET", "/projetos/"+id, nil)
@@ -100,7 +100,7 @@ func TestGetProject(t *testing.T) {
 
 	})
 
-	t.Run("BuscaProjetoErroIdDeveSerInteiro", func(t *testing.T) {
+	t.Run("Busca-Projeto-Erro-Id-Deve-Ser-Inteiro", func(t *testing.T) {
 		
 		id := "c"
 		req, err := http.NewRequest("GET", "/projetos/"+id, nil)
@@ -138,5 +138,69 @@ func TestGetProject(t *testing.T) {
 		assert.Empty(t, projetos)
 	})
 
-	
+}
+
+func TestGetTasksProject(t *testing.T) {
+	r := gin.Default()
+	r.GET("/projetos/:id/tasks", ListarTasksProjeto, middlewares.Auth())
+	r.Use(cors.Default())
+
+	token := GetToken()
+
+	t.Run("Busca-Task-Projeto-Sucesso", func(t *testing.T) {
+		id := "1"
+		req, err := http.NewRequest("GET", fmt.Sprintf("/projetos/%v/tasks", id), nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqTasksProjeto
+		json.Unmarshal(w.Body.Bytes(),&projetos)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, projetos)
+	})
+
+	t.Run("Busca-Task-Projeto-Error-ID-Invalido", func(t *testing.T) {
+		id := "c"
+		req, err := http.NewRequest("GET", fmt.Sprintf("/projetos/%v/tasks", id), nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqTasksProjeto
+		json.Unmarshal(w.Body.Bytes(),&projetos)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.Empty(t, projetos)
+	})
+
+	t.Run("Busca-Task-Projeto-Erro-ID-Inexistente", func(t *testing.T) {
+		id := "10000"
+		req, err := http.NewRequest("GET", fmt.Sprintf("/projetos/%v/tasks", id), nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqTasksProjeto
+		json.Unmarshal(w.Body.Bytes(),&projetos)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.Empty(t, projetos)
+	})
 }
