@@ -22,7 +22,7 @@ func (postgres *DBProjetos) NovoProjeto(req *modelData.ReqProjeto) (*modelAprese
 	var projeto = &modelApresentacao.ReqProjetos{}
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Projeto, req.Descricao_Projeto, req.Equipe_ID, data_limite)
-	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.EquipeID, &projeto.Status, &projeto.Descricao_Projeto,
+	if err := row.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto, &projeto.EquipeID, &projeto.Status,
 		&projeto.Data_Criacao, &projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
