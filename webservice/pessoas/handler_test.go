@@ -195,7 +195,7 @@ func TestAddPerson(t *testing.T) {
 
 	t.Run("AdicionarPessoaSucesso", func(t *testing.T) {
 
-		nome_pessoa := "Teste Unitario"
+		nome_pessoa := "Teste Unitarios"
 		funcao_pessoa := "Full-Stack"
 		equipe := 10
 
@@ -206,7 +206,7 @@ func TestAddPerson(t *testing.T) {
 		}
 
 		jsonValue, _ := json.Marshal(pessoa)
-		req, err := http.NewRequest("POST", "/pessoa/", bytes.NewBuffer(jsonValue))
+		req, err := http.NewRequest("POST", "/pessoas", bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -217,8 +217,7 @@ func TestAddPerson(t *testing.T) {
 
 		var pessoaAdicionada modelApresentacao.ReqPessoa
 		json.Unmarshal(w.Body.Bytes(), &pessoaAdicionada)
-		v := *pessoaAdicionada.ID_Pessoa
-		fmt.Println(v)
+		
 
 		assert.Equal(t, http.StatusCreated, w.Code)
 		assert.NotEmpty(t, pessoa)
@@ -255,15 +254,14 @@ func TestAddPerson(t *testing.T) {
 
 		var pessoaAdicionada modelApresentacao.ReqPessoa
 		json.Unmarshal(w.Body.Bytes(), &pessoaAdicionada)
-		v := pessoaAdicionada.ID_Pessoa
-		fmt.Println(v)
+		
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
 		assert.NotEmpty(t, pessoa)
 		assert.Empty(t, pessoaAdicionada)
 	})
 
-	t.Run("AdicionarPessoaSucesso", func(t *testing.T) {
+	t.Run("AdicionarPessoaErroEquipeInexistente", func(t *testing.T) {
 
 		nome_pessoa := "Teste Unitario"
 		funcao_pessoa := "Full-Stack"
@@ -287,11 +285,180 @@ func TestAddPerson(t *testing.T) {
 
 		var pessoaAdicionada modelApresentacao.ReqPessoa
 		json.Unmarshal(w.Body.Bytes(), &pessoaAdicionada)
-		v := pessoaAdicionada.ID_Pessoa
-		fmt.Println(v)
+		
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
 		assert.NotEmpty(t, pessoa)
 		assert.Empty(t, pessoaAdicionada)
+	})
+}
+
+func TestUpdatePerson(t *testing.T) {
+	r := gin.Default()
+	r.PUT("/pessoas/:id", atualizarPessoa, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("AtualizarSucesso", func(t *testing.T) {
+		nome_pessoa := "OI"
+		funcao_pessoa := "Opa"
+		equipe := 10
+
+		pessoa := modelDataPessoa.ReqPessoa{
+			Nome_Pessoa:   &nome_pessoa,
+			Funcao_Pessoa: &funcao_pessoa,
+			Equipe_ID:     &equipe,
+		}
+
+		jsonValue, _ := json.Marshal(pessoa)
+		id := "11"
+		req, err := http.NewRequest("PUT", "/pessoas/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var pessoaAtualizada modelApresentacao.ReqAtualizarPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoaAtualizada)
+		
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, pessoa)
+		assert.NotEmpty(t, pessoaAtualizada)
+	})
+
+	t.Run("AtualizarErroParametros", func(t *testing.T) {
+		nome_pessoa := "OI"
+		funcao_pessoa := "Opa"
+		equipe := "10"
+
+		type reqPessoaForcaError struct {
+			Nome_Pessoa   *string `json:"nome_pessoa"`
+			Funcao_Pessoa *string `json:"funcao_pessoa"`
+			Equipe_ID     *string    `json:"equipe_id" `
+		}
+
+		pessoa := reqPessoaForcaError{
+			Nome_Pessoa:   &nome_pessoa,
+			Funcao_Pessoa: &funcao_pessoa,
+			Equipe_ID:     &equipe,
+		}
+
+		jsonValue, _ := json.Marshal(pessoa)
+		id := "11"
+		req, err := http.NewRequest("PUT", "/pessoas/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var pessoaAtualizada modelApresentacao.ReqAtualizarPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoaAtualizada)
+		
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, pessoa)
+		assert.Empty(t, pessoaAtualizada)
+	})
+
+	t.Run("AtualizarErroIdInexistente", func(t *testing.T) {
+		nome_pessoa := "OI"
+		funcao_pessoa := "Opa"
+		equipe := 10
+
+		pessoa := modelDataPessoa.ReqPessoa{
+			Nome_Pessoa:   &nome_pessoa,
+			Funcao_Pessoa: &funcao_pessoa,
+			Equipe_ID:     &equipe,
+		}
+
+		jsonValue, _ := json.Marshal(pessoa)
+		id := "111451"
+		req, err := http.NewRequest("PUT", "/pessoas/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var pessoaAtualizada modelApresentacao.ReqAtualizarPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoaAtualizada)
+		
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.NotEmpty(t, pessoa)
+		assert.Empty(t, pessoaAtualizada)
+	})
+
+	t.Run("AtualizarEquipeInexistente", func(t *testing.T) {
+		nome_pessoa := "OI"
+		funcao_pessoa := "Opa"
+		equipe := 1045445
+
+		pessoa := modelDataPessoa.ReqPessoa{
+			Nome_Pessoa:   &nome_pessoa,
+			Funcao_Pessoa: &funcao_pessoa,
+			Equipe_ID:     &equipe,
+		}
+
+		jsonValue, _ := json.Marshal(pessoa)
+		id := "11"
+		req, err := http.NewRequest("PUT", "/pessoas/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var pessoaAtualizada modelApresentacao.ReqAtualizarPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoaAtualizada)
+		
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.NotEmpty(t, pessoa)
+		assert.Empty(t, pessoaAtualizada)
+	})
+}
+
+func TestDeletePerson(t *testing.T) {
+	r := gin.Default()
+	r.DELETE("/pessoas/:id", deletarPessoa, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("DeletarSucesso", func(t *testing.T) {
+		id := "26"
+		req, err := http.NewRequest("DELETE", "/pessoas/"+id, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+	})
+
+	t.Run("DeletarErroIdInexistente", func(t *testing.T) {
+		id := "12151"
+		req, err := http.NewRequest("DELETE", "/pessoas/"+id, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
 	})
 }
