@@ -262,29 +262,29 @@ func TestAddProject(t *testing.T) {
 		nome_projeto := "Teste sjdnsajkcnsssadasasda saffsdfddd dsdsadscsac xxssxa dvvbsdjk"
 		descricao_projeto := "Descricao teste para o teste unitário testarr"
 		equipe := 1
-	
+
 		projeto := modelDataProjetos.ReqProjeto{
 			Nome_Projeto:      &nome_projeto,
 			Descricao_Projeto: &descricao_projeto,
 			Equipe_ID:         &equipe,
 			Prazo:             2,
 		}
-	
+
 		jsonValue, _ := json.Marshal(projeto)
 		req, err := http.NewRequest("POST", "/projetos", bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
 		}
-	
+
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, req)
-	
+
 		var projetoAdicionado modelApresentacao.ReqProjetos
-			json.Unmarshal(w.Body.Bytes(), &projetoAdicionado)
-			v := projetoAdicionado.ID_Projeto
-		fmt.Println(*v)
-	
+		json.Unmarshal(w.Body.Bytes(), &projetoAdicionado)
+		v := projetoAdicionado.ID_Projeto
+		fmt.Println(v)
+
 		assert.Equal(t, http.StatusCreated, w.Code)
 		assert.NotEmpty(t, projeto)
 		assert.NotEmpty(t, projetoAdicionado)
@@ -294,24 +294,56 @@ func TestAddProject(t *testing.T) {
 		nome_projeto := "Teste sjdnsajkcnsssadasasda saffsdfddd dsdsadscsac xxssxa dvvbsdjk"
 		descricao_projeto := "Descricao teste para o teste unitário testarr"
 		equipe := 1
-	
+
 		projeto := modelDataProjetos.ReqProjeto{
 			Nome_Projeto:      &nome_projeto,
 			Descricao_Projeto: &descricao_projeto,
 			Equipe_ID:         &equipe,
 			Prazo:             2,
 		}
-	
+
 		jsonValue, _ := json.Marshal(projeto)
 		req, err := http.NewRequest("POST", "/projetos", bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
 		}
-	
+
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, req)
-	
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+
+	})
+
+	t.Run("post-fail-parametros-errados", func(t *testing.T) {
+		type ReqProjetoForcaError struct {
+			Nome_Projeto      *string `json:"nome_projeto"`
+			Equipe_ID         *string `json:"equipe_id"`
+			Descricao_Projeto *string `json:"descricao_projeto"`
+			Prazo             int     `json:"prazo_entrega"`
+		}
+		nome_projeto := "Teste sjdnsajkcnsssadasasda saffsdfddd dsdsadscsac xxssxa dvvbsdjk"
+		descricao_projeto := "Descricao teste para o teste unitário testarr"
+		equipe := "1"
+
+		projeto := ReqProjetoForcaError{
+			Nome_Projeto:      &nome_projeto,
+			Descricao_Projeto: &descricao_projeto,
+			Equipe_ID:         &equipe,
+			Prazo:             2,
+		}
+
+		jsonValue, _ := json.Marshal(projeto)
+		req, err := http.NewRequest("POST", "/projetos", bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
 		assert.Equal(t, http.StatusBadRequest, w.Code)
 
 	})
@@ -324,7 +356,7 @@ func TestDeleteProject(t *testing.T) {
 	token := GetToken()
 
 	t.Run("delete-project-sucesso", func(t *testing.T) {
-		id := "37"
+		id := "27"
 		req, err := http.NewRequest("DELETE", "/projetos/"+id, nil)
 		if err != nil {
 			fmt.Println(err)
@@ -337,5 +369,227 @@ func TestDeleteProject(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, w.Code)
 
+	})
+
+	t.Run("delete-project-erro", func(t *testing.T) {
+		id := "12151"
+		req, err := http.NewRequest("DELETE", "/projetos/"+id, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+
+	})
+}
+
+func TestUpdateProject(t *testing.T) {
+	r := gin.Default()
+	r.PUT("/projetos/:id", AtualizarProjeto, middlewares.Auth())
+	r.Use(cors.Default())
+
+	token := GetToken()
+
+	t.Run("PUT-sucesso", func(t *testing.T) {
+		nome_projeto := "Oi"
+		descricao_projeto := "Descricao teste para o teste unitário testarr"
+		equipe := 1
+
+		projeto := modelDataProjetos.ReqAtualizarProjetoData{
+			Nome_Projeto:      &nome_projeto,
+			Equipe_ID:         &equipe,
+			Descricao_Projeto: &descricao_projeto,
+		}
+
+		jsonValue, _ := json.Marshal(projeto)
+		id := "10"
+		req, err := http.NewRequest("PUT", "/projetos/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetoAtualizado modelApresentacao.ReqAtualizarProjeto
+		json.Unmarshal(w.Body.Bytes(), &projetoAtualizado)
+		v := projetoAtualizado.ID_Projeto
+		fmt.Println(v)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, projeto)
+		assert.NotEmpty(t, projetoAtualizado)
+	})
+
+	t.Run("PUT-erro-parametros", func(t *testing.T) {
+		nome_projeto := "Teste sjdnsajkcnsssadasasda saffsdfddd dsdsadscsac xxssxa dvvbsdjk"
+		descricao_projeto := "Descricao teste para o teste unitário testarr"
+		equipe := "1"
+
+		type reqAtualizarProjetoDataForcaError struct {
+			Nome_Projeto      *string `json:"nome_projeto" example:"Casas Bahias"`
+			Equipe_ID         *string `json:"equipe_id" example:"1"`
+			Descricao_Projeto *string `json:"descricao_projeto" example:"Criacao de sistema e-commerce"`
+		}
+
+		projeto := reqAtualizarProjetoDataForcaError{
+			Nome_Projeto:      &nome_projeto,
+			Equipe_ID:         &equipe,
+			Descricao_Projeto: &descricao_projeto,
+		}
+
+		jsonValue, _ := json.Marshal(projeto)
+		id := "10"
+		req, err := http.NewRequest("PUT", "/projetos/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetoAtualizado modelApresentacao.ReqAtualizarProjeto
+		json.Unmarshal(w.Body.Bytes(), &projetoAtualizado)
+		v := projetoAtualizado.ID_Projeto
+		fmt.Println(v)
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, projeto)
+		assert.Empty(t, projetoAtualizado)
+	})
+
+	t.Run("PUT-erro-ID", func(t *testing.T) {
+		nome_projeto := "Teste sjdnsajkcnsssadasasda saffsdfddd dsdsadscsac xxssxa dvvbsdjk"
+		descricao_projeto := "Descricao teste para o teste unitário testarr"
+		equipe := 1
+
+		projeto := modelDataProjetos.ReqAtualizarProjetoData{
+			Nome_Projeto:      &nome_projeto,
+			Equipe_ID:         &equipe,
+			Descricao_Projeto: &descricao_projeto,
+		}
+
+		jsonValue, _ := json.Marshal(projeto)
+		id := "104141"
+		req, err := http.NewRequest("PUT", "/projetos/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetoAtualizado modelApresentacao.ReqAtualizarProjeto
+		json.Unmarshal(w.Body.Bytes(), &projetoAtualizado)
+		v := projetoAtualizado.ID_Projeto
+		fmt.Println(v)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.NotEmpty(t, projeto)
+		assert.Empty(t, projetoAtualizado)
+	})
+}
+
+func TestUpdateStatus(t *testing.T) {
+	r := gin.Default()
+	r.PUT("/projetos/:id/status", AtualizarStatusProjeto, middlewares.Auth())
+	r.Use(cors.Default())
+
+	token := GetToken()
+
+	t.Run("PUT-sucesso", func(t *testing.T) {
+		status := "Em Andamento"
+
+		projeto := modelDataProjetos.ReqUpdateStatusProjeto{
+			Status: &status,
+		}
+		id := "10"
+
+		jsonValue, _ := json.Marshal(projeto)
+		req, err := http.NewRequest("PUT", fmt.Sprintf("/projetos/%v/status", id), bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetoAtualizado modelApresentacao.ReqAtualizarProjeto
+		json.Unmarshal(w.Body.Bytes(), &projetoAtualizado)
+		v := projetoAtualizado.ID_Projeto
+		fmt.Println(v)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, projeto)
+		assert.NotEmpty(t, projetoAtualizado)
+	})
+
+	t.Run("PUT-erro-parametros", func(t *testing.T) {
+		status := 1
+
+		type ReqUpdateStatusProjetoForcaError struct {
+			Status *int `json:"status" example:"Em Andamento"`
+		}
+
+		projeto := ReqUpdateStatusProjetoForcaError{
+			Status: &status,
+		}
+		id := "10"
+
+		jsonValue, _ := json.Marshal(projeto)
+		req, err := http.NewRequest("PUT", fmt.Sprintf("/projetos/%v/status", id), bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetoAtualizado modelApresentacao.ReqAtualizarProjeto
+		json.Unmarshal(w.Body.Bytes(), &projetoAtualizado)
+		v := projetoAtualizado.ID_Projeto
+		fmt.Println(v)
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, projeto)
+		assert.Empty(t, projetoAtualizado)
+	})
+
+	t.Run("PUT-sucesso", func(t *testing.T) {
+		status := "Em Andamento"
+
+		projeto := modelDataProjetos.ReqUpdateStatusProjeto{
+			Status: &status,
+		}
+		id := "10151"
+
+		jsonValue, _ := json.Marshal(projeto)
+		req, err := http.NewRequest("PUT", fmt.Sprintf("/projetos/%v/status", id), bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetoAtualizado modelApresentacao.ReqAtualizarProjeto
+		json.Unmarshal(w.Body.Bytes(), &projetoAtualizado)
+		v := projetoAtualizado.ID_Projeto
+		fmt.Println(v)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.NotEmpty(t, projeto)
+		assert.Empty(t, projetoAtualizado)
 	})
 }
