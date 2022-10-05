@@ -462,3 +462,52 @@ func TestDeletePerson(t *testing.T) {
 		assert.Equal(t, http.StatusNotFound, w.Code)
 	})
 }
+
+func TestGetFilterPerson(t *testing.T) {
+	r := gin.Default()
+	r.GET("/pessoas/filtros", listarPessoasFiltro, middlewares.Auth())
+	
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("FiltroPessoaSucesso", func(t *testing.T) {
+		
+		req, err := http.NewRequest("GET", "/pessoas/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		q := req.URL.Query()
+		q.Add("order", "ca")
+		q.Add("orderBy", "nome_pessoa")
+		req.URL.RawQuery = q.Encode()
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+   
+		var pessoa modelApresentacao.ListarGetPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoa)
+ 
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, pessoa)
+	})	
+
+	t.Run("FiltroPessoaSucesso", func(t *testing.T) {
+		
+		req, err := http.NewRequest("GET", "/pessoas/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+   
+		var pessoa modelApresentacao.ListarGetPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoa)
+ 
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, pessoa)
+	})	
+}
