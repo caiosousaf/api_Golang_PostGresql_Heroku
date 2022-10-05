@@ -94,7 +94,7 @@ func (pg *DBPessoas) ListarPessoa(id string) (res *modelApresentacao.ReqGetPesso
 		&pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
-		}
+		}	
 		return nil, err
 	}
 
@@ -173,18 +173,15 @@ func (pg *DBPessoas) ListarPessoasFiltro(params *utils.RequestParams) (res *mode
 		ordem = params.Filters["order"][0]
 	}
 
-	if params.TemFiltro("orderBy") {
-		ordenador = params.Filters["orderBy"][0]
+	if params.TemFiltro("column") {
+		ordenador = params.Filters["column"][0]
 	}
 
-	sqlStmt, sqlValues, err := sq.
-		// Select("pe.*, eq.nome_equipe").
-		// From("pessoas pe").
-		// Join("equipes eq ON eq.id_equipe = pe.equipe_id").
-		// OrderBy(ordenador + " " + ordem).
-		// PlaceholderFormat(sq.Dollar).
-		// ToSql()
+	var sqlStmt string
+	var sqlValues []interface{}
 
+	if params.TemFiltro("order") && params.TemFiltro("column")  {
+		sqlStmt, sqlValues, err = sq.
 		Select("pe.*, eq.nome_equipe").
 		From("pessoas pe").
 		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
@@ -193,6 +190,23 @@ func (pg *DBPessoas) ListarPessoasFiltro(params *utils.RequestParams) (res *mode
 		}).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
+	} else {
+		sqlStmt, sqlValues, err = sq.
+		Select("pe.*, eq.nome_equipe").
+		From("pessoas pe").
+		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
+
+	// sqlStmt, sqlValues, err := sq.
+	// 	Select("pe.*, eq.nome_equipe").
+	// 	From("pessoas pe").
+	// 	Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+	// 	OrderBy(ordenador + " " + ordem).
+	// 	PlaceholderFormat(sq.Dollar).
+	// 	ToSql()
+	
 
 	if err != nil {
 		return nil, err
