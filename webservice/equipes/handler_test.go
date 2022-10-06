@@ -7,6 +7,7 @@ import (
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	modelApresentacaoLogin "gerenciadorDeProjetos/domain/login/model"
 	modelData "gerenciadorDeProjetos/infra/login/model"
+	modelDataEquipe "gerenciadorDeProjetos/infra/equipes/model"
 	"gerenciadorDeProjetos/webservice/login"
 	"net/http"
 	"net/http/httptest"
@@ -248,5 +249,94 @@ func TestGetTasksTeam(t *testing.T) {
 
 		assert.Equal(t, http.StatusNotFound, w.Code)
 		assert.Empty(t, projetos)
+	})
+}
+
+func TestUpdateTeam(t *testing.T) {
+	r := gin.Default()
+	r.PUT("/equipes/:id", atualizarEquipe, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("AtualizarEquipeSucesso", func(t *testing.T) {
+		nome_equipe := "OIn"
+
+		equipe := modelDataEquipe.UpdateEquipe{
+			Nome_Equipe: &nome_equipe,
+		}
+
+		jsonValue, _ := json.Marshal(equipe)
+		id := "11"
+		req, err := http.NewRequest("PUT", "/equipes/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var equipeAtualizada modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipeAtualizada)
+		
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, equipe)
+		assert.NotEmpty(t, equipeAtualizada)
+	})
+
+	t.Run("AtualizarEquipeErroParametro", func(t *testing.T) {
+		nome_equipe := 1
+
+		type UpdateEquipeForcaError struct {
+			Nome_Equipe *int
+		}
+
+		equipe := UpdateEquipeForcaError{
+			Nome_Equipe: &nome_equipe,
+		}
+
+		jsonValue, _ := json.Marshal(equipe)
+		id := "11"
+		req, err := http.NewRequest("PUT", "/equipes/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var equipeAtualizada modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipeAtualizada)
+		
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, equipe)
+		assert.Empty(t, equipeAtualizada)
+	})
+
+	t.Run("AtualizarEquipeErroId", func(t *testing.T) {
+		nome_equipe := "OIn"
+
+		equipe := modelDataEquipe.UpdateEquipe{
+			Nome_Equipe: &nome_equipe,
+		}
+
+		jsonValue, _ := json.Marshal(equipe)
+		id := "1155"
+		req, err := http.NewRequest("PUT", "/equipes/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var equipeAtualizada modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipeAtualizada)
+		
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, equipe)
+		assert.Empty(t, equipeAtualizada)
 	})
 }
