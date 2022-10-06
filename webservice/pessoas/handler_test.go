@@ -51,12 +51,12 @@ func TestGetPeople(t *testing.T) {
 	r := gin.Default()
 	r.GET("/pessoas/", listarPessoas, middlewares.Auth())
 	r.Use(cors.Default())
-	//token := GetToken()
+	token := GetToken()
 
 	t.Run("BuscaPessoasSucesso", func(t *testing.T) {
 
 		req, _ := http.NewRequest("GET", "/pessoas/", nil)
-		//req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, req)
 
