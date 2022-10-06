@@ -149,9 +149,11 @@ func deletarPessoa(c *gin.Context) {
 
 // @Security bearerAuth
 // @Summary GET all people with sort 
-// @Description GET all people with sort orderBy & || order (desc, cresc)
-// @Param		orderBy		query			string				false		"column" 		Enums(id_pessoa,nome_pessoa, funcao_pessoa, data_contratacao, equipe_id)
-// @Param		order		query			string				false		"order desc"	
+// @Description GET all people with sort orderBy & || order (desc, cresc) OR filter data by name
+// @Param		column		query			string				false		"column"			Enums(nome_pessoa, funcao_pessoa)
+// @Param		value		query			string				false		"valueSearch"
+// @Param		orderBy		query			string				false		"orderBy" 			Enums(id_pessoa,nome_pessoa, funcao_pessoa, data_contratacao, equipe_id)
+// @Param		order		query			string				false		"order"				Enums(desc, asc)	
 // @Accept json
 // @Produce json
 // @Success 200 {array} modelApresentacao.ReqGetPessoa "OK"

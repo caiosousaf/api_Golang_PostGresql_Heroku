@@ -936,9 +936,21 @@ paths:
     get:
       consumes:
       - application/json
-      description: GET all people with sort orderBy & || order (desc, cresc)
+      description: GET all people with sort orderBy & || order (desc, cresc) OR filter
+        data by name
       parameters:
       - description: column
+        enum:
+        - nome_pessoa
+        - funcao_pessoa
+        in: query
+        name: column
+        type: string
+      - description: valueSearch
+        in: query
+        name: value
+        type: string
+      - description: orderBy
         enum:
         - id_pessoa
         - nome_pessoa
@@ -948,7 +960,10 @@ paths:
         in: query
         name: orderBy
         type: string
-      - description: order desc
+      - description: order
+        enum:
+        - desc
+        - asc
         in: query
         name: order
         type: string
