@@ -152,3 +152,101 @@ func TestGetMembersTeam(t *testing.T) {
 		assert.Empty(t, equipe)
 	})
 }
+
+func TestGetProjectsTeam(t *testing.T) {
+	r := gin.Default()
+	r.GET("/equipes/:id/projetos", buscarProjetosDeEquipe, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("BuscaProjetosEquipeSucesso", func(t *testing.T) {
+		id := "1"
+		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/projetos", id), nil)
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqEquipeProjetos
+		json.Unmarshal(w.Body.Bytes(), &projetos)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, projetos)
+	})
+
+	t.Run("BuscaProjetosEquipeErrorId", func(t *testing.T) {
+		id := "11"
+		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/projetos", id), nil)
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqEquipeProjetos
+		json.Unmarshal(w.Body.Bytes(), &projetos)
+
+		assert.Equal(t, http.StatusNoContent, w.Code)
+		assert.Empty(t, projetos)
+	})
+
+	t.Run("BuscaProjetosEquipeErrorIdInexistente", func(t *testing.T) {
+		id := "1322"
+		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/projetos", id), nil)
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqEquipeProjetos
+		json.Unmarshal(w.Body.Bytes(), &projetos)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.Empty(t, projetos)
+	})
+}
+
+func TestGetTasksTeam(t *testing.T) {
+	r := gin.Default()
+	r.GET("/equipes/:id/tasks", buscarTasksDeEquipe, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("BuscarTasksEquipeSucesso", func(t *testing.T) {
+		id := "1"
+		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/tasks", id), nil)
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqTasksbyTeam
+		json.Unmarshal(w.Body.Bytes(), &projetos)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, projetos)
+	})
+
+	t.Run("BuscarTasksEquipeErroId", func(t *testing.T) {
+		id := "11"
+		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/tasks", id), nil)
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqTasksbyTeam
+		json.Unmarshal(w.Body.Bytes(), &projetos)
+
+		assert.Equal(t, http.StatusNoContent, w.Code)
+		assert.Empty(t, projetos)
+	})
+
+	t.Run("BuscarTasksEquipeErroIdInexistente", func(t *testing.T) {
+		id := "15484"
+		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/tasks", id), nil)
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var projetos []modelApresentacao.ReqTasksbyTeam
+		json.Unmarshal(w.Body.Bytes(), &projetos)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.Empty(t, projetos)
+	})
+}
