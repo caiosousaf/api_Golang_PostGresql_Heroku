@@ -595,7 +595,7 @@ const docTemplate = `{
                         "bearerAuth": []
                     }
                 ],
-                "description": "GET all people with sort orderBy \u0026 || order (desc, cresc)",
+                "description": "GET all people with sort orderBy \u0026 || order (desc, cresc) OR filter data by name",
                 "consumes": [
                     "application/json"
                 ],
@@ -609,6 +609,22 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "enum": [
+                            "nome_pessoa",
+                            "funcao_pessoa"
+                        ],
+                        "type": "string",
+                        "description": "column",
+                        "name": "column",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "valueSearch",
+                        "name": "value",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
                             "id_pessoa",
                             "nome_pessoa",
                             "funcao_pessoa",
@@ -616,13 +632,17 @@ const docTemplate = `{
                             "equipe_id"
                         ],
                         "type": "string",
-                        "description": "column",
+                        "description": "orderBy",
                         "name": "orderBy",
                         "in": "query"
                     },
                     {
+                        "enum": [
+                            "desc",
+                            "asc"
+                        ],
                         "type": "string",
-                        "description": "order desc",
+                        "description": "order",
                         "name": "order",
                         "in": "query"
                     }

@@ -94,7 +94,7 @@ func (pg *DBPessoas) ListarPessoa(id string) (res *modelApresentacao.ReqGetPesso
 		&pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
-		}
+		}	
 		return nil, err
 	}
 
@@ -166,34 +166,59 @@ func (postgres *DBPessoas) DeletarPessoa(id string) error {
 func (pg *DBPessoas) ListarPessoasFiltro(params *utils.RequestParams) (res *modelApresentacao.ListarGetPessoa, err error) {
 	var (
 		ordem, ordenador string
-		
+		column, value string
 	)
 
-	if params.TemFiltro("order") {
-		ordem = params.Filters["order"][0]
+	if params.TemFiltro("value") {
+		value = params.Filters["value"][0]
+	}
+
+	if params.TemFiltro("column") {
+		column = params.Filters["column"][0]
 	}
 
 	if params.TemFiltro("orderBy") {
 		ordenador = params.Filters["orderBy"][0]
 	}
 
-	sqlStmt, sqlValues, err := sq.
-		// Select("pe.*, eq.nome_equipe").
-		// From("pessoas pe").
-		// Join("equipes eq ON eq.id_equipe = pe.equipe_id").
-		// OrderBy(ordenador + " " + ordem).
-		// PlaceholderFormat(sq.Dollar).
-		// ToSql()
+	if params.TemFiltro("order") {
+		ordem = params.Filters["order"][0]
+	}
 
+
+	var sqlStmt string
+	var sqlValues []interface{}
+
+	if params.TemFiltro("value") && params.TemFiltro("column")  {
+		sqlStmt, sqlValues, err = sq.
 		Select("pe.*, eq.nome_equipe").
 		From("pessoas pe").
 		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
 		Where(sq.ILike{
-			ordenador : "%"+ordem+"%",
+			column : "%"+value+"%",
 		}).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
+	} 
+	if !params.TemFiltro("value") && !params.TemFiltro("column") && !params.TemFiltro("order") && !params.TemFiltro("orderBy"){
+		sqlStmt, sqlValues, err = sq.
+		Select("pe.*, eq.nome_equipe").
+		From("pessoas pe").
+		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
 
+	if params.TemFiltro("order") && params.TemFiltro("orderBy")  {
+		sqlStmt, sqlValues, err = sq.
+		Select("pe.*, eq.nome_equipe").
+		From("pessoas pe").
+		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+		OrderBy(ordenador + " " + ordem).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
+	
 	if err != nil {
 		return nil, err
 	}

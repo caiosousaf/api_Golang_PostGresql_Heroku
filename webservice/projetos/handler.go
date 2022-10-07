@@ -191,9 +191,7 @@ func AtualizarStatusProjeto(c *gin.Context) {
 	}
 
 	if res, err := projetos.AtualizarStatusProjeto(id, &req); err != nil {
-		if err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		}
 	} else {
 		c.JSON(http.StatusOK, res)
 	}
