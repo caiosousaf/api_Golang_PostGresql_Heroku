@@ -9,6 +9,7 @@ import (
 	modelData "gerenciadorDeProjetos/infra/login/model"
 	modelDataEquipe "gerenciadorDeProjetos/infra/equipes/model"
 	"gerenciadorDeProjetos/webservice/login"
+	"github.com/google/uuid"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -47,6 +48,99 @@ func GetToken() (token string) {
 	}
 	fmt.Println(token)
 	return
+}
+
+func TestAddTeam(t *testing.T) {
+	r := gin.Default()
+	r.POST("/equipes", novaEquipe, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("AdicionarEquipeSucesso", func(t *testing.T) {
+
+		nome_equipe := "Teste Unitario"
+		
+
+		equipe := modelDataEquipe.Equipe{
+			Nome_Equipe: &nome_equipe,
+		}
+
+		jsonValue, _ := json.Marshal(equipe)
+		req, err := http.NewRequest("POST", "/equipes", bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var equipeAdicionada modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipeAdicionada)
+		
+
+		assert.Equal(t, http.StatusCreated, w.Code)
+		assert.NotEmpty(t, equipe)
+		assert.NotEmpty(t, equipeAdicionada)
+	})
+
+	t.Run("AdicionarEquipeErroParametro", func(t *testing.T) {
+		nome_equipe := 1
+		
+
+		type EquipeForcaError struct {
+			Nome_Equipe *int
+		}
+
+		equipe := EquipeForcaError{
+			Nome_Equipe: &nome_equipe,
+		}
+
+		jsonValue, _ := json.Marshal(equipe)
+		req, err := http.NewRequest("POST", "/equipes", bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var equipeAdicionada modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipeAdicionada)
+		
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, equipe)
+		assert.Empty(t, equipeAdicionada)
+	})
+
+	t.Run("AdicionarEquipeErroJaExiste", func(t *testing.T) {
+		nome_equipe := "Teste Unitario"
+		
+
+		equipe := modelDataEquipe.Equipe{
+			Nome_Equipe: &nome_equipe,
+		}
+
+		jsonValue, _ := json.Marshal(equipe)
+		req, err := http.NewRequest("POST", "/equipes", bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var equipeAdicionada modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipeAdicionada)
+		
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, equipe)
+		assert.Empty(t, equipeAdicionada)
+	})
 }
 
 func TestGetTeams(t *testing.T) {
@@ -259,14 +353,14 @@ func TestUpdateTeam(t *testing.T) {
 	token := GetToken()
 
 	t.Run("AtualizarEquipeSucesso", func(t *testing.T) {
-		nome_equipe := "OIn"
+		nome_equipe := uuid.New().String()
 
 		equipe := modelDataEquipe.UpdateEquipe{
 			Nome_Equipe: &nome_equipe,
 		}
 
 		jsonValue, _ := json.Marshal(equipe)
-		id := "11"
+		id := "16"
 		req, err := http.NewRequest("PUT", "/equipes/"+id, bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
@@ -338,5 +432,43 @@ func TestUpdateTeam(t *testing.T) {
 		assert.Equal(t, http.StatusBadRequest, w.Code)
 		assert.NotEmpty(t, equipe)
 		assert.Empty(t, equipeAtualizada)
+	})
+}
+
+func TestDeleteTeam(t *testing.T) {
+	r := gin.Default()
+	r.DELETE("/equipes/:id", deletarEquipe, middlewares.Auth())
+	r.Use(cors.Default())
+
+	token := GetToken()
+
+	t.Run("DeletarEquipeSucesso", func(t *testing.T) {
+		id := "14"
+		req, err := http.NewRequest("DELETE", "/equipes/"+id, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+	})
+
+	t.Run("DeletarEquipeErroId", func(t *testing.T) {
+		id := "144414"
+		req, err := http.NewRequest("DELETE", "/equipes/"+id, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
 	})
 }
