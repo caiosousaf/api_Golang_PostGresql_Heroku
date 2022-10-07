@@ -71,6 +71,7 @@ func TestGetProjects(t *testing.T) {
 		assert.NotEmpty(t, projetos)
 	})
 }
+
 func TestGetProject(t *testing.T) {
 
 	//Router(r.Group("/projetos", middlewares.Auth()))
@@ -137,7 +138,6 @@ func TestGetProject(t *testing.T) {
 		assert.Equal(t, http.StatusNotFound, w.Code)
 		assert.Empty(t, projetos)
 	})
-
 }
 
 func TestGetTasksProject(t *testing.T) {
@@ -348,6 +348,7 @@ func TestAddProject(t *testing.T) {
 
 	})
 }
+
 func TestDeleteProject(t *testing.T) {
 	r := gin.Default()
 	r.DELETE("/projetos/:id", DeletarProjeto, middlewares.Auth())
