@@ -22,8 +22,8 @@ func (postgres *DBTasks) NovaTask(req *modelData.ReqTaskData) (*modelApresentaca
 
 	row := postgres.DB.QueryRow(sqlStatement, req.Descricao_Task, req.PessoaID, req.ProjetoID,
 		req.Prioridade, data_limite)
-	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Data_Criacao,
-		&task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
+	if err := row.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.ProjetoID, &task.Status, &task.Prioridade,
+		 &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
 		} else {
