@@ -9,7 +9,7 @@ import (
 	modelApresentacaoLogin "gerenciadorDeProjetos/domain/login/model"
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
 	modelData "gerenciadorDeProjetos/infra/login/model"
-	//modelDataTasks "gerenciadorDeProjetos/infra/tasks/model"
+	modelDataTasks "gerenciadorDeProjetos/infra/tasks/model"
 	"gerenciadorDeProjetos/webservice/login"
 	"net/http"
 	"net/http/httptest"
@@ -17,6 +17,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -162,5 +163,203 @@ func TestGetStatusTask(t *testing.T) {
 })
 }
 
+func TestUpdateTask(t *testing.T) {
+	r := gin.Default()
+	r.PUT("/tasks/:id", AtualizarTask, middlewares.Auth())
+	r.Use(cors.Default())
 
+	token := GetToken()
 
+	t.Run("PUT-sucesso", func(t *testing.T) {
+		descricao_task := uuid.New().String()
+		pessoa_id := 10
+		projeto_id := 1
+		prioridade := 1
+
+		task := modelDataTasks.ReqUpdateTaskData{
+			Descricao_Task: &descricao_task,
+			PessoaID: &pessoa_id,
+			ProjetoID: &projeto_id,
+			Prioridade: &prioridade,
+		}
+
+		jsonValue, _ := json.Marshal(task)
+		id := "10"
+		req, err := http.NewRequest("PUT", "/tasks/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var tasksAtualizada modelApresentacao.ReqTask
+		json.Unmarshal(w.Body.Bytes(), &tasksAtualizada)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, task)
+		assert.NotEmpty(t, tasksAtualizada)
+	})
+
+	t.Run("PUT-erro-id", func(t *testing.T) {
+		descricao_task := uuid.New().String()
+		pessoaid := 10
+		projetoid := 1
+		prioridade := 1
+
+		task := modelDataTasks.ReqTaskData{
+			Descricao_Task: &descricao_task,
+			PessoaID: &pessoaid,
+			ProjetoID: &projetoid,
+			Prioridade: &prioridade,
+		}
+
+		jsonValue, _ := json.Marshal(task)
+		id := "10155"
+		req, err := http.NewRequest("PUT", "/tasks/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var taskAtualizada modelApresentacao.ReqTask
+		json.Unmarshal(w.Body.Bytes(), &taskAtualizada)
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, task)
+		assert.Empty(t, taskAtualizada)
+	})
+
+	t.Run("PUT-erro-parametro", func(t *testing.T) {
+		descricao_task := uuid.New().String()
+		pessoaid := "10"
+		projetoid := 1
+		prioridade := 1
+
+		type ReqUpdateTaskDataForcaError struct {
+			Descricao_Task *string `json:"descricao_task" example:"Descrição Teste"`
+			PessoaID       *string    `json:"pessoa_id" example:"4"`
+			ProjetoID      *int    `json:"projeto_id" example:"24"`
+			Prioridade     *int    `json:"prioridade" example:"1"`
+		}
+
+		task := ReqUpdateTaskDataForcaError{
+			Descricao_Task: &descricao_task,
+			PessoaID: &pessoaid,
+			ProjetoID: &projetoid,
+			Prioridade: &prioridade,
+		}
+
+		jsonValue, _ := json.Marshal(task)
+		id := "10155"
+		req, err := http.NewRequest("PUT", "/tasks/"+id, bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var taskAtualizada modelApresentacao.ReqTask
+		json.Unmarshal(w.Body.Bytes(), &taskAtualizada)
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, task)
+		assert.Empty(t, taskAtualizada)
+	})
+}
+
+func TestUpdateStatusTask(t *testing.T) {
+	r := gin.Default()
+	r.PUT("/tasks/:id/status", AtualizarStatusTask, middlewares.Auth())
+	r.Use(cors.Default())
+
+	token := GetToken()
+
+	t.Run("AtualizarStatusSucesso", func(t *testing.T) {
+		status := "Em Andamento"
+
+		task := modelDataTasks.ReqUpdateStatusTask{
+			Status: &status,
+		}
+		id := "10"
+
+		jsonValue, _ := json.Marshal(task)
+		req, err := http.NewRequest("PUT", fmt.Sprintf("/tasks/%v/status", id), bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var taskAtualizada modelApresentacao.ReqTask
+		json.Unmarshal(w.Body.Bytes(), &taskAtualizada)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, task)
+		assert.NotEmpty(t, taskAtualizada)
+	})
+
+	t.Run("AtualizarStatusErroId", func(t *testing.T) {
+		status := "Em Andamento"
+
+		task := modelDataTasks.ReqUpdateStatusTask{
+			Status: &status,
+		}
+		id := "101414"
+
+		jsonValue, _ := json.Marshal(task)
+		req, err := http.NewRequest("PUT", fmt.Sprintf("/tasks/%v/status", id), bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var taskAtualizada modelApresentacao.ReqTask
+		json.Unmarshal(w.Body.Bytes(), &taskAtualizada)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.NotEmpty(t, task)
+		assert.Empty(t, taskAtualizada)
+	})
+
+	t.Run("AtualizarStatusSucesso", func(t *testing.T) {
+		status := 1
+
+		type reqUpdateStatusTaskForcaErro struct {
+			Status *int `json:"status" example:"Em Teste"`
+		}
+
+		task := reqUpdateStatusTaskForcaErro{
+			Status: &status,
+		}
+		id := "10"
+
+		jsonValue, _ := json.Marshal(task)
+		req, err := http.NewRequest("PUT", fmt.Sprintf("/tasks/%v/status", id), bytes.NewBuffer(jsonValue))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var taskAtualizada modelApresentacao.ReqTask
+		json.Unmarshal(w.Body.Bytes(), &taskAtualizada)
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assert.NotEmpty(t, task)
+		assert.Empty(t, taskAtualizada)
+	})
+}
