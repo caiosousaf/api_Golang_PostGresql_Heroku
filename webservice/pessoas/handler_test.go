@@ -20,6 +20,36 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func GetId() (id uint) {
+	var t = &testing.T{}
+	r := gin.Default()
+	r.Use(cors.Default())
+	token := GetToken()
+
+	r.GET("/pessoas/filtros", listarPessoasFiltro)
+	req, err := http.NewRequest("GET", "/pessoas/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		q := req.URL.Query()
+		q.Add("order", "desc")
+		q.Add("orderBy", "id_pessoa")
+		req.URL.RawQuery = q.Encode()
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+   
+		var pessoa modelApresentacao.ListarGetPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoa)
+		id = *pessoa.Pessoas[0].ID_Pessoa
+		
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, pessoa)
+
+		return 
+}
+
 func GetToken() (token string) {
 	var t = &testing.T{}
 	r := gin.Default()
@@ -45,146 +75,6 @@ func GetToken() (token string) {
 	}
 	fmt.Println(token)
 	return
-}
-
-func TestGetPeople(t *testing.T) {
-	r := gin.Default()
-	r.GET("/pessoas/", listarPessoas, middlewares.Auth())
-	r.Use(cors.Default())
-	token := GetToken()
-
-	t.Run("BuscaPessoasSucesso", func(t *testing.T) {
-
-		req, _ := http.NewRequest("GET", "/pessoas/", nil)
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-		r.ServeHTTP(w, req)
-
-		var pessoas modelApresentacao.ListarGetPessoa
-		json.Unmarshal(w.Body.Bytes(), &pessoas)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-
-		assert.NotEmpty(t, pessoas)
-	})
-}
-
-func TestGetPerson(t *testing.T) {
-
-	r := gin.Default()
-	r.GET("/pessoas/:id", listarPessoa, middlewares.Auth())
-	r.Use(cors.Default())
-	token := GetToken()
-
-	t.Run("BuscaPessoaSucesso", func(t *testing.T) {
-
-		id := "1"
-		req, err := http.NewRequest("GET", "/pessoas/"+id, nil)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		var pessoas modelApresentacao.ReqGetPessoa
-		json.Unmarshal(w.Body.Bytes(), &pessoas)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-		assert.NotEmpty(t, pessoas)
-	})
-
-	t.Run("BuscaPessoaErroId", func(t *testing.T) {
-
-		id := "2932"
-		req, err := http.NewRequest("GET", "/pessoas/"+id, nil)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		var pessoas modelApresentacao.ReqGetPessoa
-		json.Unmarshal(w.Body.Bytes(), &pessoas)
-
-		assert.Equal(t, http.StatusNotFound, w.Code)
-		assert.Empty(t, pessoas)
-	})
-}
-
-func TestGetTasksPerson(t *testing.T) {
-	r := gin.Default()
-	r.GET("/pessoas/:id/tasks", listarTarefasPessoa, middlewares.Auth())
-	r.Use(cors.Default())
-	token := GetToken()
-
-	t.Run("BuscaTaskPessoaSucesso", func(t *testing.T) {
-
-		id := "1"
-		req, err := http.NewRequest("GET", fmt.Sprintf("/pessoas/%v/tasks", id), nil)
-
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		var tasks []modelApresentacao.ReqTarefaPessoa
-		json.Unmarshal(w.Body.Bytes(), &tasks)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-		assert.NotEmpty(t, tasks)
-	})
-
-	t.Run("BuscaTaskPessoaErroSemTasks", func(t *testing.T) {
-
-		id := "11"
-		req, err := http.NewRequest("GET", fmt.Sprintf("/pessoas/%v/tasks", id), nil)
-
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		var tasks []modelApresentacao.ReqTarefaPessoa
-		json.Unmarshal(w.Body.Bytes(), &tasks)
-
-		assert.Equal(t, http.StatusNoContent, w.Code)
-		assert.Empty(t, tasks)
-	})
-
-	t.Run("BuscaTaskPessoaInexistente", func(t *testing.T) {
-
-		id := "1145"
-		req, err := http.NewRequest("GET", fmt.Sprintf("/pessoas/%v/tasks", id), nil)
-
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		var tasks []modelApresentacao.ReqTarefaPessoa
-		json.Unmarshal(w.Body.Bytes(), &tasks)
-
-		assert.Equal(t, http.StatusNotFound, w.Code)
-		assert.Empty(t, tasks)
-	})
 }
 
 func TestAddPerson(t *testing.T) {
@@ -293,11 +183,153 @@ func TestAddPerson(t *testing.T) {
 	})
 }
 
+func TestGetPeople(t *testing.T) {
+	r := gin.Default()
+	r.GET("/pessoas/", listarPessoas, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("BuscaPessoasSucesso", func(t *testing.T) {
+
+		req, _ := http.NewRequest("GET", "/pessoas/", nil)
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		var pessoas modelApresentacao.ListarGetPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoas)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+
+		assert.NotEmpty(t, pessoas)
+	})
+}
+
+func TestGetPerson(t *testing.T) {
+
+	r := gin.Default()
+	r.GET("/pessoas/:id", listarPessoa, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+	id := GetId()
+	idUser := fmt.Sprint(id)
+
+	t.Run("BuscaPessoaSucesso", func(t *testing.T) {
+
+		req, err := http.NewRequest("GET", "/pessoas/"+idUser, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var pessoas modelApresentacao.ReqGetPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoas)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, pessoas)
+	})
+
+	t.Run("BuscaPessoaErroId", func(t *testing.T) {
+
+		id := "2932"
+		req, err := http.NewRequest("GET", "/pessoas/"+id, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var pessoas modelApresentacao.ReqGetPessoa
+		json.Unmarshal(w.Body.Bytes(), &pessoas)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.Empty(t, pessoas)
+	})
+}
+
+func TestGetTasksPerson(t *testing.T) {
+	r := gin.Default()
+	r.GET("/pessoas/:id/tasks", listarTarefasPessoa, middlewares.Auth())
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("BuscaTaskPessoaSucesso", func(t *testing.T) {
+
+		id := "1"
+		req, err := http.NewRequest("GET", fmt.Sprintf("/pessoas/%v/tasks", id), nil)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var tasks []modelApresentacao.ReqTarefaPessoa
+		json.Unmarshal(w.Body.Bytes(), &tasks)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, tasks)
+	})
+
+	t.Run("BuscaTaskPessoaErroSemTasks", func(t *testing.T) {
+
+		id := GetId()
+		req, err := http.NewRequest("GET", fmt.Sprintf("/pessoas/%v/tasks", id), nil)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var tasks []modelApresentacao.ReqTarefaPessoa
+		json.Unmarshal(w.Body.Bytes(), &tasks)
+
+		assert.Equal(t, http.StatusNoContent, w.Code)
+		assert.Empty(t, tasks)
+	})
+
+	t.Run("BuscaTaskPessoaInexistente", func(t *testing.T) {
+
+		id := "1145"
+		req, err := http.NewRequest("GET", fmt.Sprintf("/pessoas/%v/tasks", id), nil)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var tasks []modelApresentacao.ReqTarefaPessoa
+		json.Unmarshal(w.Body.Bytes(), &tasks)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.Empty(t, tasks)
+	})
+}
+
 func TestUpdatePerson(t *testing.T) {
 	r := gin.Default()
 	r.PUT("/pessoas/:id", atualizarPessoa, middlewares.Auth())
 	r.Use(cors.Default())
 	token := GetToken()
+	idUser := fmt.Sprint(GetId())
 
 	t.Run("AtualizarSucesso", func(t *testing.T) {
 		nome_pessoa := "OI"
@@ -311,8 +343,7 @@ func TestUpdatePerson(t *testing.T) {
 		}
 
 		jsonValue, _ := json.Marshal(pessoa)
-		id := "11"
-		req, err := http.NewRequest("PUT", "/pessoas/"+id, bytes.NewBuffer(jsonValue))
+		req, err := http.NewRequest("PUT", "/pessoas/"+idUser, bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -431,10 +462,11 @@ func TestDeletePerson(t *testing.T) {
 	r.DELETE("/pessoas/:id", deletarPessoa, middlewares.Auth())
 	r.Use(cors.Default())
 	token := GetToken()
+	idUser := fmt.Sprint(GetId())
 
 	t.Run("DeletarSucesso", func(t *testing.T) {
-		id := "26"
-		req, err := http.NewRequest("DELETE", "/pessoas/"+id, nil)
+
+		req, err := http.NewRequest("DELETE", "/pessoas/"+idUser, nil)
 		if err != nil {
 			fmt.Println(err)
 		}
