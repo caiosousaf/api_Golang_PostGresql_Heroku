@@ -5,7 +5,7 @@ import (
 	modelApresentacao "gerenciadorDeProjetos/domain/projetos/model"
 	modelData "gerenciadorDeProjetos/infra/projetos/model"
 	"gerenciadorDeProjetos/infra/projetos/postgres"
-
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 type repositorio struct {
@@ -42,3 +42,6 @@ func (r *repositorio) AtualizarProjeto(id string, req *modelApresentacao.ReqAtua
 func (r *repositorio) AtualizarStatusProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (*modelApresentacao.ReqAtualizarProjeto, error){
 	return r.Data.AtualizarStatusProjeto(id, &modelData.ReqUpdateStatusProjeto{Status: req.Status})
 } 
+func (r *repositorio) ListarProjetosFiltro(params *utils.RequestParams) ([]modelApresentacao.ReqProjetos, error) {
+	return r.Data.ListarProjetosFiltro(params)
+}

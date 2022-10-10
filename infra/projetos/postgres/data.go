@@ -5,7 +5,8 @@ import (
 
 	modelApresentacao "gerenciadorDeProjetos/domain/projetos/model"
 	modelData "gerenciadorDeProjetos/infra/projetos/model"
-
+	utils "gerenciadorDeProjetos/utils/params"
+	sq "github.com/Masterminds/squirrel"
 	"time"
 )
 
@@ -200,4 +201,89 @@ func (postgres *DBProjetos) AtualizarStatusProjeto(id string, req *modelData.Req
 	}
 
 	return projeto, nil
+}
+
+func (pg *DBProjetos) ListarProjetosFiltro(params *utils.RequestParams) (res []modelApresentacao.ReqProjetos, err error) {
+	var (
+		ordem, ordenador string
+		column, value string
+	)
+
+	if params.TemFiltro("value") {
+		value = params.Filters["value"][0]
+	}
+
+	if params.TemFiltro("column") {
+		column = params.Filters["column"][0]
+	}
+
+	if params.TemFiltro("orderBy") {
+		ordenador = params.Filters["orderBy"][0]
+	}
+
+	if params.TemFiltro("order") {
+		ordem = params.Filters["order"][0]
+	}
+
+
+	var sqlStmt string
+	var sqlValues []interface{}
+
+	if params.TemFiltro("value") && params.TemFiltro("column")  {
+		sqlStmt, sqlValues, err = sq.
+		Select(`pr.id_projeto, pr.nome_projeto,pr.descricao_projeto, pr.equipe_id, eq.nome_equipe, pr.status, 
+					 pr.data_criacao, pr.data_conclusao, pr.prazo_entrega`).
+		From("projetos AS pr").
+		Join("equipes AS eq ON pr.equipe_id = eq.id_equipe").
+		Where(sq.ILike{
+			column : "%"+value+"%",
+		}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	} 
+	if !params.TemFiltro("value") && !params.TemFiltro("column") && !params.TemFiltro("order") && !params.TemFiltro("orderBy"){
+		sqlStmt, sqlValues, err = sq.
+		Select(`pr.id_projeto, pr.nome_projeto,pr.descricao_projeto, pr.equipe_id, eq.nome_equipe, pr.status, 
+					 pr.data_criacao, pr.data_conclusao, pr.prazo_entrega`).
+		From("projetos AS pr").
+		Join("equipes AS eq ON pr.equipe_id = eq.id_equipe").
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
+
+	if params.TemFiltro("order") && params.TemFiltro("orderBy")  {
+		sqlStmt, sqlValues, err = sq.
+		Select(`pr.id_projeto, pr.nome_projeto,pr.descricao_projeto, pr.equipe_id, eq.nome_equipe, pr.status, 
+					 pr.data_criacao, pr.data_conclusao, pr.prazo_entrega`).
+		From("projetos AS pr").
+		Join("equipes AS eq ON pr.equipe_id = eq.id_equipe").
+		OrderBy(ordenador + " " + ordem).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
+	
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := pg.DB.Query(sqlStmt, sqlValues...)
+	if err != nil {
+		return nil, err
+	}
+
+	var projeto = modelApresentacao.ReqProjetos{}
+
+	for rows.Next() {
+		if err := rows.Scan(&projeto.ID_Projeto, &projeto.Nome_Projeto, &projeto.Descricao_Projeto,
+			&projeto.EquipeID, &projeto.Nome_Equipe, &projeto.Status, &projeto.Data_Criacao,
+			&projeto.Data_Conclusao, &projeto.Prazo_Entrega); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+		}
+		res = append(res, projeto)
+	}
+	return res, nil
 }

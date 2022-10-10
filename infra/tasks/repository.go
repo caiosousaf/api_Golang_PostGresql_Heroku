@@ -2,9 +2,10 @@ package tasks
 
 import (
 	"database/sql"
-	"gerenciadorDeProjetos/infra/tasks/postgres"
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
 	modelData "gerenciadorDeProjetos/infra/tasks/model"
+	"gerenciadorDeProjetos/infra/tasks/postgres"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 type repositorio struct {
@@ -44,4 +45,7 @@ func (r *repositorio) AtualizarStatusTask(id string, req *modelApresentacao.ReqT
 
 func (r *repositorio) DeletarTask(id string) error {
 	return r.Data.DeletarTask(id)
+}
+func (r *repositorio) ListarTasksFiltro(params *utils.RequestParams) ([]modelApresentacao.ReqTasks, error) {
+	return r.Data.ListarTasksFiltro(params)
 }

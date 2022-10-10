@@ -5,7 +5,7 @@ import (
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
 	utils "gerenciadorDeProjetos/utils/errors-tratment"
 	"net/http"
-
+	utilsParams "gerenciadorDeProjetos/utils/params"
 	"github.com/gin-gonic/gin"
 )
 
@@ -172,4 +172,29 @@ func DeletarTask(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, utils.KeyOk("Task deleted successfully", 200))
 	}
+}
+
+// @Security bearerAuth
+// @Summary GET all tasks with sort 
+// @Description GET all tasks with sort orderBy & || order (desc, cresc) OR filter data by name
+// @Param		column		query			string				false		"column"			Enums(descricao_task, status)
+// @Param		value		query			string				false		"valueSearch"
+// @Param		orderBy		query			string				false		"orderBy" 			Enums(id_task, descricao_task, pessoa_id, projeto_id, status, data_criacao, data_conclusao, prazo_entrega)
+// @Param		order		query			string				false		"order"				Enums(desc, asc)	
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqTasks "OK"
+// @Failure 401,400 {array} errorstratment.ResError
+// @Tags Tasks
+// @Router /tasks/filtros [get]
+func listarTasksFiltro(c *gin.Context) {
+	params := utilsParams.ParseParams(c)
+
+	res, err := tasks.ListarTasksFiltro(params)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"err": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
