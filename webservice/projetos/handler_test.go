@@ -47,6 +47,36 @@ func GetToken() (token string) {
 	return
 }
 
+func GetId() (id uint) {
+	var t = &testing.T{}
+	r := gin.Default()
+	r.Use(cors.Default())
+	token := GetToken()
+
+	r.GET("/projetos/filtros", listarProjetosFiltro)
+	req, err := http.NewRequest("GET", "/projetos/filtros", nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+	q := req.URL.Query()
+	q.Add("order", "desc")
+	q.Add("orderBy", "id_projeto")
+	req.URL.RawQuery = q.Encode()
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	var projeto []modelApresentacao.ReqProjetos
+	json.Unmarshal(w.Body.Bytes(), &projeto)
+	id = *projeto[0].ID_Projeto
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.NotEmpty(t, projeto)
+
+	return
+}
+
 func TestGetProjects(t *testing.T) {
 	r := gin.Default()
 	r.GET("/projetos/", ListarProjetos, middlewares.Auth())
@@ -81,9 +111,11 @@ func TestGetProject(t *testing.T) {
 
 	token := GetToken()
 
+	id := fmt.Sprint(GetId())
+	
 	t.Run("Busca-Projeto-Sucesso", func(t *testing.T) {
 
-		id := "1"
+		
 		req, err := http.NewRequest("GET", "/projetos/"+id, nil)
 		if err != nil {
 			fmt.Println(err)
@@ -146,9 +178,10 @@ func TestGetTasksProject(t *testing.T) {
 	r.Use(middlewares.Auth())
 
 	token := GetToken()
+	id := fmt.Sprint(GetId())
 
 	t.Run("Busca-Task-Projeto-Sucesso", func(t *testing.T) {
-		id := "1"
+		
 		req, err := http.NewRequest("GET", fmt.Sprintf("/projetos/%v/tasks", id), nil)
 		if err != nil {
 			fmt.Println(err)
@@ -219,6 +252,7 @@ func TestGetStatusOfAllProjects(t *testing.T) {
 			fmt.Println(err)
 		}
 
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
 		w := httptest.NewRecorder()
 
 		r.ServeHTTP(w, req)
@@ -349,66 +383,26 @@ func TestAddProject(t *testing.T) {
 	})
 }
 
-func TestDeleteProject(t *testing.T) {
-	r := gin.Default()
-	r.DELETE("/projetos/:id", DeletarProjeto, middlewares.Auth())
-	r.Use(cors.Default())
-
-	token := GetToken()
-
-	t.Run("delete-project-sucesso", func(t *testing.T) {
-		id := "27"
-		req, err := http.NewRequest("DELETE", "/projetos/"+id, nil)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-
-	})
-
-	t.Run("delete-project-erro", func(t *testing.T) {
-		id := "12151"
-		req, err := http.NewRequest("DELETE", "/projetos/"+id, nil)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusNotFound, w.Code)
-
-	})
-}
-
 func TestUpdateProject(t *testing.T) {
 	r := gin.Default()
 	r.PUT("/projetos/:id", AtualizarProjeto, middlewares.Auth())
 	r.Use(cors.Default())
 
 	token := GetToken()
-
+	id := fmt.Sprint(GetId())
 	t.Run("PUT-sucesso", func(t *testing.T) {
-		nome_projeto := "Oi"
+		nome_projeto := "Atualiza ai"
 		descricao_projeto := "Descricao teste para o teste unitário testarr"
-		equipe := 1
+		equipe_id := 1
 
 		projeto := modelDataProjetos.ReqAtualizarProjetoData{
 			Nome_Projeto:      &nome_projeto,
-			Equipe_ID:         &equipe,
+			Equipe_ID:         &equipe_id,
 			Descricao_Projeto: &descricao_projeto,
 		}
 
 		jsonValue, _ := json.Marshal(projeto)
-		id := "10"
+		
 		req, err := http.NewRequest("PUT", "/projetos/"+id, bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
@@ -420,8 +414,6 @@ func TestUpdateProject(t *testing.T) {
 
 		var projetoAtualizado modelApresentacao.ReqAtualizarProjeto
 		json.Unmarshal(w.Body.Bytes(), &projetoAtualizado)
-		v := projetoAtualizado.ID_Projeto
-		fmt.Println(v)
 
 		assert.Equal(t, http.StatusOK, w.Code)
 		assert.NotEmpty(t, projeto)
@@ -446,7 +438,7 @@ func TestUpdateProject(t *testing.T) {
 		}
 
 		jsonValue, _ := json.Marshal(projeto)
-		id := "10"
+		id := fmt.Sprint(GetId())
 		req, err := http.NewRequest("PUT", "/projetos/"+id, bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
@@ -505,14 +497,14 @@ func TestUpdateStatus(t *testing.T) {
 	r.Use(cors.Default())
 
 	token := GetToken()
-
+	id := fmt.Sprint(GetId())
 	t.Run("PUT-sucesso", func(t *testing.T) {
 		status := "Em Andamento"
 
 		projeto := modelDataProjetos.ReqUpdateStatusProjeto{
 			Status: &status,
 		}
-		id := "10"
+		
 
 		jsonValue, _ := json.Marshal(projeto)
 		req, err := http.NewRequest("PUT", fmt.Sprintf("/projetos/%v/status", id), bytes.NewBuffer(jsonValue))
@@ -544,7 +536,7 @@ func TestUpdateStatus(t *testing.T) {
 		projeto := ReqUpdateStatusProjetoForcaError{
 			Status: &status,
 		}
-		id := "10"
+		id := fmt.Sprint(GetId())
 
 		jsonValue, _ := json.Marshal(projeto)
 		req, err := http.NewRequest("PUT", fmt.Sprintf("/projetos/%v/status", id), bytes.NewBuffer(jsonValue))
@@ -592,5 +584,140 @@ func TestUpdateStatus(t *testing.T) {
 		assert.Equal(t, http.StatusNotFound, w.Code)
 		assert.NotEmpty(t, projeto)
 		assert.Empty(t, projetoAtualizado)
+	})
+}
+
+func TestDeleteProject(t *testing.T) {
+	r := gin.Default()
+	r.DELETE("/projetos/:id", DeletarProjeto, middlewares.Auth())
+	r.Use(cors.Default())
+
+	token := GetToken()
+	id := fmt.Sprint(GetId())
+
+	t.Run("delete-project-sucesso", func(t *testing.T) {
+		req, err := http.NewRequest("DELETE", "/projetos/"+id, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+
+	})
+
+	t.Run("delete-project-erro", func(t *testing.T) {
+		id := "12151"
+		req, err := http.NewRequest("DELETE", "/projetos/"+id, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+
+	})
+}
+
+func TestGetFilterProject(t *testing.T) {
+	r := gin.Default()
+	r.GET("/projetos/filtros", listarProjetosFiltro, middlewares.Auth())
+
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("FiltroProjetoSucesso", func(t *testing.T) {
+
+		req, err := http.NewRequest("GET", "/projetos/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		q := req.URL.Query()
+		q.Add("value", "bl")
+		q.Add("column", "nome_projeto")
+		req.URL.RawQuery = q.Encode()
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var projeto []modelApresentacao.ReqProjetos
+		json.Unmarshal(w.Body.Bytes(), &projeto)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, projeto)
+	})
+
+	t.Run("FiltroProjetoSucessoOrder", func(t *testing.T) {
+
+		req, err := http.NewRequest("GET", "/projetos/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		q := req.URL.Query()
+		q.Add("order", "desc")
+		q.Add("orderBy", "id_projeto")
+		req.URL.RawQuery = q.Encode()
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var projeto []modelApresentacao.ReqProjetos
+		json.Unmarshal(w.Body.Bytes(), &projeto)
+		opa := *projeto[0].ID_Projeto
+		fmt.Println(opa)
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, projeto)
+	})
+
+	t.Run("FiltroProjetoSucessoSemQuery", func(t *testing.T) {
+
+		req, err := http.NewRequest("GET", "/projetos/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var projeto []modelApresentacao.ReqProjetos
+		json.Unmarshal(w.Body.Bytes(), &projeto)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, projeto)
+	})
+
+	t.Run("FiltroPessoaSucesso", func(t *testing.T) {
+
+		req, err := http.NewRequest("GET", "/projetos/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		q := req.URL.Query()
+		q.Add("order", "asl")
+		q.Add("orderBy", "equipeid")
+		req.URL.RawQuery = q.Encode()
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+
+		var projeto modelApresentacao.ReqProjetos
+		json.Unmarshal(w.Body.Bytes(), &projeto)
+		// opa := *pessoa.Pessoas[0].ID_Pessoa
+		// fmt.Println(opa)
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.Empty(t, projeto)
 	})
 }

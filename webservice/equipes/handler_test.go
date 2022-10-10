@@ -50,6 +50,37 @@ func GetToken() (token string) {
 	return
 }
 
+func GetId() (id uint) {
+	var t = &testing.T{}
+	r := gin.Default()
+	r.Use(cors.Default())
+	token := GetToken()
+
+	r.GET("/equipes/filtros", listarEquipesFiltro)
+	req, err := http.NewRequest("GET", "/equipes/filtros", nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+	q := req.URL.Query()
+	q.Add("order", "desc")
+	q.Add("orderBy", "id_equipe")
+	req.URL.RawQuery = q.Encode()
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	var equipe []modelApresentacao.ReqEquipe
+	json.Unmarshal(w.Body.Bytes(), &equipe)
+	id = *equipe[0].ID_Equipe
+	
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.NotEmpty(t, equipe)
+
+	return
+}
+
 func TestAddTeam(t *testing.T) {
 	r := gin.Default()
 	r.POST("/equipes", novaEquipe, middlewares.Auth())
@@ -169,9 +200,10 @@ func TestGetTeam(t *testing.T) {
 	r.GET("/equipes/:id", buscarEquipe, middlewares.Auth())
 	r.Use(cors.Default())
 	token := GetToken()
+	id := fmt.Sprint(GetId())
 
 	t.Run("BuscaEquipeSucesso", func(t *testing.T) {
-		id := "1"
+		
 		req, _ := http.NewRequest("GET", "/equipes/"+id, nil)
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
 		w := httptest.NewRecorder()
@@ -204,6 +236,7 @@ func TestGetMembersTeam(t *testing.T) {
 	r.GET("/equipes/:id/membros", buscarMembrosDeEquipe, middlewares.Auth())
 	r.Use(cors.Default())
 	token := GetToken()
+	id := fmt.Sprint(GetId())
 
 	t.Run("BuscaMembrosSucesso", func(t *testing.T) {
 		id := "1"
@@ -234,7 +267,6 @@ func TestGetMembersTeam(t *testing.T) {
 	})
 
 	t.Run("BuscaMembroSucessoSemMembros", func(t *testing.T) {
-		id := "11"
 		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/membros", id), nil)
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
 		w := httptest.NewRecorder()
@@ -253,6 +285,7 @@ func TestGetProjectsTeam(t *testing.T) {
 	r.GET("/equipes/:id/projetos", buscarProjetosDeEquipe, middlewares.Auth())
 	r.Use(cors.Default())
 	token := GetToken()
+	id := fmt.Sprint(GetId())
 
 	t.Run("BuscaProjetosEquipeSucesso", func(t *testing.T) {
 		id := "1"
@@ -269,7 +302,7 @@ func TestGetProjectsTeam(t *testing.T) {
 	})
 
 	t.Run("BuscaProjetosEquipeErrorId", func(t *testing.T) {
-		id := "11"
+
 		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/projetos", id), nil)
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
 		w := httptest.NewRecorder()
@@ -302,6 +335,7 @@ func TestGetTasksTeam(t *testing.T) {
 	r.GET("/equipes/:id/tasks", buscarTasksDeEquipe, middlewares.Auth())
 	r.Use(cors.Default())
 	token := GetToken()
+	id := fmt.Sprint(GetId())
 
 	t.Run("BuscarTasksEquipeSucesso", func(t *testing.T) {
 		id := "1"
@@ -318,7 +352,7 @@ func TestGetTasksTeam(t *testing.T) {
 	})
 
 	t.Run("BuscarTasksEquipeErroId", func(t *testing.T) {
-		id := "11"
+
 		req, _ := http.NewRequest("GET", fmt.Sprintf("/equipes/%v/tasks", id), nil)
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
 		w := httptest.NewRecorder()
@@ -351,6 +385,7 @@ func TestUpdateTeam(t *testing.T) {
 	r.PUT("/equipes/:id", atualizarEquipe, middlewares.Auth())
 	r.Use(cors.Default())
 	token := GetToken()
+	id := fmt.Sprint(GetId())
 
 	t.Run("AtualizarEquipeSucesso", func(t *testing.T) {
 		nome_equipe := uuid.New().String()
@@ -360,7 +395,7 @@ func TestUpdateTeam(t *testing.T) {
 		}
 
 		jsonValue, _ := json.Marshal(equipe)
-		id := "16"
+		
 		req, err := http.NewRequest("PUT", "/equipes/"+id, bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
@@ -390,7 +425,7 @@ func TestUpdateTeam(t *testing.T) {
 		}
 
 		jsonValue, _ := json.Marshal(equipe)
-		id := "11"
+
 		req, err := http.NewRequest("PUT", "/equipes/"+id, bytes.NewBuffer(jsonValue))
 		if err != nil {
 			fmt.Println(err)
@@ -441,9 +476,10 @@ func TestDeleteTeam(t *testing.T) {
 	r.Use(cors.Default())
 
 	token := GetToken()
+	id := fmt.Sprint(GetId())
 
 	t.Run("DeletarEquipeSucesso", func(t *testing.T) {
-		id := "14"
+
 		req, err := http.NewRequest("DELETE", "/equipes/"+id, nil)
 		if err != nil {
 			fmt.Println(err)
@@ -471,4 +507,99 @@ func TestDeleteTeam(t *testing.T) {
 
 		assert.Equal(t, http.StatusNotFound, w.Code)
 	})
+}
+
+func TestGetFilterPerson(t *testing.T) {
+	r := gin.Default()
+	r.GET("/equipes/filtros", listarEquipesFiltro, middlewares.Auth())
+	
+	r.Use(cors.Default())
+	token := GetToken()
+
+	t.Run("FiltroEquipesSucesso", func(t *testing.T) {
+		
+		req, err := http.NewRequest("GET", "/equipes/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		q := req.URL.Query()
+		q.Add("value", "ko")
+		q.Add("column", "nome_equipe")
+		req.URL.RawQuery = q.Encode()
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+   
+		var equipe []modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipe)
+ 
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, equipe)
+	})	
+
+	t.Run("FiltroEquipesSucessoOrder", func(t *testing.T) {
+		
+		req, err := http.NewRequest("GET", "/equipes/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		q := req.URL.Query()
+		q.Add("order", "desc")
+		q.Add("orderBy", "id_equipe")
+		req.URL.RawQuery = q.Encode()
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+   
+		var equipe []modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipe)
+		opa := *equipe[0].ID_Equipe
+		fmt.Println(opa)
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, equipe)
+	})	
+
+	t.Run("FiltroEquipesSucessoSemQuery", func(t *testing.T) { 
+		
+		req, err := http.NewRequest("GET", "/equipes/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+   
+		var equipes []modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipes)
+ 
+		assert.Equal(t, http.StatusOK, w.Code)
+		assert.NotEmpty(t, equipes)
+	})
+	
+	t.Run("FiltroEquipesErro", func(t *testing.T) {
+		
+		req, err := http.NewRequest("GET", "/equipes/filtros", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		q := req.URL.Query()
+		q.Add("order", "asl")
+		q.Add("orderBy", "equipeid")
+		req.URL.RawQuery = q.Encode()
+		req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", token))
+		w := httptest.NewRecorder()
+
+		r.ServeHTTP(w, req)
+   
+		var equipes []modelApresentacao.ReqEquipe
+		json.Unmarshal(w.Body.Bytes(), &equipes)
+		// opa := *pessoa.Pessoas[0].ID_Pessoa
+		// fmt.Println(opa)
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		assert.Empty(t, equipes)
+	})	
 }
