@@ -6,6 +6,7 @@ import (
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
 	"gerenciadorDeProjetos/infra/equipes"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 func NovaEquipe(req *modelApresentacao.ReqEquipe) (*modelApresentacao.ReqEquipe, error) {
@@ -171,6 +172,28 @@ func AtualizarEquipe(id string, req *modelApresentacao.ReqEquipe) (res *modelApr
 	res, err = equipesRepo.AtualizarEquipe(id, req)
 	if err != nil {
 		return nil, fmt.Errorf("unable to update team")
+	}
+	return
+}
+
+func ListarEquipesFiltro(params *utils.RequestParams) (res []modelApresentacao.ReqEquipe, err error) {
+	db := database.Conectar()
+	defer db.Close()
+	equipesRepo := equipes.NovoRepo(db)
+
+	res, err = equipesRepo.ListarEquipesFiltro(params)
+	if err != nil {
+		return nil, fmt.Errorf("unable to search teams // " + err.Error())
+	}
+
+	for i := range res {
+
+		id := fmt.Sprint(*res[i].ID_Equipe)
+		pessoa, err := equipesRepo.BuscarMembrosDeEquipe(id)
+		if err != nil {
+			return nil, err
+		}
+		res[i].Pessoas = &pessoa
 	}
 	return
 }

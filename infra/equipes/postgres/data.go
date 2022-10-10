@@ -6,6 +6,8 @@ import (
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/equipes/model"
+	utils "gerenciadorDeProjetos/utils/params"
+	sq "github.com/Masterminds/squirrel"
 )
 
 type DBEquipes struct {
@@ -168,4 +170,82 @@ func (postgres *DBEquipes) AtualizarEquipe(id string, req *modelData.UpdateEquip
 	}
 
 	return equipe, nil
+}
+
+func (pg *DBEquipes) ListarEquipesFiltro(params *utils.RequestParams) (res []modelApresentacao.ReqEquipe, err error) {
+	var (
+		ordem, ordenador string
+		column, value string
+	)
+
+	if params.TemFiltro("value") {
+		value = params.Filters["value"][0]
+	}
+
+	if params.TemFiltro("column") {
+		column = params.Filters["column"][0]
+	}
+
+	if params.TemFiltro("orderBy") {
+		ordenador = params.Filters["orderBy"][0]
+	}
+
+	if params.TemFiltro("order") {
+		ordem = params.Filters["order"][0]
+	}
+
+
+	var sqlStmt string
+	var sqlValues []interface{}
+
+	if params.TemFiltro("value") && params.TemFiltro("column")  {
+		sqlStmt, sqlValues, err = sq.
+		Select("*").
+		From("equipes").
+		Where(sq.ILike{
+			column : "%"+value+"%",
+		}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	} 
+	if !params.TemFiltro("value") && !params.TemFiltro("column") && !params.TemFiltro("order") && !params.TemFiltro("orderBy"){
+		sqlStmt, sqlValues, err = sq.
+		Select("*").
+		From("equipes").
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
+
+	if params.TemFiltro("order") && params.TemFiltro("orderBy")  {
+		sqlStmt, sqlValues, err = sq.
+		Select("*").
+		From("equipes").
+		OrderBy(ordenador + " " + ordem).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
+	
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := pg.DB.Query(sqlStmt, sqlValues...)
+	if err != nil {
+		return nil, err
+	}
+
+	var equipe = modelApresentacao.ReqEquipe{}
+
+	for rows.Next() {
+		if err := rows.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+		}
+
+		res = append(res, equipe)
+	}
+	return res, nil
 }

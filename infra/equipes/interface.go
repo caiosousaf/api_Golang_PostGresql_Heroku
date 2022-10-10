@@ -3,6 +3,7 @@ package equipes
 import (
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 type IEquipe interface {
@@ -14,4 +15,5 @@ type IEquipe interface {
 	BuscarTasksDeEquipe(id string) ([]modelApresentacao.ReqTasksbyTeam, error)
 	DeletarEquipe(id string) error
 	AtualizarEquipe(id string, req *modelApresentacao.ReqEquipe) (*modelApresentacao.ReqEquipe, error)
+	ListarEquipesFiltro(params *utils.RequestParams) ([]modelApresentacao.ReqEquipe, error)
 }

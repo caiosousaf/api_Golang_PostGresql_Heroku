@@ -682,6 +682,64 @@ paths:
       summary: Get Tasks of a specific Team
       tags:
       - Teams
+  /equipes/filtros:
+    get:
+      consumes:
+      - application/json
+      description: GET all teams with sort orderBy & || order (desc, cresc) OR filter
+        data by name
+      parameters:
+      - description: column
+        enum:
+        - nome_equipe
+        in: query
+        name: column
+        type: string
+      - description: valueSearch
+        in: query
+        name: value
+        type: string
+      - description: orderBy
+        enum:
+        - id_equipe
+        - nome_equipe
+        - data_criacao
+        in: query
+        name: orderBy
+        type: string
+      - description: order
+        enum:
+        - desc
+        - asc
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/equipes.ReqEquipe'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: GET all teams with sort
+      tags:
+      - Teams
   /login:
     post:
       consumes:

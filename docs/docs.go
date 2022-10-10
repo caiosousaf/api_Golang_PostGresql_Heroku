@@ -122,6 +122,93 @@ const docTemplate = `{
                 }
             }
         },
+        "/equipes/filtros": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all teams with sort orderBy \u0026 || order (desc, cresc) OR filter data by name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "GET all teams with sort",
+                "parameters": [
+                    {
+                        "enum": [
+                            "nome_equipe"
+                        ],
+                        "type": "string",
+                        "description": "column",
+                        "name": "column",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "valueSearch",
+                        "name": "value",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id_equipe",
+                            "nome_equipe",
+                            "data_criacao"
+                        ],
+                        "type": "string",
+                        "description": "orderBy",
+                        "name": "orderBy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "desc",
+                            "asc"
+                        ],
+                        "type": "string",
+                        "description": "order",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.ReqEquipe"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/equipes/{id}": {
             "get": {
                 "security": [
