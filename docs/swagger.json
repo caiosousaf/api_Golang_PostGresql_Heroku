@@ -1101,7 +1101,8 @@
                     {
                         "enum": [
                             "nome_projeto",
-                            "descricao_projeto"
+                            "descricao_projeto",
+                            "status"
                         ],
                         "type": "string",
                         "description": "column",
@@ -1596,6 +1597,99 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/tasks.ReqTaskApresent"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/filtros": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all tasks with sort orderBy \u0026 || order (desc, cresc) OR filter data by name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "GET all tasks with sort",
+                "parameters": [
+                    {
+                        "enum": [
+                            "descricao_task",
+                            "status"
+                        ],
+                        "type": "string",
+                        "description": "column",
+                        "name": "column",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "valueSearch",
+                        "name": "value",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id_task",
+                            "descricao_task",
+                            "pessoa_id",
+                            "projeto_id",
+                            "status",
+                            "data_criacao",
+                            "data_conclusao",
+                            "prazo_entrega"
+                        ],
+                        "type": "string",
+                        "description": "orderBy",
+                        "name": "orderBy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "desc",
+                            "asc"
+                        ],
+                        "type": "string",
+                        "description": "order",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.ReqTasks"
+                            }
                         }
                     },
                     "400": {

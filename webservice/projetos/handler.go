@@ -201,7 +201,7 @@ func AtualizarStatusProjeto(c *gin.Context) {
 // @Security bearerAuth
 // @Summary GET all projects with sort 
 // @Description GET all projects with sort orderBy & || order (desc, cresc) OR filter data by name
-// @Param		column		query			string				false		"column"			Enums(nome_projeto, descricao_projeto)
+// @Param		column		query			string				false		"column"			Enums(nome_projeto, descricao_projeto, status)
 // @Param		value		query			string				false		"valueSearch"
 // @Param		orderBy		query			string				false		"orderBy" 			Enums(id_projeto, nome_projeto, descricao_projeto, equipe_id, data_criacao, data_conclusao, prazo_entrega)
 // @Param		order		query			string				false		"order"				Enums(desc, asc)	

@@ -2,6 +2,7 @@ package tasks
 
 import (
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 type ITask interface {
 	NovaTask(req *modelApresentacao.ReqTaskApresent) (*modelApresentacao.ReqTask, error)
@@ -11,4 +12,5 @@ type ITask interface {
 	AtualizarTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error)
 	AtualizarStatusTask(id string, req *modelApresentacao.ReqTask) (*modelApresentacao.ReqTask, error)
 	DeletarTask(id string) error
+	ListarTasksFiltro(params *utils.RequestParams) ([]modelApresentacao.ReqTasks, error)
 }
