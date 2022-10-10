@@ -5,7 +5,10 @@ import (
 
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
 	modelData "gerenciadorDeProjetos/infra/tasks/model"
+	utils "gerenciadorDeProjetos/utils/params"
 	"time"
+
+	sq "github.com/Masterminds/squirrel"
 )
 
 type DBTasks struct {
@@ -164,4 +167,91 @@ func (postgres *DBTasks) DeletarTask(id string) error {
 	}
 
 	return nil
+}
+
+func (pg *DBTasks) ListarTasksFiltro(params *utils.RequestParams) (res []modelApresentacao.ReqTasks, err error) {
+	var (
+		ordem, ordenador string
+		column, value string
+	)
+
+	if params.TemFiltro("value") {
+		value = params.Filters["value"][0]
+	}
+
+	if params.TemFiltro("column") {
+		column = params.Filters["column"][0]
+	}
+
+	if params.TemFiltro("orderBy") {
+		ordenador = params.Filters["orderBy"][0]
+	}
+
+	if params.TemFiltro("order") {
+		ordem = params.Filters["order"][0]
+	}
+
+
+	var sqlStmt string
+	var sqlValues []interface{}
+
+	if params.TemFiltro("value") && params.TemFiltro("column")  {
+		sqlStmt, sqlValues, err = sq.
+		Select(`tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao,
+				 tk.data_conclusao,tk.prazo_entrega ,tk.prioridade`).
+		From("tasks as tk ").
+		Join("pessoas as pe on tk.pessoa_id = pe.id_pessoa").
+		Join("projetos as pr on tk.projeto_id = pr.id_projeto").
+		Where(sq.ILike{
+			column : "%"+value+"%",
+		}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	} 
+	if !params.TemFiltro("value") && !params.TemFiltro("column") && !params.TemFiltro("order") && !params.TemFiltro("orderBy"){
+		sqlStmt, sqlValues, err = sq.
+		Select(`tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao,
+				 tk.data_conclusao,tk.prazo_entrega ,tk.prioridade`).
+		From("tasks as tk ").
+		Join("pessoas as pe on tk.pessoa_id = pe.id_pessoa").
+		Join("projetos as pr on tk.projeto_id = pr.id_projeto").
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
+
+	if params.TemFiltro("order") && params.TemFiltro("orderBy")  {
+		sqlStmt, sqlValues, err = sq.
+		Select(`tk.id_task, tk.descricao_task, tk.pessoa_id, pe.nome_pessoa, tk.projeto_id, pr.nome_projeto, tk.status, tk.data_criacao,
+				 tk.data_conclusao,tk.prazo_entrega ,tk.prioridade`).
+		From("tasks as tk ").
+		Join("pessoas as pe on tk.pessoa_id = pe.id_pessoa").
+		Join("projetos as pr on tk.projeto_id = pr.id_projeto").
+		OrderBy(ordenador + " " + ordem).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	}
+	
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := pg.DB.Query(sqlStmt, sqlValues...)
+	if err != nil {
+		return nil, err
+	}
+
+	var task = modelApresentacao.ReqTasks{}
+
+	for rows.Next() {
+		if err := rows.Scan(&task.ID_Task, &task.Descricao_Task, &task.PessoaID, &task.Nome_Pessoa, &task.ProjetoID, &task.Nome_Projeto, &task.Status, &task.Data_Criacao, &task.Data_Conclusao, &task.Prazo_Entrega, &task.Prioridade); err != nil {
+			if err == sql.ErrNoRows {
+				return nil, err
+			} else {
+				return nil, err
+			}
+		}
+		res = append(res, task)
+	}
+
+	return res, nil
 }

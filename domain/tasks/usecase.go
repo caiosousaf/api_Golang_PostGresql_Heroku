@@ -5,6 +5,7 @@ import (
 	"gerenciadorDeProjetos/config/database"
 	modelApresentacao "gerenciadorDeProjetos/domain/tasks/model"
 	"gerenciadorDeProjetos/infra/tasks"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 func NovaTask(req *modelApresentacao.ReqTaskApresent) (*modelApresentacao.ReqTask, error) {
@@ -91,5 +92,18 @@ func DeletarTask(id string) (err error) {
 		return fmt.Errorf("unrecognized error")
 	}
 	err = tasksRepo.DeletarTask(id)
+	return
+}
+
+func ListarTasksFiltro(params *utils.RequestParams) (res []modelApresentacao.ReqTasks, err error) {
+	db := database.Conectar()
+	defer db.Close()
+	tasksRepo := tasks.NovoRepo(db)
+
+	res, err = tasksRepo.ListarTasksFiltro(params)
+	if err != nil {
+		return nil, fmt.Errorf("unable to search tasks // " + err.Error())
+	}
+
 	return
 }

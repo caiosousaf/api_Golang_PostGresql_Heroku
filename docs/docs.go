@@ -122,6 +122,93 @@ const docTemplate = `{
                 }
             }
         },
+        "/equipes/filtros": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all teams with sort orderBy \u0026 || order (desc, cresc) OR filter data by name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "GET all teams with sort",
+                "parameters": [
+                    {
+                        "enum": [
+                            "nome_equipe"
+                        ],
+                        "type": "string",
+                        "description": "column",
+                        "name": "column",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "valueSearch",
+                        "name": "value",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id_equipe",
+                            "nome_equipe",
+                            "data_criacao"
+                        ],
+                        "type": "string",
+                        "description": "orderBy",
+                        "name": "orderBy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "desc",
+                            "asc"
+                        ],
+                        "type": "string",
+                        "description": "order",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/equipes.ReqEquipe"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/equipes/{id}": {
             "get": {
                 "security": [
@@ -1004,6 +1091,99 @@ const docTemplate = `{
                 }
             }
         },
+        "/projetos/filtros": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all projects with sort orderBy \u0026 || order (desc, cresc) OR filter data by name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "GET all projects with sort",
+                "parameters": [
+                    {
+                        "enum": [
+                            "nome_projeto",
+                            "descricao_projeto",
+                            "status"
+                        ],
+                        "type": "string",
+                        "description": "column",
+                        "name": "column",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "valueSearch",
+                        "name": "value",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id_projeto",
+                            "nome_projeto",
+                            "descricao_projeto",
+                            "equipe_id",
+                            "data_criacao",
+                            "data_conclusao",
+                            "prazo_entrega"
+                        ],
+                        "type": "string",
+                        "description": "orderBy",
+                        "name": "orderBy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "desc",
+                            "asc"
+                        ],
+                        "type": "string",
+                        "description": "order",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.ReqProjetos"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/projetos/status/{status}": {
             "get": {
                 "security": [
@@ -1429,6 +1609,99 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/tasks.ReqTaskApresent"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/filtros": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all tasks with sort orderBy \u0026 || order (desc, cresc) OR filter data by name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "GET all tasks with sort",
+                "parameters": [
+                    {
+                        "enum": [
+                            "descricao_task",
+                            "status"
+                        ],
+                        "type": "string",
+                        "description": "column",
+                        "name": "column",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "valueSearch",
+                        "name": "value",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id_task",
+                            "descricao_task",
+                            "pessoa_id",
+                            "projeto_id",
+                            "status",
+                            "data_criacao",
+                            "data_conclusao",
+                            "prazo_entrega"
+                        ],
+                        "type": "string",
+                        "description": "orderBy",
+                        "name": "orderBy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "desc",
+                            "asc"
+                        ],
+                        "type": "string",
+                        "description": "order",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tasks.ReqTasks"
+                            }
                         }
                     },
                     "400": {

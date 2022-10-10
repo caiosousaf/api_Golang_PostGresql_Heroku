@@ -8,6 +8,7 @@ import (
 	utils "gerenciadorDeProjetos/utils/errors-tratment"
 
 	"github.com/gin-gonic/gin"
+	utilsParams "gerenciadorDeProjetos/utils/params"
 )
 
 // @Security bearerAuth
@@ -189,4 +190,29 @@ func atualizarEquipe(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, res)
 	}
+}
+
+// @Security bearerAuth
+// @Summary GET all teams with sort 
+// @Description GET all teams with sort orderBy & || order (desc, cresc) OR filter data by name
+// @Param		column		query			string				false		"column"			Enums(nome_equipe)
+// @Param		value		query			string				false		"valueSearch"
+// @Param		orderBy		query			string				false		"orderBy" 			Enums(id_equipe,nome_equipe, data_criacao)
+// @Param		order		query			string				false		"order"				Enums(desc, asc)	
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqEquipe "OK"
+// @Failure 401,400 {array} errorstratment.ResError
+// @Tags Teams
+// @Router /equipes/filtros [get]
+func listarEquipesFiltro(c *gin.Context) {
+	params := utilsParams.ParseParams(c)
+
+	res, err := equipe.ListarEquipesFiltro(params)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"err": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
