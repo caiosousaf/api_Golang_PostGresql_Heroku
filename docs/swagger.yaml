@@ -1302,6 +1302,69 @@ paths:
       summary: Get Tasks of Project with Param ID
       tags:
       - Projects
+  /projetos/filtros:
+    get:
+      consumes:
+      - application/json
+      description: GET all projects with sort orderBy & || order (desc, cresc) OR
+        filter data by name
+      parameters:
+      - description: column
+        enum:
+        - nome_projeto
+        - descricao_projeto
+        in: query
+        name: column
+        type: string
+      - description: valueSearch
+        in: query
+        name: value
+        type: string
+      - description: orderBy
+        enum:
+        - id_projeto
+        - nome_projeto
+        - descricao_projeto
+        - equipe_id
+        - data_criacao
+        - data_conclusao
+        - prazo_entrega
+        in: query
+        name: orderBy
+        type: string
+      - description: order
+        enum:
+        - desc
+        - asc
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/projetos.ReqProjetos'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            items:
+              $ref: '#/definitions/errorstratment.ResError'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: GET all projects with sort
+      tags:
+      - Projects
   /projetos/status/{status}:
     get:
       consumes:

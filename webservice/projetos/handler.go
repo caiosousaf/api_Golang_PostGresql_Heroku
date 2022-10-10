@@ -6,6 +6,7 @@ import (
 	"gerenciadorDeProjetos/domain/projetos"
 	modelApresentacao "gerenciadorDeProjetos/domain/projetos/model"
 	utils "gerenciadorDeProjetos/utils/errors-tratment"
+	utilsParams "gerenciadorDeProjetos/utils/params"
 
 	"github.com/gin-gonic/gin"
 )
@@ -195,4 +196,29 @@ func AtualizarStatusProjeto(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, res)
 	}
+}
+
+// @Security bearerAuth
+// @Summary GET all projects with sort 
+// @Description GET all projects with sort orderBy & || order (desc, cresc) OR filter data by name
+// @Param		column		query			string				false		"column"			Enums(nome_projeto, descricao_projeto)
+// @Param		value		query			string				false		"valueSearch"
+// @Param		orderBy		query			string				false		"orderBy" 			Enums(id_projeto, nome_projeto, descricao_projeto, equipe_id, data_criacao, data_conclusao, prazo_entrega)
+// @Param		order		query			string				false		"order"				Enums(desc, asc)	
+// @Accept json
+// @Produce json
+// @Success 200 {array} modelApresentacao.ReqProjetos "OK"
+// @Failure 401,400 {array} errorstratment.ResError
+// @Tags Projects
+// @Router /projetos/filtros [get]
+func listarProjetosFiltro(c *gin.Context) {
+	params := utilsParams.ParseParams(c)
+
+	res, err := projetos.ListarProjetosFiltro(params)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"err": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }

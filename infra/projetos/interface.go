@@ -2,6 +2,7 @@ package projetos
 
 import (
 	modelApresentacao "gerenciadorDeProjetos/domain/projetos/model"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 type IProjeto interface {
@@ -13,4 +14,5 @@ type IProjeto interface {
 	DeletarProjeto(id string) error
 	AtualizarProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (*modelApresentacao.ReqAtualizarProjeto, error)
 	AtualizarStatusProjeto(id string, req *modelApresentacao.ReqAtualizarProjeto) (*modelApresentacao.ReqAtualizarProjeto, error)
+	ListarProjetosFiltro(params *utils.RequestParams) ([]modelApresentacao.ReqProjetos, error)
 }

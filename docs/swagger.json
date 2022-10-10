@@ -1079,6 +1079,98 @@
                 }
             }
         },
+        "/projetos/filtros": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "GET all projects with sort orderBy \u0026 || order (desc, cresc) OR filter data by name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "GET all projects with sort",
+                "parameters": [
+                    {
+                        "enum": [
+                            "nome_projeto",
+                            "descricao_projeto"
+                        ],
+                        "type": "string",
+                        "description": "column",
+                        "name": "column",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "valueSearch",
+                        "name": "value",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id_projeto",
+                            "nome_projeto",
+                            "descricao_projeto",
+                            "equipe_id",
+                            "data_criacao",
+                            "data_conclusao",
+                            "prazo_entrega"
+                        ],
+                        "type": "string",
+                        "description": "orderBy",
+                        "name": "orderBy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "desc",
+                            "asc"
+                        ],
+                        "type": "string",
+                        "description": "order",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/projetos.ReqProjetos"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/errorstratment.ResError"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/projetos/status/{status}": {
             "get": {
                 "security": [

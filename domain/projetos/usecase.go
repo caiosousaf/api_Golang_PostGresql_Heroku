@@ -5,6 +5,7 @@ import (
 	"gerenciadorDeProjetos/config/database"
 	modelApresentacao "gerenciadorDeProjetos/domain/projetos/model"
 	"gerenciadorDeProjetos/infra/projetos"
+	utils "gerenciadorDeProjetos/utils/params"
 )
 
 func NovoProjeto(req *modelApresentacao.ReqProjeto) (*modelApresentacao.ReqProjetos, error) {
@@ -108,5 +109,18 @@ func AtualizarStatusProjeto(id string, req *modelApresentacao.ReqAtualizarProjet
 	if err != nil {
 		return nil, fmt.Errorf("unable to update status: Project Does not exist")
 	}
+	return
+}
+
+func ListarProjetosFiltro(params *utils.RequestParams) (res []modelApresentacao.ReqProjetos, err error) {
+	db := database.Conectar()
+	defer db.Close()
+	projetosRepo := projetos.NovoRepo(db)
+
+	res, err = projetosRepo.ListarProjetosFiltro(params)
+	if err != nil {
+		return nil, fmt.Errorf("unable to search projects // " + err.Error())
+	}
+
 	return
 }
