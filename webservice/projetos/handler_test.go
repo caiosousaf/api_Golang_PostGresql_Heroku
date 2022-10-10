@@ -627,7 +627,7 @@ func TestDeleteProject(t *testing.T) {
 	})
 }
 
-func TestGetFilterPerson(t *testing.T) {
+func TestGetFilterProject(t *testing.T) {
 	r := gin.Default()
 	r.GET("/projetos/filtros", listarProjetosFiltro, middlewares.Auth())
 
