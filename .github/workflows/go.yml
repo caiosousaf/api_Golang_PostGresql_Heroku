@@ -2,18 +2,34 @@ name: Go
 on: [push]
 
 jobs:
-  build:
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:14
+        env: 
+            POSTGRES_USER: icsebrcphzbchf
+            POSTGRES_PASSWORD: 02fde9fd34225b556aed45e81ca823f3c50b594f2530b3f95e8d2b1fe6517473
+            POSTGRES_DB: dcqvoffgfp6u50
+          ports: 
+            - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5s
+
     steps:
+
       - uses: actions/checkout@v3
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
           go-version: '1.18.3'
-      - name: Install dependencies
-        run: go get .
-      - name: Build
-        run: go build -v ./...
+      
+       
+
       - name: Test with the Go CLI
         run: go test -v ./webservice/... 
