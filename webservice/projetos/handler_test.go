@@ -178,7 +178,7 @@ func TestGetTasksProject(t *testing.T) {
 	r.Use(middlewares.Auth())
 
 	token := GetToken()
-	id := fmt.Sprint(GetId())
+	id := "1"
 
 	t.Run("Busca-Task-Projeto-Sucesso", func(t *testing.T) {
 		
