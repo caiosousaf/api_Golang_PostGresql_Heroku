@@ -6,9 +6,15 @@ on:
   pull_request:
     branches: [ "main" ]
 
-jobs:
 
-  build:
+jobs:
+  env:
+    DB_HOST: ec2-23-23-151-191.compute-1.amazonaws.com
+    DB_USER:  icsebrcphzbchf
+    DB_PASSWORD: 02fde9fd34225b556aed45e81ca823f3c50b594f2530b3f95e8d2b1fe6517473
+    DB_NAME: dcqvoffgfp6u50
+
+  build: 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -21,5 +27,5 @@ jobs:
     - name: Build
       run: go build -v ./...
 
-    - name: Test
+    - name: Test Go with cli
       run: go test -v ./webservice/...
