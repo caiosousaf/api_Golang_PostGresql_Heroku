@@ -8,7 +8,6 @@ on:
 
 jobs:
   job:
-  - name: Get secret from DATABASE
     env:
       DB_HOST: ${{ secrets.DB_HOST }}
       DB_USER: ${{ secrets.DB_USER }}
