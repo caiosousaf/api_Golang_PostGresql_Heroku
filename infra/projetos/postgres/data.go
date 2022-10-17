@@ -282,7 +282,7 @@ func (pg *DBProjetos) ListarProjetosFiltro(params *utils.RequestParams) (res []m
 			} else {
 				return nil, err
 			}
-		}
+		}   
 		res = append(res, projeto)
 	}
 	return res, nil

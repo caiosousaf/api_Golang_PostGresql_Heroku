@@ -3,18 +3,17 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	//"os"
+	"os"
 
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "ec2-23-23-151-191.compute-1.amazonaws.com"
-	port     = 5432
-	user     = "icsebrcphzbchf"
-	password = "02fde9fd34225b556aed45e81ca823f3c50b594f2530b3f95e8d2b1fe6517473"
-	dbname   = "dcqvoffgfp6u50"
-)
+var host string = os.Getenv("DB_HOST")
+var user string = os.Getenv("DB_USER")
+var password string = os.Getenv("DB_PASSWORD")
+var dbname string = os.Getenv("DB_NAME")
+const port = 5432
+
 
 func Conectar() *sql.DB {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
