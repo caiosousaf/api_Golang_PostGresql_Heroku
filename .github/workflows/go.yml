@@ -20,5 +20,11 @@ jobs:
     - name: Build
       run: go build -v ./...
 
-    - name: Test Go with CLI
-      run: go test -v ./webservice/...
+    - name: Test Projects
+      run: go test -v ./webservice/projetos
+    - name: Test Teams
+      run: go test -v ./webservice/equipes
+    - name: Test People
+      run: go test -v ./webservice/pessoas
+    - name: Test Tasks
+      run: go test -v ./webservice/tasks
