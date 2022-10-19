@@ -144,28 +144,12 @@ func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.R
 }
 
 func (postgres *DBPessoas) AtualizarPessoa(id string, req *modelData.ReqPessoa) (*modelApresentacao.ReqAtualizarPessoa, error) {
-
-	sqlStatement, sqlValues, err := sq.
-		Update("pessoas").
-		Set("nome_pessoa = $1", req.Nome_Pessoa).
-		Set("equipe_id = $2", req.Equipe_ID).
-		Set("funcao_pessoa = $3", req.Funcao_Pessoa,).
-		Where(
-			"id_pessoa = $4", id,
-		).
-		PlaceholderFormat(sq.Dollar).
-		ToSql()
-
-		if err != nil {
-			return nil, err
-		}
-		
-	// sqlStatement := `UPDATE pessoas 
-	// 				 SET nome_pessoa = $1, funcao_pessoa = $2, equipe_id = $3 
-	// 				 WHERE id_pessoa = $4 RETURNING nome_pessoa, funcao_pessoa, equipe_id`
+	sqlStatement := `UPDATE pessoas 
+					 SET nome_pessoa = $1, funcao_pessoa = $2, equipe_id = $3 
+					 WHERE id_pessoa = $4 RETURNING nome_pessoa, funcao_pessoa, equipe_id`
 	var pessoa = &modelApresentacao.ReqAtualizarPessoa{}
 
-	row := postgres.DB.QueryRow(sqlStatement, sqlValues...)
+	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Pessoa, req.Funcao_Pessoa, req.Equipe_ID, id)
 
 	if err := row.Scan(&pessoa.Nome_Pessoa, &pessoa.Funcao_Pessoa, &pessoa.Equipe_ID); err != nil {
 		if err == sql.ErrNoRows {
