@@ -2,11 +2,13 @@ package postgres
 
 import (
 	"database/sql"
+	"fmt"
 
 	modelApresentacao "gerenciadorDeProjetos/domain/equipes/model"
 	modelPessoa "gerenciadorDeProjetos/domain/pessoas/model"
 	modelData "gerenciadorDeProjetos/infra/equipes/model"
 	utils "gerenciadorDeProjetos/utils/params"
+
 	sq "github.com/Masterminds/squirrel"
 )
 
@@ -155,11 +157,22 @@ func (postgres *DBEquipes) DeletarEquipe(id string) error {
 }
 
 func (postgres *DBEquipes) AtualizarEquipe(id string, req *modelData.UpdateEquipe) (*modelApresentacao.ReqEquipe, error) {
-	sqlStatement := `UPDATE equipes SET nome_equipe = $1 
-	WHERE id_equipe = $2 RETURNING *`
+	sqlStatement, sqlValues, err := sq.
+	Update("equipes").
+	Set("nome_equipe", req.Nome_Equipe).
+	Where(sq.Eq{"id_equipe": id}).
+	PlaceholderFormat(sq.Dollar).
+	Suffix("RETURNING *").
+	ToSql()
+	fmt.Println(sqlStatement)
+	if err != nil {
+		return nil, err
+	}
+	// sqlStatement := `UPDATE equipes SET nome_equipe = $1 
+	// WHERE id_equipe = $2 RETURNING *`
 	var equipe = &modelApresentacao.ReqEquipe{}
 
-	row := postgres.DB.QueryRow(sqlStatement, req.Nome_Equipe, id)
+	row := postgres.DB.QueryRow(sqlStatement, sqlValues...)
 
 	if err := row.Scan(&equipe.ID_Equipe, &equipe.Nome_Equipe, &equipe.Data_Criacao); err != nil {
 		if err == sql.ErrNoRows {
