@@ -32,7 +32,7 @@ func (postgres *DBPessoas) NovaPessoa(req *modelData.ReqPessoa) (*modelApresenta
 	return pessoa, nil
 }
 
-func (pg *DBPessoas) ListarPessoas() (res *modelApresentacao.ListarGetPessoa,err error) {
+func (pg *DBPessoas) ListarPessoas() (res *modelApresentacao.ListarGetPessoa, err error) {
 	//sqlStatement := `SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, pe.equipe_id, eq.nome_equipe, pe.data_contratacao
 	//FROM pessoas as pe INNER JOIN equipes as eq on pe.equipe_id = eq.id_equipe ORDER BY pe.id_pessoa`
 	var pessoa = modelApresentacao.ReqGetPessoa{}
@@ -62,7 +62,7 @@ func (pg *DBPessoas) ListarPessoas() (res *modelApresentacao.ListarGetPessoa,err
 			&pessoa.EquipeID, &pessoa.Nome_Equipe, &pessoa.Data_Contratacao); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, err
-			} 
+			}
 			return nil, err
 		}
 		res.Pessoas = append(res.Pessoas, pessoa)
@@ -94,7 +94,7 @@ func (pg *DBPessoas) ListarPessoa(id string) (res *modelApresentacao.ReqGetPesso
 		&pessoa.EquipeID, &pessoa.Data_Contratacao, &pessoa.Nome_Equipe); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, err
-		}	
+		}
 		return nil, err
 	}
 
@@ -102,18 +102,28 @@ func (pg *DBPessoas) ListarPessoa(id string) (res *modelApresentacao.ReqGetPesso
 }
 
 func (postgres *DBPessoas) ListarTarefasPessoa(id string) ([]modelApresentacao.ReqTarefaPessoa, error) {
-	sqlStatement := `	SELECT pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, eq.id_equipe, eq.nome_equipe, pr.nome_projeto,tk.id_task, tk.descricao_task,
-	tk.projeto_id, tk.status, tk.data_criacao, tk.data_conclusao, tk.prazo_entrega, tk.prioridade 
-	FROM pessoas pe 
-	INNER JOIN equipes eq ON pe.equipe_id = eq.id_equipe 
-	INNER JOIN projetos pr ON pr.equipe_id = eq.id_equipe 
-	INNER JOIN tasks tk ON tk.pessoa_id = pe.id_pessoa 
-	WHERE pe.id_pessoa = $1`
+
+	sqlStatement, sqlValues, err := sq.
+		Select(`pe.id_pessoa, pe.nome_pessoa, pe.funcao_pessoa, eq.id_equipe, eq.nome_equipe, pr.nome_projeto,tk.id_task, 
+		tk.descricao_task, tk.projeto_id, tk.status, tk.data_criacao, tk.data_conclusao, tk.prazo_entrega, tk.prioridade`).
+		From("pessoas pe").
+		Join("equipes eq ON pe.equipe_id = eq.id_equipe").
+		Join("tasks tk ON tk.pessoa_id = pe.id_pessoa").
+		Join("projetos pr ON pr.id_projeto = tk.projeto_id").
+		Where(sq.Eq{
+			"pe.id_pessoa": id,
+		}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+
+	if err != nil {
+		return nil, err
+	}
 
 	var pessoa = modelApresentacao.ReqTarefaPessoa{}
 	var res = []modelApresentacao.ReqTarefaPessoa{}
 
-	row, err := postgres.DB.Query(sqlStatement, id)
+	row, err := postgres.DB.Query(sqlStatement, sqlValues...)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +176,7 @@ func (postgres *DBPessoas) DeletarPessoa(id string) error {
 func (pg *DBPessoas) ListarPessoasFiltro(params *utils.RequestParams) (res *modelApresentacao.ListarGetPessoa, err error) {
 	var (
 		ordem, ordenador string
-		column, value string
+		column, value    string
 	)
 
 	if params.TemFiltro("value") {
@@ -185,40 +195,39 @@ func (pg *DBPessoas) ListarPessoasFiltro(params *utils.RequestParams) (res *mode
 		ordem = params.Filters["order"][0]
 	}
 
-
 	var sqlStmt string
 	var sqlValues []interface{}
 
-	if params.TemFiltro("value") && params.TemFiltro("column")  {
+	if params.TemFiltro("value") && params.TemFiltro("column") {
 		sqlStmt, sqlValues, err = sq.
-		Select("pe.*, eq.nome_equipe").
-		From("pessoas pe").
-		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
-		Where(sq.ILike{
-			column : "%"+value+"%",
-		}).
-		PlaceholderFormat(sq.Dollar).
-		ToSql()
-	} 
-	if !params.TemFiltro("value") && !params.TemFiltro("column") && !params.TemFiltro("order") && !params.TemFiltro("orderBy"){
+			Select("pe.*, eq.nome_equipe").
+			From("pessoas pe").
+			Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+			Where(sq.ILike{
+				column: "%" + value + "%",
+			}).
+			PlaceholderFormat(sq.Dollar).
+			ToSql()
+	}
+	if !params.TemFiltro("value") && !params.TemFiltro("column") && !params.TemFiltro("order") && !params.TemFiltro("orderBy") {
 		sqlStmt, sqlValues, err = sq.
-		Select("pe.*, eq.nome_equipe").
-		From("pessoas pe").
-		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
-		PlaceholderFormat(sq.Dollar).
-		ToSql()
+			Select("pe.*, eq.nome_equipe").
+			From("pessoas pe").
+			Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+			PlaceholderFormat(sq.Dollar).
+			ToSql()
 	}
 
-	if params.TemFiltro("order") && params.TemFiltro("orderBy")  {
+	if params.TemFiltro("order") && params.TemFiltro("orderBy") {
 		sqlStmt, sqlValues, err = sq.
-		Select("pe.*, eq.nome_equipe").
-		From("pessoas pe").
-		Join("equipes eq ON eq.id_equipe = pe.equipe_id").
-		OrderBy(ordenador + " " + ordem).
-		PlaceholderFormat(sq.Dollar).
-		ToSql()
+			Select("pe.*, eq.nome_equipe").
+			From("pessoas pe").
+			Join("equipes eq ON eq.id_equipe = pe.equipe_id").
+			OrderBy(ordenador + " " + ordem).
+			PlaceholderFormat(sq.Dollar).
+			ToSql()
 	}
-	
+
 	if err != nil {
 		return nil, err
 	}
